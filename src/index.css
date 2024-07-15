@@ -1,13 +1,21 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: KoPubWorld Bold; /* 폰트 이름 정의 */
+  src: url('assets/font/KoPubWorld Dotum Bold.ttf') format('truetype');
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+  font-family: KoPubWorld Light; /* 폰트 이름 정의 */
+  src: url('assets/font/KoPubWorld Dotum Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: KoPubWorld Medium; /* 폰트 이름 정의 */
+  src: url('assets/font/KoPubWorld Dotum Medium.ttf') format('truetype');
+}
+
+body {
+  margin: 0;
+  font-family: 'KoPubWorld Medium', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
