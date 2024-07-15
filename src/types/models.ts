@@ -1,85 +1,86 @@
-type VCS = {
-    VCS_ID: bigint;
-    VCS_FilePath: string;
+interface VcsFileEntity {
+    id?: number;
+    path: string;
     checkSum: string;
-    isLastCommit: number;
-    userToken: string;
-    dataBaseID: string;
-}
-
-type API = {
-    API_ID: bigint;
-    createUserToken: string;
-    API_Path: string;
-    optionFilter: string;
-}
-
-type Image = {
-    media_ID: bigint;
-    name: string;
-    path: string;
-    uplodateTime: string;
-    userToken: string;
-    table_ID: bigint;
-}
-
-type Video = {
-    video_ID: bigint;
-    name: string;
-    path: string;
-    uplodateTime: string;
-    userToken: string;
-    table_ID: bigint;
-}
-
-type DataBase = {
-    dataBase_ID: bigint;
-    tableName: string;
-    comment: string;
-    createUserToken: string;
-}
-
-type Table = {
-    table_ID: bigint;
-    tableName: string;
     createTime: string;
-    updateTime: string;
+    isCurrent: string;
+    databaseID: number;
+}
+
+interface ApiInfoEntity {
+    id?: number;
+    path: string;
+    filterOption: string;
     tableHash: string;
-    database_ID: bigint;
+}
+
+interface MediaEntity {
+    id?: number;
+    name: string;
+    updateTime: string;
     createUserToken: string;
+    tableID: number;
 }
 
-type Column = {
-    column_ID: bigint;
-    columnName: string;
-    columnType: string;
-    table_ID: bigint;
+interface VideoEntity {
+    id?: number;
+    name: string;
+    updateTime: string;
+    createUserToken: string;
+    tableID: number;
 }
 
-type IntData = {
-    data_ID: bigint;
-    data: string;
-    dataUUID: string;
-    API_Path: string;
-    dataCreateTime: string;
-    column_ID: bigint;
+interface DataBaseEntity {
+    id?: number;
+    name: string;
+    comment: string;
+    currentUserToken: string;
 }
 
-type TextData = {
-    data_ID: bigint;
-    data: string;
-    dataUUID: string;
-    API_Path: string;
-    dataCreateTime: string;
-    column_ID: bigint;
+interface TableEntity {
+    id?: number;
+    tableHash: string;
+    joinTable?: string | null;
+    name: string;
+    comment: string;
+    crateTime: string;
+    updateTime: string;
+    currentUserToken: string;
 }
 
-type RealData = {
-    data_ID: bigint;
-    data: string;
-    dataUUID: string;
-    API_Path: string;
-    dataCreateTime: string;
-    column_ID: bigint;
+interface ColumnEntity {
+    id?: number;
+    type: string;
+    tableID: number;
+    columnHash: string;
+    joinColumn?: string | null;
+    isNotNull: number;
+    isPrimaryKey: number;
+    isForeignKey: number;
+    isUniqueKey: number;
+}
+
+interface IntData {
+    id?: number;
+    data: number;
+    createTime: number;
+    columnID: number;
+    lineHash: string;
+}
+
+interface RealData {
+    id?: number;
+    data: number;
+    createTime: number;
+    columnID: number;
+    lineHash: string;
+}
+
+interface TextData {
+    id?: number;
+    data: number;
+    createTime: number;
+    columnID: number;
+    lineHash: string;
 }
 

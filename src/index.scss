@@ -1,0 +1,54 @@
+@font-face {
+  font-family: KoPubWorld Bold; /* 폰트 이름 정의 */
+  src: url('assets/font/KoPubWorld Dotum Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: KoPubWorld Light; /* 폰트 이름 정의 */
+  src: url('assets/font/KoPubWorld Dotum Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: KoPubWorld Medium; /* 폰트 이름 정의 */
+  src: url('assets/font/KoPubWorld Dotum Medium.ttf') format('truetype');
+}
+
+$color-blue-deep: #00A3FF;
+$color-blue-light: #62C6FF;
+$color-gray-deep: #515151;
+$color-gray-middle: #D8D8D8;
+$color-gray-light: #F5F5F5;
+$font-KoPub-bold: KoPubWorld Bold, sans-serif;
+$font-KoPub-medium: KoPubWorld Medium, sans-serif;
+
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-left {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+@mixin flex-right {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+@mixin flex-space-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+body {
+  margin: 0;
+  font-family: $font-KoPub-medium;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

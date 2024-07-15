@@ -1,0 +1,80 @@
+@import '../../../index';
+
+//* {border: 1px solid red}
+
+.header {
+  @include flex-space-between;
+  background-color: #FDFDFD;
+  color: $color-gray-deep;
+  font-family: $font-KoPub-bold;
+  font-size: 2.3vmin;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: .3em .8em;
+
+  &__nav {
+    @include flex-left;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    &__logo {
+      width: 13%;
+      height: auto;
+      margin-right: 1.5em;
+    }
+
+    &__item {
+      margin-right: 4vmin;
+      cursor: pointer;
+      display: inline-block;
+      white-space: nowrap;
+
+      &--selected {
+        color: $color-blue-deep;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  }
+
+  &__userInfo {
+    position: relative;
+    padding: 0 1%;
+    cursor: pointer;
+
+    .dropdown {
+      width: 4em;
+      font-size: 90%;
+      text-align: center;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 10%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+
+      a {
+        display: block;
+        color: #333;
+        text-decoration: none;
+
+        &:hover {
+          background-color: #f1f1f1;
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
