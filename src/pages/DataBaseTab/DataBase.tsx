@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
+import Tab from "../../publicComponents/UI/Tab";
 
-const dataBase:React.FC = () => {
+const DataBase:React.FC = () => {
+    const [selectedTab, setSelectedTab] = useState(0);
+
     return (
         <div>
-            <a>Test</a>
+            <Tab tabs={['Data', 'Like', 'Rest API', 'Query', 'Excel', 'Resource']} onTabSelect={(index) => setSelectedTab(index)}/>
         </div>
     );
 };
 
-export default dataBase;
+export default DataBase;

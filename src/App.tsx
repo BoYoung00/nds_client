@@ -19,15 +19,14 @@ const App: React.FC = () => {
                 <div>
                     <Header user={user} onLogout={() => setUser(null)} />
                     <Routes>
-                        <Route path="/" element={<DataBase />} />
+                        <Route path='/' element={<Navigate to="/database" />} />
                         <Route path="/database" element={<DataBase />} />
                     </Routes>
                 </div>
-            ) : (
-                // 로그인 안 하면 메인으로 돌아감
+            ) : ( // 로그인 안 하면 메인으로 돌아감
                 <div>
-                    <Navigate to="/main" replace />
                     <Routes>
+                        <Route path='/' element={<Navigate to="/main" />} />
                         <Route path="/main" element={<Main />} />
                     </Routes>
                 </div>

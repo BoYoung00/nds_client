@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const menuItems = [
+const maxMenuItems: MenuItem[] = [
     { path: '/database', text: 'DATABASE' },
     { path: '/version', text: 'VERSION' },
     { path: '/erd', text: 'ERD' },
@@ -9,16 +9,38 @@ const menuItems = [
     { path: '/template', text: 'TEMPLATE' }
 ];
 
+const minMenuItems: MenuItem[] = [
+    { path: '/database', text: 'DB' },
+    { path: '/version', text: 'VCS' },
+    { path: '/erd', text: 'ERD' },
+    { path: '/api', text: 'API' },
+    { path: '/template', text: 'TEMP' }
+];
+
 export const useHeader = () => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [showMenu, setShowMenu] = useState(false);
+    const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
     const location = useLocation();
+
+    const handleResize = () => {
+        if (window.innerWidth <= 640)
+            setMenuItems(minMenuItems);
+        else
+            setMenuItems(maxMenuItems);
+    };
 
     useEffect(() => {
         const path = location.pathname;
-        const index = menuItems.findIndex(item => item.path === path);
+        const index = minMenuItems.findIndex(item => item.path === path);
         setSelectedIndex(index === -1 ? 0 : index);
     }, [location]);
+
+    useEffect(() => {
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
@@ -28,6 +50,6 @@ export const useHeader = () => {
         selectedIndex,
         showMenu,
         toggleMenu,
-        menuItems
+        menuItems,
     };
 };

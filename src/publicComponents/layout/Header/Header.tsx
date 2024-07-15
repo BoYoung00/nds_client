@@ -13,13 +13,12 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
     const { selectedIndex, showMenu, toggleMenu, menuItems } = useHeader(); // Custom Hook 사용
 
+
     return (
         <header className={styles.header}>
+            <img className={styles.header__nav__logo} src={logo} alt="Logo" />
             <ul className={styles.header__nav}>
-                <li className={styles.header__nav__logo}>
-                    <img src={logo} alt="Logo" />
-                </li>
-                {menuItems.map((item, index) => (
+                {menuItems && menuItems.map((item, index) => (
                     <li
                         key={index}
                         className={`${styles.header__nav__item} ${
