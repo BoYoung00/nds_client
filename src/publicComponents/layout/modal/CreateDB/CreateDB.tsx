@@ -1,0 +1,73 @@
+import React, { useState } from 'react';
+import BackgroundModal from "../../../UI/BackgroundModal";
+import styles from './CreateDB.module.scss';
+import LineTitle from "../../../UI/LineTitle";
+import {useDatabaseForm, useFileUpload} from "./useCreateDB";
+
+interface CreateDBProps {
+    isOpenCreateDBModal: boolean;
+    onCloseModal(isOpenModal: boolean): void;
+}
+
+const CreateDB: React.FC<CreateDBProps> = ({ isOpenCreateDBModal, onCloseModal }) => {
+    if (!isOpenCreateDBModal) return null;
+
+    return (
+        <>
+            <BackgroundModal
+                width={70}
+                height={60}
+                onClose={onCloseModal}
+                element={CreateDBForm}
+            />
+        </>
+    );
+};
+
+export const CreateDBForm: React.FC = () => {
+    const { dataBaseData, handleChange, handleSubmit } = useDatabaseForm();
+    const { selectedFile, handleFileChange } = useFileUpload();
+
+    return (
+        <div className={styles.modal}>
+            <LineTitle text={"새로운 데이터베이스 생성"} />
+            <form className={styles['modal-form']} onSubmit={handleSubmit}>
+                <div className={styles['form-group']}>
+                    <label htmlFor="name">데이터베이스명</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                        onChange={handleChange}
+                        value={dataBaseData.name}
+                    />
+                </div>
+                <div className={styles['form-group']}>
+                    <label htmlFor="comment">설명 <span>(선택 사항)</span></label>
+                    <textarea
+                        id="comment"
+                        name="comment"
+                        onChange={handleChange}
+                        value={dataBaseData.comment}
+                    />
+                </div>
+                <button className={styles['submit-button']} type="submit">데이터베이스 생성</button>
+            </form>
+            <div className={styles.fileUploader}>
+                <label className={styles.fileUploaderLabel}>
+                    파일 스크립터로 생성하기
+                    <input
+                        type="file"
+                        accept=".sql, .txt"
+                        onChange={handleFileChange}
+                        className={styles.fileInput}
+                    />
+                </label>
+                {selectedFile && <span className={styles.selectedFileName}>{selectedFile.name}</span>}
+            </div>
+        </div>
+    );
+};
+
+export default CreateDB;

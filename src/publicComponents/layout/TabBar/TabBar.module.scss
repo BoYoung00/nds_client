@@ -1,0 +1,40 @@
+@import '../../../index';
+
+.tab-bar-container {
+  display: flex;
+  align-items: end;
+  margin: 10px;
+
+  .tab {
+    text-align: center;
+    white-space: nowrap;
+    font-family: $font-KoPub-bold;
+    cursor: pointer;
+    padding: .5em .8em 1em .8em;
+    border: 1px solid #ECECEC;
+    background: #ECECEC;
+    color: #808080;
+    height: 1em;
+    border-radius: 6px 6px 0 0;
+    margin-right: 5px;
+
+    &.active {
+      background: white;
+      color: #00A3FF;
+      height: 1.5em;
+    }
+
+    &.create-db-tab {
+      height: 1em;
+      background: #ECECEC;
+      color: #808080;
+      border: 1px solid #ECECEC;
+      border-radius: 6px 6px 0 0;
+      cursor: pointer;
+
+      &:hover {
+        background: #D0D0D0;
+      }
+    }
+  }
+}
