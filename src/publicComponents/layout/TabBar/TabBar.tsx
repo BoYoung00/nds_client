@@ -17,12 +17,12 @@ const TabBar: React.FC<TabBarProps> = ({ tabs, onTabSelect, width = 5 }) => {
     const [isOpenCreateDBModal, setIsOpenCreateDBModal] = useState<boolean>(false);
 
     return (
-        <div className={styles['tab-bar-container']}>
+        <div className={styles.tabBar}>
             {tabs.map((tab, index) => (
                 // 비어있는 탭이라면 CREATE DATABASE +
                 tab === "" ?
                 <div
-                    className={`${styles.tab} ${styles['create-db-tab']}`}
+                    className={`${styles.tabBar__tab} ${styles['create-db-tab']}`}
                     onClick={()=>setIsOpenCreateDBModal(true)}
                     style={{
                         width: `${width}em`,
@@ -34,7 +34,7 @@ const TabBar: React.FC<TabBarProps> = ({ tabs, onTabSelect, width = 5 }) => {
                 :
                 <div
                     key={index}
-                    className={`${styles.tab} ${index === selectedIndex ? styles.active : ''}`}
+                    className={`${styles.tabBar__tab} ${index === selectedIndex ? styles.active : ''}`}
                     onClick={() => handleTabClick(index)}
                     style={{
                         width: `${width}em`,
@@ -46,7 +46,7 @@ const TabBar: React.FC<TabBarProps> = ({ tabs, onTabSelect, width = 5 }) => {
             ))}
 
             <CreateDB
-                isOpenCreateDBModal={isOpenCreateDBModal}
+                isOpenModal={isOpenCreateDBModal}
                 onCloseModal={() => setIsOpenCreateDBModal(false)}
             />
         </div>

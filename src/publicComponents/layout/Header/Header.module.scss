@@ -1,9 +1,11 @@
-@import '../../../index';
+@import 'src/App.module';
 
 //* {border: 1px solid red}
 
 .header {
+  height: 60px;
   @include flex-left;
+  flex: 0 0 auto;
   background-color: #FDFDFD;
   color: $color-gray-deep;
   font-family: $font-KoPub-bold;
@@ -25,7 +27,7 @@
     }
 
     &__item {
-      margin-right: 3%;
+      margin-right: 30px;
       cursor: pointer;
       display: inline-block;
       white-space: nowrap;
@@ -73,7 +75,7 @@
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 850px) {
   .header {
     font-size: 16px;
   }
@@ -81,6 +83,8 @@
     width: 80px;
   }
 }
+
+
 
 
 

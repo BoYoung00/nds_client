@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import BackgroundModal from "../../../UI/BackgroundModal";
 import styles from './CreateDB.module.scss';
 import LineTitle from "../../../UI/LineTitle";
 import {useDatabaseForm, useFileUpload} from "./useCreateDB";
 
 interface CreateDBProps {
-    isOpenCreateDBModal: boolean;
+    isOpenModal: boolean;
     onCloseModal(isOpenModal: boolean): void;
 }
 
-const CreateDB: React.FC<CreateDBProps> = ({ isOpenCreateDBModal, onCloseModal }) => {
-    if (!isOpenCreateDBModal) return null;
+const CreateDB: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal }) => {
+    if (!isOpenModal) return null;
 
     return (
         <>
             <BackgroundModal
-                width={70}
+                width={90}
                 height={60}
                 onClose={onCloseModal}
                 element={CreateDBForm}
@@ -24,15 +24,15 @@ const CreateDB: React.FC<CreateDBProps> = ({ isOpenCreateDBModal, onCloseModal }
     );
 };
 
-export const CreateDBForm: React.FC = () => {
+const CreateDBForm: React.FC = () => {
     const { dataBaseData, handleChange, handleSubmit } = useDatabaseForm();
     const { selectedFile, handleFileChange } = useFileUpload();
 
     return (
         <div className={styles.modal}>
             <LineTitle text={"새로운 데이터베이스 생성"} />
-            <form className={styles['modal-form']} onSubmit={handleSubmit}>
-                <div className={styles['form-group']}>
+            <form className={styles.modal__form} onSubmit={handleSubmit}>
+                <div className={styles.modal__form__group}>
                     <label htmlFor="name">데이터베이스명</label>
                     <input
                         type="text"
@@ -43,7 +43,7 @@ export const CreateDBForm: React.FC = () => {
                         value={dataBaseData.name}
                     />
                 </div>
-                <div className={styles['form-group']}>
+                <div className={styles.modal__form__group}>
                     <label htmlFor="comment">설명 <span>(선택 사항)</span></label>
                     <textarea
                         id="comment"
@@ -52,10 +52,10 @@ export const CreateDBForm: React.FC = () => {
                         value={dataBaseData.comment}
                     />
                 </div>
-                <button className={styles['submit-button']} type="submit">데이터베이스 생성</button>
+                <button className={styles.modal__form__submit} type="submit">데이터베이스 생성</button>
             </form>
-            <div className={styles.fileUploader}>
-                <label className={styles.fileUploaderLabel}>
+            <div className={styles.modal__fileUploader}>
+                <label className={styles.modal__fileUploader__label}>
                     파일 스크립터로 생성하기
                     <input
                         type="file"
@@ -64,7 +64,7 @@ export const CreateDBForm: React.FC = () => {
                         className={styles.fileInput}
                     />
                 </label>
-                {selectedFile && <span className={styles.selectedFileName}>{selectedFile.name}</span>}
+                {selectedFile && <span className={styles['modal__fileUploader--selectedFileName']}>{selectedFile.name}</span>}
             </div>
         </div>
     );

@@ -1,1 +1,1 @@
-export { default } from './CreateDB';
+export { default as CreateDB} from './CreateDB';

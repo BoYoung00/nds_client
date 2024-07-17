@@ -24,7 +24,7 @@ export const useHeader = () => {
     const location = useLocation();
 
     const handleResize = () => {
-        if (window.innerWidth <= 640)
+        if (window.innerWidth <= 700)
             setMenuItems(minMenuItems);
         else
             setMenuItems(maxMenuItems);

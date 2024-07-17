@@ -84,7 +84,7 @@ interface TextData {
     lineHash: string;
 }
 
-// 클라이언트 용
+// 클라이언트용
 interface MenuItem {
     path: string;
     text: string;

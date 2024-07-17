@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import styles from "./App.module.scss";
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Main from "./pages/main";
 import DataBase from './pages/DataBaseTab/DataBase';
@@ -14,15 +15,17 @@ const App: React.FC = () => {
     const [user, setUser] = useState<UserToken | null>(exampleUser);
 
     return (
-        <>
+        <div className={styles.app}>
             {user ? (
-                <div>
+                <>
                     <Header user={user} onLogout={() => setUser(null)} />
-                    <Routes>
-                        <Route path='/' element={<Navigate to="/database" />} />
-                        <Route path="/database" element={<DataBase />} />
-                    </Routes>
-                </div>
+                    <div className={styles.content}>
+                        <Routes>
+                            <Route path='/' element={<Navigate to="/database" />} />
+                            <Route path="/database" element={<DataBase />} />
+                        </Routes>
+                    </div>
+                </>
             ) : ( // 로그인 안 하면 메인으로 돌아감
                 <div>
                     <Routes>
@@ -31,7 +34,7 @@ const App: React.FC = () => {
                     </Routes>
                 </div>
             )}
-        </>
+        </div>
     );
 }
 
