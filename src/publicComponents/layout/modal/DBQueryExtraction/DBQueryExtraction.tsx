@@ -27,8 +27,9 @@ const DBQueryExtraction: React.FC<DBQueryExtractionProps> = ({ isOpenModal, onCl
                 width={70}
                 height={60}
                 onClose={onCloseModal}
-                element={ModalContent}
-            />
+            >
+                <ModalContent />
+            </BackgroundModal>
         </>
     );
 };

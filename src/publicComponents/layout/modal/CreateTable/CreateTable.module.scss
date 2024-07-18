@@ -9,33 +9,18 @@
 
     &__group {
       margin: 20px 0 20px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
 
+      section { width: 100%}
 
       label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-
-        span {
-          font-size: 10px;
-          color: #808080;
-          font-family: $font-KoPub-light;
-        }
+        @include label-style;
       }
 
-      input, textarea {
-        width: 100%;
-        padding: 8px;
-        font-size: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-        font-family: $font-KoPub-light;
-      }
-
-      textarea {
-        resize: none;
-        height: 120px;
+      input {
+        @include input-style;
       }
     }
 
@@ -43,28 +28,91 @@
       @include button-style;
     }
   }
+}
 
-//파일 선택 디자인
-  &__fileUploader {
-    width: 100%;
+//테이블 컬럼 시작
+.createTableColumn {
+  width: 100%;
 
-    &__label {
-      display: block;
-      color: $color-blue-deep;
-      text-decoration: underline;
+  &__titleSection {
+    @include flex-space-between;
+  }
+
+  &__buttonBox {
+    a {
+      font-family: $font-KoPub-bold;
+      padding: 8px 10px;
       cursor: pointer;
-      padding: 10px;
+      transition: font-size 0.3s;
 
-      input[type='file'] {
-        display: none;
+      &:hover {
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  &__tableSection {
+    height: 200px;
+    overflow-y: auto;
+    background-color: #fff;
+
+    table {
+
+      width: 100%;
+      table-layout: fixed;
+      background-color: #fff;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+
+      th, td {
+        border: 1px solid #ccc; // 셀에 선 추가
+        padding: 6px;
+      }
+
+      td { padding: 8px;}
+
+      th {
+        background-color: #f8f8f8;
+        color: #333;
+        border: 1px solid #ccc;
+        // 헤더 고정
+        position: sticky;
+        top: -1px;
+        z-index: 1;
       }
     }
 
-    &--selectedFileName {
-      padding: 10px;
-      font-size: 0.9rem;
-      color: #868686;
-      text-decoration: none;
+    .columnName {
+      width: 25%; // '이름' 열의 너비 설정
+    }
+
+    .dataType {
+      width: 20%; // '데이터 타입' 열의 너비 설정
+    }
+
+    .pk, .fk, .uk, .nn {
+      width: 5%; // 너비
+    }
+
+    .join {
+      width: 30%; // '조인' 열의 너비 설정
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.5); // 체크박스 크기를 1.5배로 확대
+      margin: 0;
+      cursor: pointer;
     }
   }
 }
+
+@media (max-width: 768px) {
+  .createTableColumn__tableSection {
+    th {
+      font-size: 12px;
+    }
+  }
+}
+
+
+

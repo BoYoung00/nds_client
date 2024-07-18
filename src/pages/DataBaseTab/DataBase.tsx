@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './DataBase.module.scss';
 import TabBar from "../../publicComponents/layout/TabBar/TabBar";
 import DataBaseBlueSidebar from "./Components/DataBaseBlueSidebar";
@@ -20,11 +20,11 @@ const dataBaseEntities: DataBaseEntity[] = [
     },
 ];
 
-const exampleData: TableEntity[] = [
+const tableEntities: TableEntity[] = [
     {
         id: 1,
         tableHash: "abc123",
-        joinTable: null,
+        dataBaseID: 1,
         name: "Users",
         comment: "This table stores user information",
         crateTime: "2024-01-01T10:00:00Z",
@@ -34,7 +34,7 @@ const exampleData: TableEntity[] = [
     {
         id: 2,
         tableHash: "def456",
-        joinTable: "UserDetails",
+        dataBaseID: 1,
         name: "Orders",
         comment: "This table stores order information",
         crateTime: "2024-02-01T10:00:00Z",
@@ -44,7 +44,7 @@ const exampleData: TableEntity[] = [
     {
         id: 3,
         tableHash: "ghi789",
-        joinTable: null,
+        dataBaseID: 2,
         name: "Products",
         comment: "This table stores product information",
         crateTime: "2024-03-01T10:00:00Z",
@@ -55,8 +55,13 @@ const exampleData: TableEntity[] = [
 
 const DataBase:React.FC = () => {
     const [selectedTab, setSelectedTab] = useState(0);
-    const [selectedDataBaseID, setSelectedDataBaseID] = useState(-1);
-    const [selectedTableID, setSelectedTableID] = useState(-1);
+    const [selectedDataBase, setSelectedDataBase] = useState<DataBaseEntity | null>(null);
+    const [selectedTableID, setSelectedTableID] = useState<TableEntity | null>(null);
+
+    useEffect(()=> {
+        console.log("선택된 DB : ",selectedDataBase)
+        // 여기에 테이블 목록 가져와서 tableEntities 업데이트 로직
+    }, [selectedDataBase]);
 
     return (
         <>
@@ -65,11 +70,12 @@ const DataBase:React.FC = () => {
                 <div className={styles.content}>
                     <DataBaseBlueSidebar
                         dataBases={dataBaseEntities}
-                        setSelectedDataBaseID={()=> setSelectedDataBaseID}
+                        setSelectedDataBase={setSelectedDataBase}
                     />
                     <DataBaseWhiteSidebar
-                        tables={exampleData}
-                        setSelectedTableID={()=> setSelectedTableID}
+                        tables={tableEntities}
+                        setSelectedTable={setSelectedTableID}
+                        parentsDataBase={selectedDataBase}
                     />
                 </div>
             </div>

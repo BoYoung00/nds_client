@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+interface MenuItem {
+    path: string;
+    text: string;
+}
+
 const maxMenuItems: MenuItem[] = [
     { path: '/database', text: 'DATABASE' },
     { path: '/version', text: 'VERSION' },

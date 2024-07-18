@@ -10,30 +10,16 @@
     &__group {
       margin: 20px 0 20px 0;
 
-
       label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-
-        span {
-          font-size: 10px;
-          color: #808080;
-          font-family: $font-KoPub-light;
-        }
+        @include label-style;
       }
 
-      input, textarea {
-        width: 100%;
-        padding: 8px;
-        font-size: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-        font-family: $font-KoPub-light;
+      input {
+        @include input-style;
       }
 
       textarea {
+        @include input-style;
         resize: none;
         height: 120px;
       }
@@ -44,7 +30,7 @@
     }
   }
 
-//파일 선택 디자인
+  // 파일 선택 디자인
   &__fileUploader {
     width: 100%;
 

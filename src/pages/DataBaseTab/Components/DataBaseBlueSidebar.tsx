@@ -1,16 +1,16 @@
 import React from 'react';
 import styles from '../DataBase.module.scss';
-import { DBQueryExtraction } from "../../../publicComponents/layout/modal/DBQueryExtraction";
-import { CreateDB } from "../../../publicComponents/layout/modal/CreateDB";
-import { Notification } from "../../../publicComponents/layout/modal/Notification";
-import { useDataBaseBlueSidebar } from "../hooks/useDataBaseBlueSidebar";
+import {DBQueryExtraction} from "../../../publicComponents/layout/modal/DBQueryExtraction";
+import {CreateDB} from "../../../publicComponents/layout/modal/CreateDB";
+import {Notification} from "../../../publicComponents/layout/modal/Notification";
+import {useDataBaseBlueSidebar} from "../hooks/useDataBaseBlueSidebar";
 
 interface DataBaseBlueSidebarProps {
     dataBases?: DataBaseEntity[],
-    setSelectedDataBaseID: (id: number) => void;
+    setSelectedDataBase: (dataBase: DataBaseEntity) => void;
 }
 
-const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ dataBases, setSelectedDataBaseID }) => {
+const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ dataBases, setSelectedDataBase }) => {
     const {
         selectedId,
         modals: {
@@ -27,7 +27,7 @@ const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ dataBases, se
             handleScript,
             handleDelete,
         }
-    } = useDataBaseBlueSidebar(setSelectedDataBaseID);
+    } = useDataBaseBlueSidebar(setSelectedDataBase);
 
     return (
         <>
@@ -37,7 +37,7 @@ const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ dataBases, se
                         <div
                             key={item.id}
                             className={`${styles.item} ${selectedId === item.id ? styles.selected : ''}`}
-                            onClick={() => onSelected(item.id!!)}
+                            onClick={() => onSelected(item)}
                         >
                             {item.name}
                         </div>

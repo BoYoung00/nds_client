@@ -47,7 +47,8 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
   align-items: center;
 }
 
-@mixin button-none-style($fontSize: 1rem, $color: $color-blue-deep, $isBold) {
+// 버튼 스타일 모두 없애기
+@mixin button-none-style($fontSize: 1rem, $color: $color-blue-deep, $isBold: true) {
   border: none;
   background: none;
   cursor: pointer;
@@ -61,7 +62,8 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
   }
 }
 
-@mixin border-radius($isBorderNone, $borderSize: 1px, $borderColor: #000) {
+// 둥근 모서리 선 디자인
+@mixin border-radius($isBorderNone: true, $borderSize: 1px, $borderColor: #000) {
   border-radius: 4px;
 
   @if $isBorderNone {
@@ -71,6 +73,7 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
   }
 }
 
+// 파란색 버튼 스타일
 @mixin button-style($isBlueBut: true, $width: 100%, $fontSize: 1.1rem) {
   width: $width;
   padding: 10px;
@@ -94,6 +97,30 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
   }
 }
 
+//레이블 스타일
+@mixin label-style {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+
+  span {
+    font-size: 10px;
+    color: #808080;
+    font-family: $font-KoPub-light;
+  }
+}
+
+//텍스트 박스 스타일
+@mixin input-style() {
+  width: 100%;
+  padding: 7px;
+  font-size: .95rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: $font-KoPub-medium;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -112,14 +139,42 @@ body {
     overflow: auto;
   }
 
-  .app::-webkit-scrollbar {
+  //스크롤바 디자인
+  *::-webkit-scrollbar {
     width: 10px;
   }
-  .app::-webkit-scrollbar-thumb {
-    background: rgb(192, 192, 192); /* 스크롤바 색상 */
-    border-radius: 10px; /* 스크롤바 둥근 테두리 */
+  *::-webkit-scrollbar-track {
+    background: #f1f1f1;
   }
-  .app::-webkit-scrollbar-track {
-    background: rgb(240, 240, 240);  /*스크롤바 뒷 배경 색상*/
+  *::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: #555;
   }
 }
+
+//선택 박스 디자인
+select {
+  width: 100%;
+  padding: 8px 5px;
+  font-size: 1rem;
+  @include border-radius(false, 1px, #ccc);
+  color: #333;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+
+  &:hover {
+    border-color: #007bff;
+  }
+
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+  }
+}
+
+
+

@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
-export const useDataBaseBlueSidebar = (setSelectedDataBaseID: (id: number) => void) => {
+export const useDataBaseBlueSidebar = (setSelectedDataBase: (dataBase: DataBaseEntity) => void) => {
     const [selectedId, setSelectedId] = useState(-1);
     const [isOpenCreateDBModal, setIsOpenCreateDBModal] = useState<boolean>(false);
     const [isOpenQueryModal, setIsOpenQueryModal] = useState<boolean>(false);
     const [isErrorOpen, setIsErrorOpen] = useState<boolean>(false);
 
-    const onSelected = (id: number) => {
-        setSelectedId(id);
-        setSelectedDataBaseID(id);
+    const onSelected = (dataBase: DataBaseEntity) => {
+        setSelectedId(dataBase.id!!);
+        setSelectedDataBase(dataBase);
     }
 
     const handleQuery = () => {

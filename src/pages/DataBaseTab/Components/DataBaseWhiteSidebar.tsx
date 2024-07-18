@@ -1,25 +1,24 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from '../DataBase.module.scss';
-import { DBQueryExtraction } from "../../../publicComponents/layout/modal/DBQueryExtraction";
-import { CreateDB } from "../../../publicComponents/layout/modal/CreateDB";
-import { Notification } from "../../../publicComponents/layout/modal/Notification";
-import { useDataBaseBlueSidebar } from "../hooks/useDataBaseBlueSidebar";
+import {DBQueryExtraction} from "../../../publicComponents/layout/modal/DBQueryExtraction";
+import {Notification} from "../../../publicComponents/layout/modal/Notification";
 import {CreateTable} from "../../../publicComponents/layout/modal/CreateTable";
 
 interface DataBaseWhiteSidebarProps {
-    tables?: DataBaseEntity[],
-    setSelectedTableID: (id: number) => void;
+    tables?: TableEntity[];
+    setSelectedTable: (table: TableEntity) => void;
+    parentsDataBase: DataBaseEntity | null;
 }
 
-const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({ tables, setSelectedTableID }) => {
+const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({ tables=[], setSelectedTable, parentsDataBase }) => {
     const [selectedId, setSelectedId] = useState(-1);
     const [isOpenCreateTableModal, setIsOpenCreateTableModal] = useState<boolean>(false);
     const [isOpenMergeModal, setIsOpenMergeModal] = useState<boolean>(false);
     const [isErrorOpen, setIsErrorOpen] = useState<boolean>(false);
 
-    const onSelected = (id: number) => {
-        setSelectedId(id);
-        setSelectedTableID(id);
+    const onSelected = (table: TableEntity) => {
+        setSelectedId(table.id!!);
+        setSelectedTable(table);
     }
 
     const handleQuery = () => {
@@ -38,6 +37,11 @@ const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({ tables, set
         }
     }
 
+    useEffect(()=> {
+        console.log(parentsDataBase)
+    }, [parentsDataBase]);
+
+
     return (
         <>
             <div className={`${styles.dataBaseSidebar} ${styles.whiteSidebar}`}>
@@ -46,14 +50,16 @@ const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({ tables, set
                         <div
                             key={item.id}
                             className={`${styles.item} ${selectedId === item.id ? styles.selected : ''}`}
-                            onClick={() => onSelected(item.id!!)}
+                            onClick={() => onSelected(item)}
                         >
                             {item.name}
                         </div>
                     ))}
-                    <button className={styles.createButton} onClick={() => setIsOpenCreateTableModal(true)}>
-                        CREATE DATABASE +
-                    </button>
+                    { parentsDataBase &&
+                        <button className={styles.createButton} onClick={() => setIsOpenCreateTableModal(true)}>
+                            CREATE DATABASE +
+                        </button>
+                    }
                 </section>
 
                 <footer>
@@ -72,6 +78,7 @@ const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({ tables, set
             <CreateTable
                 isOpenModal={isOpenCreateTableModal}
                 onCloseModal={() => setIsOpenCreateTableModal(false)}
+                dataBase={parentsDataBase}
             />
 
             {/* 쿼리 추출 모달 */}
@@ -85,7 +92,7 @@ const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({ tables, set
                 isOpen={isErrorOpen}
                 onClose={() => setIsErrorOpen(false)}
                 type="error"
-                message="선택한 데이터베이스가 없습니다."
+                message="선택한 테이블이 없습니다."
             />
         </>
     );

@@ -18,8 +18,9 @@ const CreateDB: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal }) => {
                 width={90}
                 height={60}
                 onClose={onCloseModal}
-                element={CreateDBForm}
-            />
+            >
+                <CreateDBForm />
+            </BackgroundModal>
         </>
     );
 };
@@ -59,7 +60,7 @@ const CreateDBForm: React.FC = () => {
                     파일 스크립터로 생성하기
                     <input
                         type="file"
-                        accept=".sql, .txt"
+                        accept=".nds"
                         onChange={handleFileChange}
                         className={styles.fileInput}
                     />

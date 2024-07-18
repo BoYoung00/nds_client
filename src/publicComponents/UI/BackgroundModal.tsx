@@ -4,10 +4,10 @@ interface BackgroundModalProps {
     width: number;
     height: number;
     onClose(isOpenModal: boolean): void;
-    element: React.FC;
+    children: React.ReactNode;
 }
 
-const BackgroundModal: React.FC<BackgroundModalProps> = ({ width = 80, height = 80, onClose, element: Element }) => {
+const BackgroundModal: React.FC<BackgroundModalProps> = ({ width = 80, height = 80, onClose, children }) => {
     const modalBackdropStyle: React.CSSProperties = {
         position: 'fixed',
         top: 0,
@@ -25,7 +25,7 @@ const BackgroundModal: React.FC<BackgroundModalProps> = ({ width = 80, height = 
         width: `${width}vmin`,
         height: `${height}%`,
         minWidth: '400px',
-        minHeight: '500px',
+        minHeight: '600px',
         borderRadius: '4px',
         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
         background: 'white',
@@ -67,7 +67,7 @@ const BackgroundModal: React.FC<BackgroundModalProps> = ({ width = 80, height = 
                     X
                 </div>
                 <div style={elementBoxStyle}>
-                    <Element />
+                    {children}
                 </div>
             </div>
         </>

@@ -40,19 +40,21 @@ interface DataBaseEntity {
 interface TableEntity {
     id?: number;
     tableHash: string;
-    joinTable?: string | null;
     name: string;
     comment: string;
     crateTime: string;
     updateTime: string;
     currentUserToken: string;
+    dataBaseID: number;
 }
 
 interface ColumnEntity {
     id?: number;
     type: string;
+    name: string;
     tableID: number;
     columnHash: string;
+    joinTableHash?: string | null;
     joinColumn?: string | null;
     isNotNull: number;
     isPrimaryKey: number;
@@ -84,8 +86,15 @@ interface TextData {
     lineHash: string;
 }
 
-// 클라이언트용
-interface MenuItem {
-    path: string;
-    text: string;
+// New Column 통신 요청용 타입
+interface RowState {
+    columnName: string;
+    dataType: string;
+    pk: boolean;
+    fk: boolean;
+    uk: boolean;
+    isNotNull: boolean;
+    joinTable: string | null;
+    joinColumn : string | null;
+    [key: string]: any;
 }
