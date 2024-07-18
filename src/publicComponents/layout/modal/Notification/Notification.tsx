@@ -48,13 +48,13 @@ const Notification: React.FC<NotificationProps> = ({ isOpen, onClose, type, mess
                 <p>{message}</p>
                 {type === 'question' && (
                     <div className={styles.buttonGroup}>
-                        <button onClick={handleConfirm}>Confirm</button>
-                        <button onClick={handleClose}>Cancel</button>
+                        <button onClick={handleConfirm}>실행</button>
+                        <button onClick={handleClose}>취소</button>
                     </div>
                 )}
                 {type !== 'question' && (
                     <button className={styles.closeButton} onClick={handleClose}>
-                        Close
+                        닫기
                     </button>
                 )}
             </div>
@@ -93,48 +93,50 @@ export default Notification;
 
 
 // 사용 방법
-// const [successOpen, setSuccessOpen] = useState(false);
-// const [questionOpen, setQuestionOpen] = useState(false);
-// const [errorOpen, setErrorOpen] = useState(false);
-//
-// const openSuccessNotification = () => {
-//     setSuccessOpen(true);
-// };
-//
-// const openQuestionNotification = () => {
-//     setQuestionOpen(true);
-// };
-//
-// const openErrorNotification = () => {
-//     setErrorOpen(true);
-// };
-//
-// <div>
-//     <button onClick={openSuccessNotification}>Open Success Notification</button>
-//     <button onClick={openQuestionNotification}>Open Question Notification</button>
-//     <button onClick={openErrorNotification}>Open Error Notification</button>
-//
-//     <Notification
-//         isOpen={successOpen}
-//         onClose={() => setSuccessOpen(false)}
-//         type="success"
-//         message="This is a success notification!"
-//     />
-//
-//     <Notification
-//         isOpen={questionOpen}
-//         onClose={() => setQuestionOpen(false)}
-//         type="question"
-//         message="Do you want to proceed?"
-//         onConfirm={() => {
-//             console.log('Confirmed');
-//         }}
-//     />
-//
-//     <Notification
-//         isOpen={errorOpen}
-//         onClose={() => setErrorOpen(false)}
-//         type="error"
-//         message="An error occurred!"
-//     />
-// </div>
+/*
+const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+const [isQuestionOpen, setIsQuestionOpen] = useState(false);
+const [isErrorOpen, setIsErrorOpen] = useState(false);
+
+const openSuccessNotification = () => {
+    setIsSuccessOpen(true);
+};
+
+const openQuestionNotification = () => {
+    setIsQuestionOpen(true);
+};
+
+const openErrorNotification = () => {
+    setIsErrorOpen(true);
+};
+
+<div>
+    <button onClick={openSuccessNotification}>Open Success Notification</button>
+    <button onClick={openQuestionNotification}>Open Question Notification</button>
+    <button onClick={openErrorNotification}>Open Error Notification</button>
+
+    <Notification
+        isOpen={isSuccessOpen}
+        onClose={() => setIsSuccessOpen(false)}
+        type="success"
+        message="This is a success notification!"
+    />
+
+    <Notification
+        isOpen={isQuestionOpen}
+        onClose={() => setIsQuestionOpen(false)}
+        type="question"
+        message="Do you want to proceed?"
+        onConfirm={() => {
+            console.log('Confirmed');
+        }}
+    />
+
+    <Notification
+        isOpen={isErrorOpen}
+        onClose={() => setIsErrorOpen(false)}
+        type="error"
+        message="An error occurred!"
+    />
+</div>
+*/

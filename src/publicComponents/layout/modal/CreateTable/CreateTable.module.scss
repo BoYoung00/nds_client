@@ -1,0 +1,70 @@
+@import "src/App.module";
+
+.modal {
+  width: 85%;
+  margin: 0 auto;
+
+  &__form {
+    width: 100%;
+
+    &__group {
+      margin: 20px 0 20px 0;
+
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+
+        span {
+          font-size: 10px;
+          color: #808080;
+          font-family: $font-KoPub-light;
+        }
+      }
+
+      input, textarea {
+        width: 100%;
+        padding: 8px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-family: $font-KoPub-light;
+      }
+
+      textarea {
+        resize: none;
+        height: 120px;
+      }
+    }
+
+    &__submit {
+      @include button-style;
+    }
+  }
+
+//파일 선택 디자인
+  &__fileUploader {
+    width: 100%;
+
+    &__label {
+      display: block;
+      color: $color-blue-deep;
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 10px;
+
+      input[type='file'] {
+        display: none;
+      }
+    }
+
+    &--selectedFileName {
+      padding: 10px;
+      font-size: 0.9rem;
+      color: #868686;
+      text-decoration: none;
+    }
+  }
+}

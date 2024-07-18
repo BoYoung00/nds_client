@@ -11,7 +11,7 @@
   font-family: $font-KoPub-bold;
   font-size: 21px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: .3em .8em;
+  padding: 4px 2px;
 
   &__nav {
     width: 100%;
@@ -54,7 +54,7 @@
       text-align: center;
       position: absolute;
       top: 100%;
-      left: 50%;
+      left: 30%;
       transform: translateX(-50%);
       background-color: #fff;
       border: 1px solid #ccc;

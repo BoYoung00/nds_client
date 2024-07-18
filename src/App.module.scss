@@ -111,4 +111,15 @@ body {
     flex: 1 0 auto;
     overflow: auto;
   }
+
+  .app::-webkit-scrollbar {
+    width: 10px;
+  }
+  .app::-webkit-scrollbar-thumb {
+    background: rgb(192, 192, 192); /* 스크롤바 색상 */
+    border-radius: 10px; /* 스크롤바 둥근 테두리 */
+  }
+  .app::-webkit-scrollbar-track {
+    background: rgb(240, 240, 240);  /*스크롤바 뒷 배경 색상*/
+  }
 }
