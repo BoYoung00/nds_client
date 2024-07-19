@@ -11,6 +11,12 @@
     display: flex;
     flex: 1;
     overflow: hidden;
+
+    .tabContent {
+      flex: 1 0; // 부모로 부터 남은 너비를 모두 가득 채움
+      padding: 30px 40px;
+      min-width: 600px;
+    }
   }
 }
 
@@ -63,6 +69,7 @@
 // 파란색 사이드바
 .blueSidebar {
   width: 220px;
+  min-width: 220px;
   background-color: $color-blue-deep;
   color: white;
   font-size: 1.1rem;
@@ -87,6 +94,7 @@
 // 하얀색 사이드바
 .whiteSidebar {
   width: 200px;
+  min-width: 200px;
   font-size: 1rem;
   background-color: white;
   color: #606060;

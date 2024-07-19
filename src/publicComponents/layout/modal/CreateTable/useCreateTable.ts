@@ -48,7 +48,6 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
             setIsErrorOpen(true);
             return { isError: true };
         }
-
         return { isError: false };
     }
 
@@ -56,7 +55,9 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (validateData()) return;
+        // 유효성 검사
+        const validationResult = validateData();
+        if (validationResult.isError) return;
 
         let obj = {
             tableName : tableData.name,

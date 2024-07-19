@@ -98,3 +98,19 @@ interface RowState {
     joinColumn : string | null;
     [key: string]: any;
 }
+
+// 테이블 행, 데이터 예시 데이터용
+interface ExColumnEntity {
+    id?: number;
+    type: string;
+    name: string;
+    tableID: number;
+    columnHash: string;
+    joinTableHash?: string | null;
+    joinColumn?: string | null;
+    isNotNull: number;
+    isPrimaryKey: number;
+    isForeignKey: number;
+    isUniqueKey: number;
+    intDataList: IntData[]; // IntData 배열을 추가
+}

@@ -43,10 +43,9 @@
       font-family: $font-KoPub-bold;
       padding: 8px 10px;
       cursor: pointer;
-      transition: font-size 0.3s;
 
       &:hover {
-        font-size: 1.2rem;
+        color: $color-blue-deep;
       }
     }
   }

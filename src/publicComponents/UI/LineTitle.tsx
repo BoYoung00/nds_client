@@ -1,15 +1,15 @@
 import React from 'react';
 
 interface TitleProps {
-    text: string;
-    smallText?: string;
+    text: string ;
+    smallText?: string ;
     isCenter?: boolean;
 }
 
 const LineTitle: React.FC<TitleProps> = ({ text, smallText , isCenter = false }) => {
     const commonStyles: React.CSSProperties = {
         width: `100%`,
-        background: 'white',
+        background: 'none',
         borderBottom: '1px solid #999999',
         textAlign: isCenter ? 'center' : 'left',
         display: isCenter ? 'block' : 'flex',
@@ -29,7 +29,8 @@ const LineTitle: React.FC<TitleProps> = ({ text, smallText , isCenter = false })
         fontSize: '14px',
         color: 'gray',
         marginTop: isCenter ? '5px' : '0',
-        marginLeft: isCenter ? '0' : '10px',
+        marginLeft: isCenter ? '0' : '15px',
+        paddingBottom: '5px',
         fontFamily: 'KoPubWorld Light',
     };
 

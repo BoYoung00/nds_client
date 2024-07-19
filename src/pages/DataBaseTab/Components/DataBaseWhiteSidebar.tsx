@@ -3,44 +3,27 @@ import styles from '../DataBase.module.scss';
 import {DBQueryExtraction} from "../../../publicComponents/layout/modal/DBQueryExtraction";
 import {Notification} from "../../../publicComponents/layout/modal/Notification";
 import {CreateTable} from "../../../publicComponents/layout/modal/CreateTable";
+import {useDataBaseWhiteSidebar} from "../hooks/useDataBaseWhiteSidebar";
 
 interface DataBaseWhiteSidebarProps {
     tables?: TableEntity[];
-    setSelectedTable: (table: TableEntity) => void;
+    setSelectedTable: (table: TableEntity | null) => void;
     parentsDataBase: DataBaseEntity | null;
 }
 
 const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({ tables=[], setSelectedTable, parentsDataBase }) => {
-    const [selectedId, setSelectedId] = useState(-1);
-    const [isOpenCreateTableModal, setIsOpenCreateTableModal] = useState<boolean>(false);
-    const [isOpenMergeModal, setIsOpenMergeModal] = useState<boolean>(false);
-    const [isErrorOpen, setIsErrorOpen] = useState<boolean>(false);
-
-    const onSelected = (table: TableEntity) => {
-        setSelectedId(table.id!!);
-        setSelectedTable(table);
-    }
-
-    const handleQuery = () => {
-        if (selectedId === -1) {
-            setIsErrorOpen(true);
-        } else {
-            setIsOpenMergeModal(true);
-        }
-    }
-
-    const handleDelete = () => {
-        if (selectedId === -1) {
-            setIsErrorOpen(true);
-        } else {
-            console.log('삭제 로직');
-        }
-    }
-
-    useEffect(()=> {
-        console.log(parentsDataBase)
-    }, [parentsDataBase]);
-
+    const {
+        selectedId,
+        isOpenCreateTableModal,
+        setIsOpenCreateTableModal,
+        isOpenMergeModal,
+        setIsOpenMergeModal,
+        isErrorOpen,
+        setIsErrorOpen,
+        onSelected,
+        handleQuery,
+        handleDelete
+    } = useDataBaseWhiteSidebar(tables, setSelectedTable, parentsDataBase);
 
     return (
         <>
