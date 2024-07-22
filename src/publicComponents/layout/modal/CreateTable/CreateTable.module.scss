@@ -18,10 +18,6 @@
       label {
         @include label-style;
       }
-
-      input {
-        @include input-style;
-      }
     }
 
     &__submit {

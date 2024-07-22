@@ -14,12 +14,7 @@
         @include label-style;
       }
 
-      input {
-        @include input-style;
-      }
-
       textarea {
-        @include input-style;
         resize: none;
         height: 120px;
       }

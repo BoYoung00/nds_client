@@ -5,6 +5,7 @@ import DataBaseBlueSidebar from "./Components/DataBaseBlueSidebar";
 import DataBaseWhiteSidebar from "./Components/DataBaseWhiteSidebar";
 import LineTitle from "../../publicComponents/UI/LineTitle";
 import DataTab from "./Components/DataTab";
+import {formatDate} from "../../utils/utils";
 
 // 데이터베이스 예시 데이터
 const dataBaseEntities: DataBaseEntity[] = [
@@ -27,10 +28,11 @@ const tableData: TableData[] = [
     {
         id: 1,
         name: "StdInfoManagerTable",
+        createTime: "2024-07-21T22:15:20.356003",
         comment: "학생 정보 관리할 테이블",
         tableHash: "dfff94bd6070680fd62033b4569ad24652cafd68e900cd8f7a83ba642cc6bdb0",
         tableInnerStructure: {
-            "ColumnResponse(id=2, name=ID, type=INTEGER, tableID=1)": [
+            "ColumnResponse(id=2, name=ID, type=INTEGER, tableID=1, columnHash=aa123)": [
                 {
                     id: 13,
                     data: "1",
@@ -56,7 +58,7 @@ const tableData: TableData[] = [
                     dataType: "INTEGER"
                 }
             ],
-            "ColumnResponse(id=3, name=NAME, type=TEXT, tableID=1)": [
+            "ColumnResponse(id=3, name=NAME, type=TEXT, tableID=1, columnHash=abc)": [
                 {
                     id: 14,
                     data: "학생_A",
@@ -82,7 +84,7 @@ const tableData: TableData[] = [
                     dataType: "TEXT"
                 }
             ],
-            "ColumnResponse(id=4, name=LEVEL, type=REAL, tableID=1)": [
+            "ColumnResponse(id=4, name=LEVEL, type=REAL, tableID=1, columnHash=aa123)": [
                 {
                     id: 15,
                     data: "4.3",
@@ -125,7 +127,7 @@ const DataBase:React.FC = () => {
     const renderTabContent = () => {
         switch (selectedTab) {
             case 0:
-                return <DataTab selectedTable={selectedTable} />;
+                return <DataTab selectedTableStructure={selectedTable?.tableInnerStructure} />;
             case 1:
                 return ;
             case 2:
@@ -149,8 +151,7 @@ const DataBase:React.FC = () => {
                     />
                     { selectedTable &&
                         <section className={styles.tabContent}>
-                            {/*<LineTitle text={selectedTable.name} smallText={formatDate(selectedTable.crateTime)}/>*/}
-                            <LineTitle text={selectedTable.name} />
+                            <LineTitle text={selectedTable.name} smallText={formatDate(selectedTable.createTime)}/>
                             { renderTabContent() }
                         </section>
                     }

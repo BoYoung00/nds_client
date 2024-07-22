@@ -6,7 +6,7 @@ interface NotificationProps {
     onClose(): void;
     type: 'success' | 'question' | 'error';
     message: string;
-    onConfirm?(): void;
+    onConfirm?: ConfirmFunction | null;
 }
 
 const Notification: React.FC<NotificationProps> = ({ isOpen, onClose, type, message, onConfirm }) => {
@@ -94,26 +94,11 @@ export default Notification;
 
 // 사용 방법
 /*
-const [isSuccessOpen, setIsSuccessOpen] = useState(false);
-const [isQuestionOpen, setIsQuestionOpen] = useState(false);
-const [isErrorOpen, setIsErrorOpen] = useState(false);
+const [isSuccessOpen, setIsSuccessOpen] = useState<boolean>(false);
+const [isQuestionOpen, setIsQuestionOpen] = useState<boolean>(false);
+const [isErrorOpen, setIsErrorOpen] = useState<boolean>(false);
+const [message, setMessage] = useState<string>(""); // 알림창 메세지
 
-const openSuccessNotification = () => {
-    setIsSuccessOpen(true);
-};
-
-const openQuestionNotification = () => {
-    setIsQuestionOpen(true);
-};
-
-const openErrorNotification = () => {
-    setIsErrorOpen(true);
-};
-
-<div>
-    <button onClick={openSuccessNotification}>Open Success Notification</button>
-    <button onClick={openQuestionNotification}>Open Question Notification</button>
-    <button onClick={openErrorNotification}>Open Error Notification</button>
 
     <Notification
         isOpen={isSuccessOpen}
@@ -138,5 +123,5 @@ const openErrorNotification = () => {
         type="error"
         message="An error occurred!"
     />
-</div>
+
 */

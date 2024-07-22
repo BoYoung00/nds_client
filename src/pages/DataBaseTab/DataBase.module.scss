@@ -133,7 +133,7 @@
 
 //DataTab 디자인
 .dataTab {
-  height: 75%;
+  height: 80%;
 
   .dataTab__header {
     @include flex-space-between;
@@ -146,6 +146,7 @@
       margin-right: .5rem;
       font-size: .1rem;
       color: #7A7A7A;
+      cursor: pointer;
 
       img {
         width: 47px;
@@ -170,13 +171,25 @@
       border: 1px solid #ddd;
 
       th, td {
-        padding: 0.75rem;
+        padding: 0.5rem;
+        max-width: 50px;
         text-align: left;
       }
 
       th {
         background-color: $color-blue-deep;
         color: white;
+      }
+
+      .selectedCell {
+        background: #eaeff8;
+      }
+
+      .readOnlyInput {
+        border: none;
+        background: none;
+        cursor: default;
+        outline: none;
       }
     }
   }

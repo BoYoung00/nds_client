@@ -64,24 +64,24 @@ interface ColumnEntity {
 
 interface IntData {
     id?: number;
-    data: number;
-    createTime: number;
+    data: string;
+    createTime: string;
     columnID: number;
     lineHash: string;
 }
 
 interface RealData {
     id?: number;
-    data: number;
-    createTime: number;
+    data: string;
+    createTime: string;
     columnID: number;
     lineHash: string;
 }
 
 interface TextData {
     id?: number;
-    data: number;
-    createTime: number;
+    data: string;
+    createTime: string;
     columnID: number;
     lineHash: string;
 }
@@ -101,7 +101,7 @@ interface RowState {
 
 // 테이블, 행, 데이터 Response 타입
 interface ColumnData {
-    id: number;
+    id?: number | null;
     data: string;
     createTime: string;
     columnID: number;
@@ -114,9 +114,23 @@ interface TableInnerStructure {
 }
 
 interface TableData {
-    id: number;
+    id: number ;
     name: string;
     comment: string;
+    createTime: string;
     tableHash: string;
     tableInnerStructure: TableInnerStructure;
 }
+
+// 데이터 추가, 수정, 삭제 Request 타입
+interface RequestData {
+    id?: number | null;
+    columnID: number;
+    columnHash: string;
+    data: string;
+    columnLine: number;
+    dataType: string;
+}
+
+// 함수 타입
+type ConfirmFunction = () => void;
