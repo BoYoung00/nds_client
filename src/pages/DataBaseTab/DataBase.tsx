@@ -4,7 +4,6 @@ import TabBar from "../../publicComponents/layout/TabBar/TabBar";
 import DataBaseBlueSidebar from "./Components/DataBaseBlueSidebar";
 import DataBaseWhiteSidebar from "./Components/DataBaseWhiteSidebar";
 import LineTitle from "../../publicComponents/UI/LineTitle";
-import {formatDate} from "../../utils/utils";
 import DataTab from "./Components/DataTab";
 
 // 데이터베이스 예시 데이터
@@ -12,132 +11,127 @@ const dataBaseEntities: DataBaseEntity[] = [
     {
         id: 1,
         name: "Entity One",
-        comment: "This is the first entity",
+        comment: "This is the first dataBase",
         currentUserToken: "token123"
     },
     {
         id: 2,
         name: "Entity Two",
-        comment: "This is the second entity",
+        comment: "This is the second dataBase",
         currentUserToken: "token456"
     },
 ];
 
 // 테이블 예시 데이터
-const tableEntities: TableEntity[] = [
+const tableData: TableData[] = [
     {
         id: 1,
-        tableHash: "abc123",
-        dataBaseID: 1,
-        name: "Users",
-        comment: "This table stores user information",
-        crateTime: "2024-01-01T10:00:00Z",
-        updateTime: "2024-01-01T10:00:00Z",
-        currentUserToken: "token123",
-    },
-    {
-        id: 2,
-        tableHash: "def456",
-        dataBaseID: 1,
-        name: "Orders",
-        comment: "This table stores order information",
-        crateTime: "2024-02-01T10:00:00Z",
-        updateTime: "2024-02-01T10:00:00Z",
-        currentUserToken: "token456",
-    },
-    {
-        id: 3,
-        tableHash: "ghi789",
-        dataBaseID: 2,
-        name: "Products",
-        comment: "This table stores product information",
-        crateTime: "2024-03-01T10:00:00Z",
-        updateTime: "2024-03-01T10:00:00Z",
-        currentUserToken: "token789",
-    }
-];
-
-// 행 예시 데이터
-const exampleColumnEntities: ExColumnEntity[] = [
-    {
-        id: 1,
-        type: 'int',
-        name: 'exampleColumn1',
-        tableID: 100,
-        columnHash: 'abcd1234',
-        isNotNull: 1,
-        isPrimaryKey: 0,
-        isForeignKey: 0,
-        isUniqueKey: 0,
-        intDataList: [
-            {
-                id: 1,
-                data: 10,
-                createTime: 1627889183,
-                columnID: 1,
-                lineHash: 'lineHash1',
-            },
-            {
-                id: 2,
-                data: 20,
-                createTime: 1627889283,
-                columnID: 1,
-                lineHash: 'lineHash2',
-            },
-            {
-                id: 3,
-                data: 30,
-                createTime: 1627889383,
-                columnID: 1,
-                lineHash: 'lineHash3',
-            },
-        ],
-    },
-    {
-        id: 2,
-        type: 'int',
-        name: 'exampleColumn2',
-        tableID: 200,
-        columnHash: 'efgh5678',
-        isNotNull: 1,
-        isPrimaryKey: 0,
-        isForeignKey: 0,
-        isUniqueKey: 1,
-        intDataList: [
-            {
-                id: 4,
-                data: 40,
-                createTime: 1627889483,
-                columnID: 2,
-                lineHash: 'lineHash4',
-            },
-            {
-                id: 5,
-                data: 50,
-                createTime: 1627889583,
-                columnID: 2,
-                lineHash: 'lineHash5',
-            },
-            {
-                id: 6,
-                data: 60,
-                createTime: 1627889683,
-                columnID: 2,
-                lineHash: 'lineHash6',
-            },
-        ],
+        name: "StdInfoManagerTable",
+        comment: "학생 정보 관리할 테이블",
+        tableHash: "dfff94bd6070680fd62033b4569ad24652cafd68e900cd8f7a83ba642cc6bdb0",
+        tableInnerStructure: {
+            "ColumnResponse(id=2, name=ID, type=INTEGER, tableID=1)": [
+                {
+                    id: 13,
+                    data: "1",
+                    createTime: "2024-07-21T22:15:20.356003",
+                    columnID: 2,
+                    lineHash: "48ac7374-7a1a-4153-8e3a-c10aa904ddd7",
+                    dataType: "INTEGER"
+                },
+                {
+                    id: 16,
+                    data: "2",
+                    createTime: "2024-07-21T22:15:20.468383",
+                    columnID: 2,
+                    lineHash: "75ac0c0b-1dfd-422b-8fed-65d40032f08a",
+                    dataType: "INTEGER"
+                },
+                {
+                    id: 19,
+                    data: "3",
+                    createTime: "2024-07-21T22:42:36.127007",
+                    columnID: 2,
+                    lineHash: "4d04f64b-96ec-478f-92e6-918dfa5ef073",
+                    dataType: "INTEGER"
+                }
+            ],
+            "ColumnResponse(id=3, name=NAME, type=TEXT, tableID=1)": [
+                {
+                    id: 14,
+                    data: "학생_A",
+                    createTime: "2024-07-21T22:15:20.356003",
+                    columnID: 3,
+                    lineHash: "48ac7374-7a1a-4153-8e3a-c10aa904ddd7",
+                    dataType: "TEXT"
+                },
+                {
+                    id: 17,
+                    data: "학생_B_2",
+                    createTime: "2024-07-21T22:15:20.468383",
+                    columnID: 3,
+                    lineHash: "75ac0c0b-1dfd-422b-8fed-65d40032f08a",
+                    dataType: "TEXT"
+                },
+                {
+                    id: 20,
+                    data: "학생_C",
+                    createTime: "2024-07-21T22:42:36.127007",
+                    columnID: 3,
+                    lineHash: "4d04f64b-96ec-478f-92e6-918dfa5ef073",
+                    dataType: "TEXT"
+                }
+            ],
+            "ColumnResponse(id=4, name=LEVEL, type=REAL, tableID=1)": [
+                {
+                    id: 15,
+                    data: "4.3",
+                    createTime: "2024-07-21T22:15:20.356003",
+                    columnID: 4,
+                    lineHash: "48ac7374-7a1a-4153-8e3a-c10aa904ddd7",
+                    dataType: "REAL"
+                },
+                {
+                    id: 18,
+                    data: "4.5",
+                    createTime: "2024-07-21T22:15:20.468383",
+                    columnID: 4,
+                    lineHash: "75ac0c0b-1dfd-422b-8fed-65d40032f08a",
+                    dataType: "REAL"
+                },
+                {
+                    id: 21,
+                    data: "4.3",
+                    createTime: "2024-07-21T22:42:36.127007",
+                    columnID: 4,
+                    lineHash: "4d04f64b-96ec-478f-92e6-918dfa5ef073",
+                    dataType: "REAL"
+                }
+            ]
+        }
     },
 ];
 
 const DataBase:React.FC = () => {
     const [selectedTab, setSelectedTab] = useState(0);
     const [selectedDataBase, setSelectedDataBase] = useState<DataBaseEntity | null>(null);
-    const [selectedTable, setSelectedTable] = useState<TableEntity | null>(null);
+    const [selectedTable, setSelectedTable] = useState<TableData | null>(null);
 
     useEffect(()=> {
-        console.log("선택된 DB : ",selectedDataBase)
-        // 여기에 테이블 목록 가져와서 tableEntities 업데이트 로직
+        console.log("선택된 DB : ", selectedDataBase)
+        // 여기에 테이블 목록 가져와서 tableData 업데이트 로직
     }, [selectedDataBase]);
+
+    const renderTabContent = () => {
+        switch (selectedTab) {
+            case 0:
+                return <DataTab selectedTable={selectedTable} />;
+            case 1:
+                return ;
+            case 2:
+                return ;
+        }
+    };
 
     return (
         <>
@@ -149,14 +143,15 @@ const DataBase:React.FC = () => {
                         setSelectedDataBase={setSelectedDataBase}
                     />
                     <DataBaseWhiteSidebar
-                        tables={tableEntities}
+                        tables={tableData}
                         setSelectedTable={setSelectedTable}
                         parentsDataBase={selectedDataBase}
                     />
                     { selectedTable &&
                         <section className={styles.tabContent}>
-                            <LineTitle text={selectedTable.name} smallText={formatDate(selectedTable.crateTime)}/>
-                            <DataTab />
+                            {/*<LineTitle text={selectedTable.name} smallText={formatDate(selectedTable.crateTime)}/>*/}
+                            <LineTitle text={selectedTable.name} />
+                            { renderTabContent() }
                         </section>
                     }
                 </main>

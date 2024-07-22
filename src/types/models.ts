@@ -99,18 +99,24 @@ interface RowState {
     [key: string]: any;
 }
 
-// 테이블 행, 데이터 예시 데이터용
-interface ExColumnEntity {
-    id?: number;
-    type: string;
+// 테이블, 행, 데이터 Response 타입
+interface ColumnData {
+    id: number;
+    data: string;
+    createTime: string;
+    columnID: number;
+    lineHash: string;
+    dataType: string;
+}
+
+interface TableInnerStructure {
+    [key: string]: ColumnData[];
+}
+
+interface TableData {
+    id: number;
     name: string;
-    tableID: number;
-    columnHash: string;
-    joinTableHash?: string | null;
-    joinColumn?: string | null;
-    isNotNull: number;
-    isPrimaryKey: number;
-    isForeignKey: number;
-    isUniqueKey: number;
-    intDataList: IntData[]; // IntData 배열을 추가
+    comment: string;
+    tableHash: string;
+    tableInnerStructure: TableInnerStructure;
 }

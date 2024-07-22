@@ -6,8 +6,8 @@ import {CreateTable} from "../../../publicComponents/layout/modal/CreateTable";
 import {useDataBaseWhiteSidebar} from "../hooks/useDataBaseWhiteSidebar";
 
 interface DataBaseWhiteSidebarProps {
-    tables?: TableEntity[];
-    setSelectedTable: (table: TableEntity | null) => void;
+    tables?: TableData[];
+    setSelectedTable: (table: TableData | null) => void;
     parentsDataBase: DataBaseEntity | null;
 }
 
@@ -57,7 +57,7 @@ const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({ tables=[], 
                 </footer>
             </div>
 
-            {/* DB 생성 모달 */}
+            {/* 테이블 생성 모달 */}
             <CreateTable
                 isOpenModal={isOpenCreateTableModal}
                 onCloseModal={() => setIsOpenCreateTableModal(false)}

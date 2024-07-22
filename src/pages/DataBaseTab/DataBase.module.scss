@@ -131,4 +131,55 @@
 }
 
 
+//DataTab 디자인
+.dataTab {
+  height: 75%;
+
+  .dataTab__header {
+    @include flex-space-between;
+    padding: 1rem;
+
+    span {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: .5rem;
+      font-size: .1rem;
+      color: #7A7A7A;
+
+      img {
+        width: 47px;
+      }
+
+      &:first-child {
+        margin-right: auto;
+      }
+    }
+  }
+
+  .dataTab__main {
+    background: white;
+    border: 1px solid #777777;
+    height: 100%;
+    flex: 0 1;
+    padding: .3rem;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #ddd;
+
+      th, td {
+        padding: 0.75rem;
+        text-align: left;
+      }
+
+      th {
+        background-color: $color-blue-deep;
+        color: white;
+      }
+    }
+  }
+}
+
 
