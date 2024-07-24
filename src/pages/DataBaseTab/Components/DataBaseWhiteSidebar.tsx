@@ -40,7 +40,7 @@ const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({ tables=[], 
                     ))}
                     { parentsDataBase &&
                         <button className={styles.createButton} onClick={() => setIsOpenCreateTableModal(true)}>
-                            CREATE DATABASE +
+                            CREATE TABLE +
                         </button>
                     }
                 </section>

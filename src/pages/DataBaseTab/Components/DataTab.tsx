@@ -10,19 +10,49 @@ import { Notification } from '../../../publicComponents/layout/modal/Notificatio
 import {useDataTab} from "../hooks/useDataTab";
 
 interface DataTabProps {
-    selectedTableStructure: TableInnerStructure | undefined;
+    selectedTable: TableData | null;
 }
 
-const DataTab: React.FC<DataTabProps> = ({ selectedTableStructure }) => {
+const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
     const {
-        hooks: { tableStructure, editingCell, editedValue, requestDataList, selectedRow, setTableStructure, setRequestDataList, setSelectedRow },
-        handlers: { handleAddData, handleDeleteData, handleCellDoubleClick, handleInputChange, handleInputBlur, handleRefreshClick },
-        modals: { isErrorOpen, setIsErrorOpen, isQuestionOpen, setIsQuestionOpen, message }
-    } = useDataTab(selectedTableStructure);
+        hooks: {
+            tableStructure,
+            editingCell,
+            editedValue,
+            selectedRow,
+            setSelectedRow,
+            createDataList,
+            setCreateDataList,
+            updateDataList,
+            setUpdateDataList,
+            deleteDataList,
+            setDeleteDataList,
+            setTableStructure
+        },
+        handlers: {
+            handleAddData,
+            handleDeleteData,
+            handleSave,
+            handleCellDoubleClick,
+            handleInputChange,
+            handleInputBlur,
+            handleRefreshClick
+        },
+        modals: {
+            isErrorOpen,
+            setIsErrorOpen,
+            isQuestionOpen,
+            setIsQuestionOpen,
+            message
+        }
+    } = useDataTab(selectedTable);
+
 
     useEffect(() => {
-        console.log('요청 데이터 출력', requestDataList);
-    }, [requestDataList]);
+        console.log('추가 데이터', createDataList);
+        console.log('수정 데이터', updateDataList);
+        console.log('삭제 데이터', deleteDataList);
+    }, [createDataList, updateDataList, deleteDataList]);
 
     if (!tableStructure) return null;
     const columns = tableStructure ? Object.keys(tableStructure) : [];
@@ -43,8 +73,8 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTableStructure }) => {
                         <img src={deleteData} alt="deleteData" />
                         DELETE_DATA
                     </span>
-                    <span>
-                        {requestDataList.length === 0 ?
+                    <span onClick={handleSave}>
+                        {createDataList.length === 0 && updateDataList.length === 0 && deleteDataList.length === 0 ?
                             <img src={save} alt="save" />
                             :
                             <img src={updateSave} alt="updateSave" />
@@ -78,23 +108,35 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTableStructure }) => {
                                             onDoubleClick={() => handleCellDoubleClick(columnKey, rowIndex, cellData)}
                                             className={selectedRow === rowIndex ? styles.selectedCell : ''}
                                         >
-                                            {editingCell && editingCell.columnKey === columnKey && editingCell.rowIndex === rowIndex
-                                                ?
-                                                <input
-                                                    type="text"
-                                                    value={editedValue}
-                                                    onChange={handleInputChange}
-                                                    onBlur={handleInputBlur}
-                                                    placeholder={'NULL'}
-                                                />
+                                            { cellData.dataType === 'MediaFile' ?
+                                                <p>MediaFile</p>
                                                 :
-                                                <input
-                                                    type="text"
-                                                    value={cellData.data}
-                                                    placeholder={'NULL'}
-                                                    readOnly
-                                                    className={styles.readOnlyInput}
-                                                />
+                                                <>
+                                                    { cellData.dataType === 'JOIN_Column' ?
+                                                        <p>JOIN_Column</p>
+                                                        :
+                                                        <>
+                                                            { editingCell && editingCell.columnKey === columnKey && editingCell.rowIndex === rowIndex
+                                                                ?
+                                                                <input
+                                                                    type="text"
+                                                                    value={editedValue}
+                                                                    onChange={handleInputChange}
+                                                                    onBlur={handleInputBlur}
+                                                                    placeholder={'NULL'}
+                                                                />
+                                                                :
+                                                                <input
+                                                                    type="text"
+                                                                    value={cellData.data}
+                                                                    placeholder={'NULL'}
+                                                                    readOnly
+                                                                    className={styles.readOnlyInput}
+                                                                />
+                                                            }
+                                                        </>
+                                                    }
+                                                </>
                                             }
                                         </td>
                                     );
@@ -106,18 +148,22 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTableStructure }) => {
                 </main>
             </div>
 
+            {/*새로고침 모달*/}
             <Notification
                 isOpen={isQuestionOpen}
                 onClose={() => setIsQuestionOpen(false)}
                 type="question"
                 message={message}
                 onConfirm={() => {
-                    setTableStructure(selectedTableStructure);
-                    setRequestDataList([]);
+                    setTableStructure(selectedTable?.tableInnerStructure);
+                    setCreateDataList([]);
+                    setUpdateDataList([]);
+                    setDeleteDataList([]);
                     setSelectedRow(null);
                 }}
             />
 
+            {/*에러 모달*/}
             <Notification
                 isOpen={isErrorOpen}
                 onClose={() => setIsErrorOpen(false)}

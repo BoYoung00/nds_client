@@ -122,10 +122,10 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  //min-width: 1100px;
 
   .content {
     flex: 1 0 auto;
-    overflow: auto;
   }
 
   // input, textarea 디자인

@@ -32,7 +32,7 @@ const tableData: TableData[] = [
         comment: "학생 정보 관리할 테이블",
         tableHash: "dfff94bd6070680fd62033b4569ad24652cafd68e900cd8f7a83ba642cc6bdb0",
         tableInnerStructure: {
-            "ColumnResponse(id=2, name=ID, type=INTEGER, tableID=1, columnHash=aa123)": [
+            "ColumnResponse(id=1, name=ID, type=INTEGER, tableID=1, columnHash=ID)": [
                 {
                     id: 13,
                     data: "1",
@@ -58,7 +58,7 @@ const tableData: TableData[] = [
                     dataType: "INTEGER"
                 }
             ],
-            "ColumnResponse(id=3, name=NAME, type=TEXT, tableID=1, columnHash=abc)": [
+            "ColumnResponse(id=2, name=NAME, type=TEXT, tableID=1, columnHash=NAME)": [
                 {
                     id: 14,
                     data: "학생_A",
@@ -84,7 +84,7 @@ const tableData: TableData[] = [
                     dataType: "TEXT"
                 }
             ],
-            "ColumnResponse(id=4, name=LEVEL, type=REAL, tableID=1, columnHash=aa123)": [
+            "ColumnResponse(id=3, name=LEVEL, type=REAL, tableID=1, columnHash=LEVEL)": [
                 {
                     id: 15,
                     data: "4.3",
@@ -119,15 +119,10 @@ const DataBase:React.FC = () => {
     const [selectedDataBase, setSelectedDataBase] = useState<DataBaseEntity | null>(null);
     const [selectedTable, setSelectedTable] = useState<TableData | null>(null);
 
-    useEffect(()=> {
-        console.log("선택된 DB : ", selectedDataBase)
-        // 여기에 테이블 목록 가져와서 tableData 업데이트 로직
-    }, [selectedDataBase]);
-
     const renderTabContent = () => {
         switch (selectedTab) {
             case 0:
-                return <DataTab selectedTableStructure={selectedTable?.tableInnerStructure} />;
+                return <DataTab selectedTable={selectedTable} />;
             case 1:
                 return ;
             case 2:

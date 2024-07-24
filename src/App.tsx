@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styles from "./App.module.scss";
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Main from "./pages/main";
+import Main from "./pages/Main";
 import DataBase from './pages/DataBaseTab/DataBase';
 import Header from "./publicComponents/layout/Header";
 
@@ -13,6 +13,7 @@ const exampleUser: UserToken = {
 
 const App: React.FC = () => {
     const [user, setUser] = useState<UserToken | null>(exampleUser);
+    // const { isAuthenticated } = useAuth();
 
     return (
         <div className={styles.app}>

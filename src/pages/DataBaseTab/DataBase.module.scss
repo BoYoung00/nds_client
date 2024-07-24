@@ -2,15 +2,14 @@
 
 .dataBase {
   height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   background: #f4f4f4;
 
   .content {
     display: flex;
     flex: 1;
-    overflow: hidden;
 
     .tabContent {
       flex: 1 0; // 부모로 부터 남은 너비를 모두 가득 채움
@@ -45,7 +44,6 @@
 
     .commentBox {
       height: 150px;
-      overflow-y: auto;
 
       p {
         font-size: 1.1rem;
@@ -101,7 +99,7 @@
 
   .tablesBox {
     height: 65%;
-    overflow-y: auto;
+    overflow: auto;
   }
 
   .item {
@@ -144,7 +142,7 @@
       flex-direction: column;
       align-items: center;
       margin-right: .5rem;
-      font-size: .1rem;
+      font-size: .6rem;
       color: #7A7A7A;
       cursor: pointer;
 

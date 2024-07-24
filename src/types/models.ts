@@ -86,7 +86,7 @@ interface TextData {
     lineHash: string;
 }
 
-// New Column 통신 요청용 타입
+// 테이블 생성 Column 통신 요청용 타입
 interface RowState {
     columnName: string;
     dataType: string;
@@ -123,13 +123,21 @@ interface TableData {
 }
 
 // 데이터 추가, 수정, 삭제 Request 타입
-interface RequestData {
+interface DataDTO {
     id?: number | null;
     columnID: number;
     columnHash: string;
     data: string;
     columnLine: number;
     dataType: string;
+}
+
+interface DataRequest {
+    tableID: number;
+    tableHash: string;
+    createDataRequests: DataDTO[]; // 생성 데이터
+    updateDataRequests: DataDTO[]; // 수정 데이터
+    deleteDataRequests: DataDTO[]; // 삭제 데이터
 }
 
 // 함수 타입

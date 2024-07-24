@@ -1,16 +1,46 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import {findColumnInfo} from "../../../utils/utils";
 
-export function useDataTab(initialTableStructure: TableInnerStructure | undefined) {
-    const [tableStructure, setTableStructure] = useState<TableInnerStructure | undefined>(initialTableStructure);
+export function useDataTab(selectedTable: TableData | null) {
+    const [tableStructure, setTableStructure] = useState<TableInnerStructure | undefined>(selectedTable?.tableInnerStructure);
     const [editingCell, setEditingCell] = useState<{ columnKey: string; rowIndex: number } | null>(null); // 더블 클릭한 key, index 값
     const [editedValue, setEditedValue] = useState<string>(''); // 더블 클릭한 value 값
-    const [requestDataList, setRequestDataList] = useState<RequestData[]>([]); // 요청 데이터 (추가, 수정, 삭제)
     const [selectedRow, setSelectedRow] = useState<number | null>(null); // 행 선택
 
+    const [createDataList, setCreateDataList] = useState<DataDTO[]>([]); // 요청 데이터 (추가)
+    const [updateDataList, setUpdateDataList] = useState<DataDTO[]>([]); // 요청 데이터 (수정)
+    const [deleteDataList, setDeleteDataList] = useState<DataDTO[]>([]); // 요청 데이터 (삭제)
+
+    const [isSuccessOpen, setIsSuccessOpen] = useState<boolean>(false); // 성공창
     const [isErrorOpen, setIsErrorOpen] = useState<boolean>(false); // 오류창
     const [isQuestionOpen, setIsQuestionOpen] = useState<boolean>(false); // 알림창
     const [message, setMessage] = useState<string>(""); // 알림창 메세지
+
+    // 저장 버튼 클릭 (통신)
+    const handleSave = async () => {
+        if (selectedTable === null) return;
+
+        let requestData: DataRequest = {
+            tableID: selectedTable.id,
+            tableHash: selectedTable.tableHash,
+            createDataRequests: createDataList,
+            updateDataRequests: updateDataList,
+            deleteDataRequests: deleteDataList
+        };
+
+        console.log("requestData (SAVE)", requestData);
+
+        // 예제
+        // try {
+        //     await post('/url', { requestData });
+        //     setIsSuccessOpen(true);
+        //     setMessage('성공');
+        // } catch (error) {
+        //     setIsErrorOpen(true);
+        //     setMessage('실패');
+        // }
+
+    }
 
     // 새로고침 버튼 클릭
     const handleRefreshClick = () => {
@@ -23,6 +53,21 @@ export function useDataTab(initialTableStructure: TableInnerStructure | undefine
         if (tableStructure) {
             const columns = Object.keys(tableStructure);
             const newData = columns.reduce((acc, columnKey) => {
+
+                // setCreateDataList에 추가
+                const { columnID, type, columnHash } = findColumnInfo(columnKey);
+                const columnLength = (tableStructure[columnKey]?.length || 0) + 1;
+                const newCreateData: DataDTO = {
+                    id: null,
+                    columnID,
+                    columnHash,
+                    data: '',
+                    columnLine: columnLength,
+                    dataType: type,
+                };
+                createDataList.push(newCreateData);
+
+                // 테이블 행 리스트에 추가
                 acc[columnKey] = [
                     ...(tableStructure[columnKey] || []),
                     { id: null, data: '', columnID: 0, createTime: '', lineHash: '', dataType: '' },
@@ -40,13 +85,37 @@ export function useDataTab(initialTableStructure: TableInnerStructure | undefine
         if (selectedRow !== null && tableStructure) {
             const updatedTableStructure = { ...tableStructure };
             const columns = Object.keys(tableStructure);
+            const deletedDataList: DataDTO[] = [];
+
             columns.forEach(columnKey => {
-                updatedTableStructure[columnKey] = tableStructure[columnKey].filter((_, index) => index !== selectedRow);
+                const columnData = tableStructure[columnKey];
+                const deletedData = columnData[selectedRow];
+
+                // 삭제 요청 값 만들기
+                const { columnID, columnHash, type } = findColumnInfo(columnKey);
+                const newCreateData: DataDTO = {
+                    id: deletedData.id,
+                    columnID,
+                    columnHash,
+                    data: deletedData.data,
+                    columnLine: selectedRow + 1,
+                    dataType: type,
+                };
+                deletedDataList.push(newCreateData);
+                if (deletedData.id !== null)
+                    deleteDataList.push(newCreateData)
+
+                // 전체 리스트에서 해당 데이터 빼기
+                updatedTableStructure[columnKey] = columnData.filter((_, index) => index !== selectedRow);
             });
 
-            setTableStructure(updatedTableStructure);
-            setRequestDataList(prevList => prevList.filter(data => data.columnLine !== selectedRow + 1));
+            // 추가 했던 데이터 리스트에서 삭제하기
+            const deletedDataLines = Array.from(new Set(deletedDataList.map(data => data.columnLine)));
+            setCreateDataList(prevList => [...prevList.filter(data =>
+                    !deletedDataLines.includes(data.columnLine)
+            )]);
             setSelectedRow(null);
+            setTableStructure(updatedTableStructure);
         } else {
             setIsErrorOpen(true);
             setMessage("삭제할 행을 선택해 주세요.");
@@ -64,7 +133,7 @@ export function useDataTab(initialTableStructure: TableInnerStructure | undefine
         setEditedValue(event.target.value);
     };
 
-    // 셀 편집 완료
+    // 셀 편집 완료 (데이터 추가, 수정)
     const handleInputBlur = () => {
         if (editingCell && tableStructure) {
             const { columnKey, rowIndex } = editingCell;
@@ -77,8 +146,8 @@ export function useDataTab(initialTableStructure: TableInnerStructure | undefine
 
             setTableStructure(updatedTableStructure);
 
-            // 수정, 삭제, 추가 요청 값 만들기
-            const newRequestData: RequestData = {
+            // 수정, 추가 요청 값 만들기
+            const newCreateData: DataDTO = {
                 id: updatedCellData[rowIndex].id ?? null,
                 columnID,
                 columnHash,
@@ -86,10 +155,20 @@ export function useDataTab(initialTableStructure: TableInnerStructure | undefine
                 columnLine: rowIndex + 1,
                 dataType: type,
             };
-            setRequestDataList(prevList => [
-                ...prevList.filter(data => data.id !== newRequestData.id),
-                newRequestData
-            ]);
+
+            if (newCreateData.id === null) {
+                setCreateDataList(prevList => [
+                    ...prevList.filter(data =>
+                        !(data.columnLine === newCreateData.columnLine &&
+                        data.columnID === newCreateData.columnID)),
+                    newCreateData
+                ]);
+            } else {
+                setUpdateDataList(prevList => [
+                    ...prevList.filter(data => data.id !== newCreateData.id),
+                    newCreateData
+                ]);
+            }
 
             setEditingCell(null);
         }
@@ -97,24 +176,32 @@ export function useDataTab(initialTableStructure: TableInnerStructure | undefine
 
     return {
         hooks: {
-            tableStructure,
             editingCell,
             editedValue,
-            requestDataList,
             selectedRow,
-            setTableStructure,
-            setRequestDataList,
             setSelectedRow,
+            tableStructure,
+            setTableStructure,
+            createDataList,
+            setCreateDataList,
+            updateDataList,
+            setUpdateDataList,
+            deleteDataList,
+            setDeleteDataList,
+
         },
         handlers: {
             handleAddData,
             handleDeleteData,
+            handleSave,
             handleCellDoubleClick,
             handleInputChange,
             handleInputBlur,
             handleRefreshClick
         },
         modals: {
+            isSuccessOpen,
+            setIsSuccessOpen,
             isErrorOpen,
             setIsErrorOpen,
             isQuestionOpen,
