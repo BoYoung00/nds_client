@@ -82,7 +82,7 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
                         SAVE
                     </span>
                     <span>
-                        <img src={search} alt="search" />
+                        <img src={search} alt="search" style={{ marginBottom: '2.5px' }}/>
                         FIND_COLUMN
                     </span>
                 </header>
@@ -109,11 +109,23 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
                                             className={selectedRow === rowIndex ? styles.selectedCell : ''}
                                         >
                                             { cellData.dataType === 'MediaFile' ?
-                                                <p>MediaFile</p>
+                                                <input
+                                                    type="text"
+                                                    value={cellData.data}
+                                                    placeholder={'NULL'}
+                                                    readOnly
+                                                    className={styles.readOnlyInput}
+                                                />
                                                 :
                                                 <>
                                                     { cellData.dataType === 'JOIN_Column' ?
-                                                        <p>JOIN_Column</p>
+                                                        <input
+                                                            type="text"
+                                                            value={cellData.data}
+                                                            placeholder={'NULL'}
+                                                            readOnly
+                                                            className={styles.readOnlyInput}
+                                                        />
                                                         :
                                                         <>
                                                             { editingCell && editingCell.columnKey === columnKey && editingCell.rowIndex === rowIndex

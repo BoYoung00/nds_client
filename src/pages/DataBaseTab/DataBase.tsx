@@ -37,7 +37,7 @@ const tableData: TableData[] = [
                     id: 13,
                     data: "1",
                     createTime: "2024-07-21T22:15:20.356003",
-                    columnID: 2,
+                    columnID: 1,
                     lineHash: "48ac7374-7a1a-4153-8e3a-c10aa904ddd7",
                     dataType: "INTEGER"
                 },
@@ -45,7 +45,7 @@ const tableData: TableData[] = [
                     id: 16,
                     data: "2",
                     createTime: "2024-07-21T22:15:20.468383",
-                    columnID: 2,
+                    columnID: 1,
                     lineHash: "75ac0c0b-1dfd-422b-8fed-65d40032f08a",
                     dataType: "INTEGER"
                 },
@@ -53,7 +53,7 @@ const tableData: TableData[] = [
                     id: 19,
                     data: "3",
                     createTime: "2024-07-21T22:42:36.127007",
-                    columnID: 2,
+                    columnID: 1,
                     lineHash: "4d04f64b-96ec-478f-92e6-918dfa5ef073",
                     dataType: "INTEGER"
                 }
@@ -63,7 +63,7 @@ const tableData: TableData[] = [
                     id: 14,
                     data: "학생_A",
                     createTime: "2024-07-21T22:15:20.356003",
-                    columnID: 3,
+                    columnID: 2,
                     lineHash: "48ac7374-7a1a-4153-8e3a-c10aa904ddd7",
                     dataType: "TEXT"
                 },
@@ -71,7 +71,7 @@ const tableData: TableData[] = [
                     id: 17,
                     data: "학생_B_2",
                     createTime: "2024-07-21T22:15:20.468383",
-                    columnID: 3,
+                    columnID: 2,
                     lineHash: "75ac0c0b-1dfd-422b-8fed-65d40032f08a",
                     dataType: "TEXT"
                 },
@@ -79,7 +79,7 @@ const tableData: TableData[] = [
                     id: 20,
                     data: "학생_C",
                     createTime: "2024-07-21T22:42:36.127007",
-                    columnID: 3,
+                    columnID: 2,
                     lineHash: "4d04f64b-96ec-478f-92e6-918dfa5ef073",
                     dataType: "TEXT"
                 }
@@ -89,7 +89,7 @@ const tableData: TableData[] = [
                     id: 15,
                     data: "4.3",
                     createTime: "2024-07-21T22:15:20.356003",
-                    columnID: 4,
+                    columnID: 3,
                     lineHash: "48ac7374-7a1a-4153-8e3a-c10aa904ddd7",
                     dataType: "REAL"
                 },
@@ -97,7 +97,7 @@ const tableData: TableData[] = [
                     id: 18,
                     data: "4.5",
                     createTime: "2024-07-21T22:15:20.468383",
-                    columnID: 4,
+                    columnID: 3,
                     lineHash: "75ac0c0b-1dfd-422b-8fed-65d40032f08a",
                     dataType: "REAL"
                 },
@@ -105,14 +105,67 @@ const tableData: TableData[] = [
                     id: 21,
                     data: "4.3",
                     createTime: "2024-07-21T22:42:36.127007",
-                    columnID: 4,
+                    columnID: 3,
                     lineHash: "4d04f64b-96ec-478f-92e6-918dfa5ef073",
                     dataType: "REAL"
+                }
+            ],
+            "ColumnResponse(id=4, name=MediaFile, type=MediaFile, tableID=1, columnHash=MediaFile)": [
+                {
+                    id: 16,
+                    data: "MediaFile1",
+                    createTime: "2024-07-21T22:15:20.356003",
+                    columnID: 4,
+                    lineHash: "48ac7374-7a1a-4153-8e3a-c10aa904ddd7",
+                    dataType: "MediaFile"
+                },
+                {
+                    id: 19,
+                    data: "MediaFile2",
+                    createTime: "2024-07-21T22:15:20.468383",
+                    columnID: 4,
+                    lineHash: "75ac0c0b-1dfd-422b-8fed-65d40032f08a",
+                    dataType: "MediaFile"
+                },
+                {
+                    id: 22,
+                    data: "MediaFile3",
+                    createTime: "2024-07-21T22:42:36.127007",
+                    columnID: 4,
+                    lineHash: "4d04f64b-96ec-478f-92e6-918dfa5ef073",
+                    dataType: "MediaFile"
+                }
+            ],
+            "ColumnResponse(id=5, name=JOIN_COLUMN_1, type=JOIN_Column, tableID=1, columnHash=JOIN_COLUMN_1)": [
+                {
+                    id: 23,
+                    data: "JoinData1",
+                    createTime: "2024-07-21T22:15:20.356003",
+                    columnID: 5,
+                    lineHash: "48ac7374-7a1a-4153-8e3a-c10aa904ddd7",
+                    dataType: "JOIN_Column"
+                },
+                {
+                    id: 24,
+                    data: "JoinData2",
+                    createTime: "2024-07-21T22:15:20.468383",
+                    columnID: 5,
+                    lineHash: "75ac0c0b-1dfd-422b-8fed-65d40032f08a",
+                    dataType: "JOIN_Column"
+                },
+                {
+                    id: 25,
+                    data: "JoinData3",
+                    createTime: "2024-07-21T22:42:36.127007",
+                    columnID: 5,
+                    lineHash: "4d04f64b-96ec-478f-92e6-918dfa5ef073",
+                    dataType: "JOIN_Column"
                 }
             ]
         }
     },
 ];
+
 
 const DataBase:React.FC = () => {
     const [selectedTab, setSelectedTab] = useState(0);

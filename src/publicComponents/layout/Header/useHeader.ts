@@ -42,9 +42,10 @@ export const useHeader = () => {
     }, [location]);
 
     useEffect(() => {
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        // 반응형 : 글자 줄이기
+        // handleResize();
+        // window.addEventListener('resize', handleResize);
+        // return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     const toggleMenu = () => {
