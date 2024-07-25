@@ -3,7 +3,7 @@
 .tabBar {
   display: flex;
   align-items: end;
-  padding: 10px 10px 0 10px;
+  padding: .5rem .5rem 0 .5rem;
   background: #D8D8D8;
 
   &__tab {
@@ -18,7 +18,7 @@
     color: #808080;
     height: 1em;
     border-radius: 6px 6px 0 0;
-    margin-right: 5px;
+    margin-right: .5rem;
 
     &.active {
       background: white;

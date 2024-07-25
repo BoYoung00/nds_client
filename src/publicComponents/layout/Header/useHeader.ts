@@ -29,10 +29,10 @@ export const useHeader = () => {
     const location = useLocation();
 
     const handleResize = () => {
-        if (window.innerWidth <= 700)
-            setMenuItems(minMenuItems);
-        else
-            setMenuItems(maxMenuItems);
+        // if (window.innerWidth <= 700)
+        //     setMenuItems(minMenuItems);
+        // else
+        //     setMenuItems(maxMenuItems);
     };
 
     useEffect(() => {
@@ -43,9 +43,9 @@ export const useHeader = () => {
 
     useEffect(() => {
         // 반응형 : 글자 줄이기
-        // handleResize();
-        // window.addEventListener('resize', handleResize);
-        // return () => window.removeEventListener('resize', handleResize);
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     const toggleMenu = () => {
