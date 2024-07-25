@@ -190,6 +190,12 @@
         background: #eaeff8;
       }
 
+      input {
+        border: none;
+        background: none;
+        overflow: hidden;
+      }
+
       .readOnlyInput {
         border: none;
         background: none;

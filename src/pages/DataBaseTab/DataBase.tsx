@@ -6,6 +6,7 @@ import DataBaseWhiteSidebar from "./Components/DataBaseWhiteSidebar";
 import LineTitle from "../../publicComponents/UI/LineTitle";
 import DataTab from "./Components/DataTab";
 import {formatDate} from "../../utils/utils";
+import Search from "../../publicComponents/layout/modal/Search/Search";
 
 // 데이터베이스 예시 데이터
 const dataBaseEntities: DataBaseEntity[] = [
@@ -203,6 +204,7 @@ const DataBase:React.FC = () => {
                             { renderTabContent() }
                         </section>
                     }
+                    {/*<Search handleJoinTableSelect={()=> null} showSearch={true} setShowSearch={() => false} />*/}
                 </main>
             </div>
         </>

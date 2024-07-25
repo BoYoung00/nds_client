@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from '../DataBase.module.scss';
 import refresh from '../../../assets/images/refresh.png';
 import addData from '../../../assets/images/addData.png';
@@ -7,7 +7,7 @@ import save from '../../../assets/images/save.png';
 import updateSave from '../../../assets/images/updateSave.png';
 import search from '../../../assets/images/search.png';
 import { Notification } from '../../../publicComponents/layout/modal/Notification';
-import {useDataTab} from "../hooks/useDataTab";
+import { useDataTab } from "../hooks/useDataTab";
 
 interface DataTabProps {
     selectedTable: TableData | null;
@@ -17,8 +17,6 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
     const {
         hooks: {
             tableStructure,
-            editingCell,
-            editedValue,
             selectedRow,
             setSelectedRow,
             createDataList,
@@ -33,7 +31,6 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
             handleAddData,
             handleDeleteData,
             handleSave,
-            handleCellDoubleClick,
             handleInputChange,
             handleInputBlur,
             handleRefreshClick
@@ -47,11 +44,32 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
         }
     } = useDataTab(selectedTable);
 
+    const inputRefs = useRef<{ [key: string]: HTMLInputElement }>({});
 
     useEffect(() => {
-        console.log('추가 데이터', createDataList);
-        console.log('수정 데이터', updateDataList);
-        console.log('삭제 데이터', deleteDataList);
+        const columnWidths: { [key: string]: number } = {};
+
+        Object.values(inputRefs.current).forEach(input => {
+            if (input) {
+                const columnKey = input.dataset.columnKey as string;
+                if (columnKey) {
+                    input.style.width = 'auto';
+                    const inputWidth = input.scrollWidth;
+                    if (!columnWidths[columnKey] || inputWidth > columnWidths[columnKey]) {
+                        columnWidths[columnKey] = inputWidth;
+                    }
+                }
+            }
+        });
+
+        Object.values(inputRefs.current).forEach(input => {
+            if (input) {
+                const columnKey = input.dataset.columnKey as string;
+                if (columnKey) {
+                    input.style.width = `${columnWidths[columnKey] || 100}px`;
+                }
+            }
+        });
     }, [createDataList, updateDataList, deleteDataList]);
 
     if (!tableStructure) return null;
@@ -105,48 +123,26 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
                                     return (
                                         <td
                                             key={cellData.id || columnKey + rowIndex}
-                                            onDoubleClick={() => handleCellDoubleClick(columnKey, rowIndex, cellData)}
                                             className={selectedRow === rowIndex ? styles.selectedCell : ''}
                                         >
                                             { cellData.dataType === 'MediaFile' ?
-                                                <input
-                                                    type="text"
-                                                    value={cellData.data}
-                                                    placeholder={'NULL'}
-                                                    readOnly
-                                                    className={styles.readOnlyInput}
-                                                />
+                                                <span>{cellData.data}</span>
                                                 :
                                                 <>
                                                     { cellData.dataType === 'JOIN_Column' ?
+                                                        <span>{cellData.data}</span>
+                                                        :
                                                         <input
+                                                            ref={el => {
+                                                                if (el) inputRefs.current[`${columnKey}-${rowIndex}`] = el;
+                                                            }}
                                                             type="text"
                                                             value={cellData.data}
+                                                            data-column-key={columnKey}
+                                                            onChange={e => handleInputChange(e, columnKey, rowIndex)}
+                                                            onBlur={handleInputBlur}
                                                             placeholder={'NULL'}
-                                                            readOnly
-                                                            className={styles.readOnlyInput}
                                                         />
-                                                        :
-                                                        <>
-                                                            { editingCell && editingCell.columnKey === columnKey && editingCell.rowIndex === rowIndex
-                                                                ?
-                                                                <input
-                                                                    type="text"
-                                                                    value={editedValue}
-                                                                    onChange={handleInputChange}
-                                                                    onBlur={handleInputBlur}
-                                                                    placeholder={'NULL'}
-                                                                />
-                                                                :
-                                                                <input
-                                                                    type="text"
-                                                                    value={cellData.data}
-                                                                    placeholder={'NULL'}
-                                                                    readOnly
-                                                                    className={styles.readOnlyInput}
-                                                                />
-                                                            }
-                                                        </>
                                                     }
                                                 </>
                                             }
