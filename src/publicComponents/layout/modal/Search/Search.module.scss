@@ -1,55 +1,67 @@
 @import "src/App.module";
 
-.notification {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  width: 300px;
-  //text-align: center;
+.search {
+  width: 16rem; height: 22rem;
+  padding: .2rem;
+  background: white;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  position: absolute;
+  top: 0;
 
-  &.success {
-    border-color: #81c784;
-    h3 { color: #388e3c; }
-  }
-
-  &.question {
-    border-color: #ffb74d;
-    h3 { color: #f57c00; }
-  }
-
-  &.error {
-    border-color: #e57373;
-    h3 { color: #d32f2f; }
-  }
-
-  h3 {
-    margin-bottom: 10px;
-  }
-
-  p {
-    margin-bottom: 20px;
-  }
-
-  .buttonGroup {
+  &__title {
+    padding: .5rem .5rem 0 .5rem;
+    font-size: 1.1rem;
+    font-family: $font-KoPub-bold;
     display: flex;
-    justify-content: right;
-    margin-top: 10px;
+    justify-content: space-between;
 
-    button {
-      padding: 5px 20px;
-      margin: 0 10px;
+    p {
+      color: grey;
+      font-size: .8rem;
+      padding: 2px;
+      margin: 0;
+      cursor: pointer;
     }
   }
 
-  .closeButton {
-    //@include button-style(true, 20%, .9rem);
-    float: right;
+  &__searchBar {
+    padding: .5rem;
+    border-bottom: 1px solid grey;
+
+    &__inputBox {
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 0 8px;
+      background: white;
+    }
+
+    img {
+      width: 1.7rem;
+    }
+
+    input {
+      font-size: .9rem;
+      @include input-style-none;
+    }
+  }
+
+  &__listBox {
+    height: 70%;
+    margin: 0 auto;
+    overflow-y: scroll;
+
+    div {
+      width: 80%;
+      margin: 0 auto;
+
+      span {
+        font-size: .8rem;
+        cursor: pointer;
+      }
+    }
   }
 }

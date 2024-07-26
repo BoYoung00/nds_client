@@ -72,7 +72,7 @@ export function useDataTab(selectedTable: TableData | null) {
 
                 acc[columnKey] = [
                     ...(tableStructure[columnKey] || []),
-                    { id: null, data: '', columnID: 0, createTime: '', lineHash: createRowLine.toString(), dataType: '' },
+                    { id: null, data: '', columnID: newCreateData.columnID, createTime: '', lineHash: createRowLine.toString(), dataType: newCreateData.dataType },
                 ];
                 return acc;
             }, {} as TableInnerStructure);

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styles from "./App.module.scss";
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Main from "./pages/Main";
-import DataBase from './pages/DataBaseTab/DataBase';
+import DataBase from './pages/DataBase/DataBase';
 import Header from "./publicComponents/layout/Header";
 
 // 임시 유저 정보

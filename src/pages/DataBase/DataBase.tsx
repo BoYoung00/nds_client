@@ -6,7 +6,7 @@ import DataBaseWhiteSidebar from "./Components/DataBaseWhiteSidebar";
 import LineTitle from "../../publicComponents/UI/LineTitle";
 import DataTab from "./Components/DataTab";
 import {formatDate} from "../../utils/utils";
-import Search from "../../publicComponents/layout/modal/Search/Search";
+import RestApiTab from "./Components/RestApiTab";
 
 // 데이터베이스 예시 데이터
 const dataBaseEntities: DataBaseEntity[] = [
@@ -137,7 +137,7 @@ const tableData: TableData[] = [
                     dataType: "MediaFile"
                 }
             ],
-            "ColumnResponse(id=5, name=JOIN_COLUMN_1, type=JOIN_Column, tableID=1, columnHash=JOIN_COLUMN_1)": [
+            "ColumnResponse(id=5, name=JOIN_COLUMN, type=JOIN_Column, tableID=1, columnHash=JOIN_COLUMN)": [
                 {
                     id: 23,
                     data: "JoinData1",
@@ -180,7 +180,7 @@ const DataBase:React.FC = () => {
             case 1:
                 return ;
             case 2:
-                return ;
+                return <RestApiTab isExpanded={true} endpoint={"endpoint"} localPort={"url"} />;
         }
     };
 
@@ -204,7 +204,7 @@ const DataBase:React.FC = () => {
                             { renderTabContent() }
                         </section>
                     }
-                    {/*<Search handleJoinTableSelect={()=> null} showSearch={true} setShowSearch={() => false} />*/}
+                    {/*<Search handleSelectData={()=> null} showSearch={true} setShowSearch={() => false} title={"조인 테이블 PK 검색"}/>*/}
                 </main>
             </div>
         </>

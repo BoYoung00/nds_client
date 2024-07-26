@@ -110,6 +110,13 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
   }
 }
 
+// input text 스타일 모두 없애기
+@mixin input-style-none {
+  border: none;
+  background: none;
+  outline: none;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -122,7 +129,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  min-width: 60rem;
+  min-width: 50rem;
 
   .content {
     flex: 1 0 auto;
@@ -175,6 +182,4 @@ select {
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
   }
 }
-
-
 
