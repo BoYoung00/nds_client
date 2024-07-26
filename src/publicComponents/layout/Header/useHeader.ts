@@ -32,7 +32,7 @@ export const useHeader = () => {
         // if (window.innerWidth <= 700)
         //     setMenuItems(minMenuItems);
         // else
-        //     setMenuItems(maxMenuItems);
+        setMenuItems(maxMenuItems);
     };
 
     useEffect(() => {
