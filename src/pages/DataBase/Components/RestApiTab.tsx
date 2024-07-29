@@ -15,7 +15,7 @@ const RestApiTab: React.FC<RestApiTabProps> = ({ isExpanded = true, localPort, e
         <div className={styles.RestApiTab}>
             <section className={`${styles.urlContainer} ${isExpanded ? styles.visible : ''}`}>
                 {isExpanded && (
-                    <div style={{padding: '20px' }}>
+                    <div>
                         <ApiSection method="GET" url={url} />
                         <ApiSection method="POST" url={url} />
                         <ApiSection method="UPDATE" url={`${url}/[PK]`} />

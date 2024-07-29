@@ -16,7 +16,7 @@
 $color-blue-deep: #00A3FF;
 $color-blue-light: #62C6FF;
 $color-gray-deep: #515151;
-$color-gray-middle: #D8D8D8;
+$color-gray-middle: #9b9b9b;
 $color-gray-light: #F5F5F5;
 $font-KoPub-bold: KoPubWorld Bold, sans-serif;
 $font-KoPub-medium: KoPubWorld Medium, sans-serif;
@@ -76,7 +76,7 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
 // 파란색 버튼 스타일
 @mixin button-style($isBlueBut: true, $width: 100%, $fontSize: 1.1rem) {
   width: $width;
-  padding: 10px;
+  padding: .6rem;
   font-size: $fontSize;
   border-radius: 4px;
   cursor: pointer;
@@ -117,7 +117,9 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
   outline: none;
 }
 
+
 body {
+  font-size: 1rem;
   margin: 0;
   padding: 0;
   font-family: $font-KoPub-medium;
@@ -129,7 +131,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  min-width: 50rem;
+  //min-width: 60rem;
 
   .content {
     flex: 1 0 auto;

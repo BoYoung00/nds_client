@@ -5,11 +5,13 @@
   background: white;
   border: 1px solid #777777;
   margin-top: 1.3rem;
+  overflow-y: auto;
 }
 
 .dataBase {
   height: 100%;
   width: 100%;
+  min-width: 60rem;
   display: flex;
   flex-direction: column;
   background: #f4f4f4;
@@ -211,32 +213,33 @@
 }
 
 // REST API 탭 디자인
-
 .RestApiTab {
   @include tab-container;
 
   .urlContainer {
-    height: 100%;
+    width: 95%; height: 95%;
+    margin: 0 auto;
+    padding-top: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    position: relative;
+    align-items: end;
+    gap: 1rem;
+
+    div { width: 100%; margin: 0 auto; }
 
     .ApiButton {
       @include button-style(true, 12rem);
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
+      float: left;
     }
   }
 
   .ApiSection {
-    margin: 0 auto;
     border-bottom: 1px solid $color-gray-deep;
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: repeat(2, auto);
-    gap: 10px;
+    gap: 1rem;
 
     h3 {
       grid-column: 1;

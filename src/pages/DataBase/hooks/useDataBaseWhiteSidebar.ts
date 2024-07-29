@@ -4,7 +4,7 @@ export const useDataBaseWhiteSidebar = (tables: TableData[], setSelectedTable: (
     const [selectedId, setSelectedId] = useState<number>(-1);
     const [isOpenCreateTableModal, setIsOpenCreateTableModal] = useState<boolean>(false);
     const [isOpenMergeModal, setIsOpenMergeModal] = useState<boolean>(false);
-    const [isErrorOpen, setIsErrorOpen] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const onSelected = (table: TableData) => {
         setSelectedId(table.id!!);
@@ -13,7 +13,7 @@ export const useDataBaseWhiteSidebar = (tables: TableData[], setSelectedTable: (
 
     const handleQuery = () => {
         if (selectedId === -1) {
-            setIsErrorOpen(true);
+            setErrorMessage("선택한 테이블이 없습니다.");
         } else {
             setIsOpenMergeModal(true);
         }
@@ -21,7 +21,7 @@ export const useDataBaseWhiteSidebar = (tables: TableData[], setSelectedTable: (
 
     const handleDelete = () => {
         if (selectedId === -1) {
-            setIsErrorOpen(true);
+            setErrorMessage("선택한 테이블이 없습니다.");
         } else {
             console.log('삭제 로직');
         }
@@ -44,8 +44,8 @@ export const useDataBaseWhiteSidebar = (tables: TableData[], setSelectedTable: (
         setIsOpenCreateTableModal,
         isOpenMergeModal,
         setIsOpenMergeModal,
-        isErrorOpen,
-        setIsErrorOpen,
+        errorMessage,
+        setErrorMessage,
         onSelected,
         handleQuery,
         handleDelete

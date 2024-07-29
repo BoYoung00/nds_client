@@ -36,11 +36,12 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
             handleRefreshClick
         },
         modals: {
-            isErrorOpen,
-            setIsErrorOpen,
-            isQuestionOpen,
-            setIsQuestionOpen,
-            message
+            successMessage,
+            setSuccessMessage,
+            questionMessage,
+            setQuestionMessage,
+            errorMessage,
+            setErrorMessage,
         }
     } = useDataTab(selectedTable);
 
@@ -157,11 +158,10 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
             </div>
 
             {/*새로고침 모달*/}
-            <Notification
-                isOpen={isQuestionOpen}
-                onClose={() => setIsQuestionOpen(false)}
+            {questionMessage && <Notification
+                onClose={() => setQuestionMessage(null)}
                 type="question"
-                message={message}
+                message={questionMessage}
                 onConfirm={() => {
                     setTableStructure(selectedTable?.tableInnerStructure);
                     setCreateDataList([]);
@@ -169,15 +169,14 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
                     setDeleteDataList([]);
                     setSelectedRow(null);
                 }}
-            />
+            />}
 
             {/*에러 모달*/}
-            <Notification
-                isOpen={isErrorOpen}
-                onClose={() => setIsErrorOpen(false)}
+            {errorMessage && <Notification
+                onClose={() => setErrorMessage(null)}
                 type="error"
-                message={message}
-            />
+                message={errorMessage}
+            />}
         </>
     );
 };

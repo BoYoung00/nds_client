@@ -26,10 +26,9 @@ export function useDataTab(selectedTable: TableData | null) {
     const [deleteDataList, setDeleteDataList] = useState<DataDTO[]>([]);
 
     // 모달
-    const [isSuccessOpen, setIsSuccessOpen] = useState<boolean>(false);
-    const [isErrorOpen, setIsErrorOpen] = useState<boolean>(false);
-    const [isQuestionOpen, setIsQuestionOpen] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>("");
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [questionMessage, setQuestionMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     // 저장 (통신)
     const handleSave = async () => {
@@ -58,8 +57,7 @@ export function useDataTab(selectedTable: TableData | null) {
 
     // 새로고침
     const handleRefreshClick = () => {
-        setMessage("새로고침을 하시겠습니까?");
-        setIsQuestionOpen(true);
+        setQuestionMessage("새로고침을 하시겠습니까?");
     };
 
     // 행 추가
@@ -88,8 +86,7 @@ export function useDataTab(selectedTable: TableData | null) {
     // 행 삭제
     const handleDeleteData = () => {
         if (selectedRow === null || !tableStructure) {
-            setIsErrorOpen(true);
-            setMessage("삭제할 행을 선택해 주세요.");
+            setErrorMessage("삭제할 행을 선택해 주세요.");
             return;
         }
 
@@ -207,13 +204,12 @@ export function useDataTab(selectedTable: TableData | null) {
             handleRefreshClick
         },
         modals: {
-            isSuccessOpen,
-            setIsSuccessOpen,
-            isErrorOpen,
-            setIsErrorOpen,
-            isQuestionOpen,
-            setIsQuestionOpen,
-            message,
+            successMessage,
+            setSuccessMessage,
+            questionMessage,
+            setQuestionMessage,
+            errorMessage,
+            setErrorMessage,
         }
     };
 }

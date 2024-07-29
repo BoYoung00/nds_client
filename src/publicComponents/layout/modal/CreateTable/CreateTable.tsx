@@ -36,7 +36,7 @@ interface CreateTableFormProps {
 }
 
 export const CreateTableForm: React.FC<CreateTableFormProps> = ({dataBase}) => {
-    const { tableData, handleChange, handleSubmit, setColumnData, isErrorOpen, setIsErrorOpen, errorMessage } = useCreateTable(dataBase);
+    const { tableData, handleChange, handleSubmit, setColumnData, errorMessage, setErrorMessage } = useCreateTable(dataBase);
 
     const handleSetColumnData = (newData: RowState[]) => {
         setColumnData(newData);
@@ -87,12 +87,11 @@ export const CreateTableForm: React.FC<CreateTableFormProps> = ({dataBase}) => {
                 </form>
             </div>
 
-            <Notification
-                isOpen={isErrorOpen}
-                onClose={() => setIsErrorOpen(false)}
+            {errorMessage && <Notification
+                onClose={() => setErrorMessage(null)}
                 type="error"
                 message={errorMessage}
-            />
+            />}
         </>
     );
 };

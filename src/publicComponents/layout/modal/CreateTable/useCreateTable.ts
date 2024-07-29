@@ -7,8 +7,7 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
         name: '',
         comment: '',
     });
-    const [isErrorOpen, setIsErrorOpen] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     // 테이블 이름, 설명 받기
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -41,11 +40,9 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
 
         if (hasDuplicates) {
             setErrorMessage("중복된 이름을 가진 행이 존재합니다.");
-            setIsErrorOpen(true);
             return { isError: true };
         } else if(hasEmptyColumnName) {
             setErrorMessage("행 이름을 작성해주세요.");
-            setIsErrorOpen(true);
             return { isError: true };
         }
         return { isError: false };
@@ -75,9 +72,8 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
         handleChange,
         handleSubmit,
         setColumnData,
-        isErrorOpen,
-        setIsErrorOpen,
         errorMessage,
+        setErrorMessage,
     };
 };
 

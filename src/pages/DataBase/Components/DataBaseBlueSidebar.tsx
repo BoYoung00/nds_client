@@ -18,8 +18,8 @@ const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ dataBases, se
             setIsOpenCreateDBModal,
             isOpenQueryModal,
             setIsOpenQueryModal,
-            isErrorOpen,
-            setIsErrorOpen,
+            errorMessage,
+            setErrorMessage,
         },
         handlers: {
             onSelected,
@@ -75,12 +75,11 @@ const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ dataBases, se
             />
 
             {/* 오류 모달 */}
-            <Notification
-                isOpen={isErrorOpen}
-                onClose={() => setIsErrorOpen(false)}
+            { errorMessage && <Notification
+                onClose={() => setErrorMessage(null)}
                 type="error"
-                message="선택한 데이터베이스가 없습니다."
-            />
+                message={errorMessage}
+            /> }
         </>
     );
 };

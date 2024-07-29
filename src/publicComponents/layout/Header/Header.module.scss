@@ -1,6 +1,7 @@
 @import 'src/App.module';
 
 .header {
+  min-width: 60rem;
   height: 4rem;
   @include flex-left;
   flex: 0 0 auto;

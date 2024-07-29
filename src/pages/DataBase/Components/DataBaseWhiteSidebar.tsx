@@ -18,8 +18,8 @@ const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({ tables=[], 
         setIsOpenCreateTableModal,
         isOpenMergeModal,
         setIsOpenMergeModal,
-        isErrorOpen,
-        setIsErrorOpen,
+        errorMessage,
+        setErrorMessage,
         onSelected,
         handleQuery,
         handleDelete
@@ -71,12 +71,11 @@ const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({ tables=[], 
             />
 
             {/* 오류 모달 */}
-            <Notification
-                isOpen={isErrorOpen}
-                onClose={() => setIsErrorOpen(false)}
+            {errorMessage && <Notification
+                onClose={() => setErrorMessage(null)}
                 type="error"
-                message="선택한 테이블이 없습니다."
-            />
+                message={errorMessage}
+            />}
         </>
     );
 };

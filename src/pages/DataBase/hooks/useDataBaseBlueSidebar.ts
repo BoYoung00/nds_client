@@ -4,7 +4,7 @@ export const useDataBaseBlueSidebar = (setSelectedDataBase: (dataBase: DataBaseE
     const [selectedId, setSelectedId] = useState(-1);
     const [isOpenCreateDBModal, setIsOpenCreateDBModal] = useState<boolean>(false);
     const [isOpenQueryModal, setIsOpenQueryModal] = useState<boolean>(false);
-    const [isErrorOpen, setIsErrorOpen] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const onSelected = (dataBase: DataBaseEntity) => {
         setSelectedId(dataBase.id!!);
@@ -13,7 +13,7 @@ export const useDataBaseBlueSidebar = (setSelectedDataBase: (dataBase: DataBaseE
 
     const handleQuery = () => {
         if (selectedId === -1) {
-            setIsErrorOpen(true);
+            setErrorMessage("선택된 데이터베이스가 없습니다.");
         } else {
             setIsOpenQueryModal(true);
         }
@@ -21,7 +21,7 @@ export const useDataBaseBlueSidebar = (setSelectedDataBase: (dataBase: DataBaseE
 
     const handleScript = () => {
         if (selectedId === -1) {
-            setIsErrorOpen(true);
+            setErrorMessage("선택된 데이터베이스가 없습니다.");
         } else {
             console.log('스크립트 다운 로직');
         }
@@ -29,7 +29,7 @@ export const useDataBaseBlueSidebar = (setSelectedDataBase: (dataBase: DataBaseE
 
     const handleDelete = () => {
         if (selectedId === -1) {
-            setIsErrorOpen(true);
+            setErrorMessage("선택된 데이터베이스가 없습니다.");
         } else {
             console.log('삭제 로직');
         }
@@ -42,8 +42,8 @@ export const useDataBaseBlueSidebar = (setSelectedDataBase: (dataBase: DataBaseE
             setIsOpenCreateDBModal,
             isOpenQueryModal,
             setIsOpenQueryModal,
-            isErrorOpen,
-            setIsErrorOpen,
+            errorMessage,
+            setErrorMessage,
         },
         handlers: {
             onSelected,

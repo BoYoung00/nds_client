@@ -2,15 +2,13 @@ import React from 'react';
 import styles from './Notification.module.scss';
 
 interface NotificationProps {
-    isOpen: boolean;
     onClose(): void;
     type: 'success' | 'question' | 'error';
-    message: string;
+    message: string | null;
     onConfirm?: ConfirmFunction | null;
 }
 
-const Notification: React.FC<NotificationProps> = ({ isOpen, onClose, type, message, onConfirm }) => {
-    if (!isOpen) return null;
+const Notification: React.FC<NotificationProps> = ({ onClose, type, message, onConfirm }) => {
 
     const handleClose = () => {
         onClose();
@@ -94,34 +92,29 @@ export default Notification;
 
 // 사용 방법
 /*
-const [isSuccessOpen, setIsSuccessOpen] = useState<boolean>(false);
-const [isQuestionOpen, setIsQuestionOpen] = useState<boolean>(false);
-const [isErrorOpen, setIsErrorOpen] = useState<boolean>(false);
-const [message, setMessage] = useState<string>(""); // 알림창 메세지
+const [successMessage, setSuccessMessage] = useState<string | null>(null);
+const [questionMessage, setQuestionMessage] = useState<string | null>(null);
+const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-
-    <Notification
-        isOpen={isSuccessOpen}
-        onClose={() => setIsSuccessOpen(false)}
+    { successMessage && <Notification
+        onClose={() => setSuccessMessage(null)}
         type="success"
-        message="This is a success notification!"
-    />
+        message={successMessage}
+    /> }
 
-    <Notification
-        isOpen={isQuestionOpen}
-        onClose={() => setIsQuestionOpen(false)}
+    { questionMessage && <Notification
+        onClose={() => setQuestionMessage(null)}
         type="question"
-        message="Do you want to proceed?"
+        message={questionMessage}
         onConfirm={() => {
             console.log('Confirmed');
         }}
-    />
+    /> }
 
-    <Notification
-        isOpen={isErrorOpen}
-        onClose={() => setIsErrorOpen(false)}
+    { errorMessage && <Notification
+        onClose={() => setErrorMessage(null)}
         type="error"
-        message="An error occurred!"
-    />
+        message={errorMessage}
+    /> }
 
 */
