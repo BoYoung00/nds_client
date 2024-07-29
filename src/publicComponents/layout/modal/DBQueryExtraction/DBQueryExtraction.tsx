@@ -3,6 +3,8 @@ import BackgroundModal from "../../../UI/BackgroundModal";
 import styles from './DBQueryExtraction.module.scss';
 import LineTitle from "../../../UI/LineTitle";
 import {} from "./useDBQueryExtraction";
+import CodeEditor from "../../../UI/CodeEditor";
+import CopyButton from "../../../UI/CopyButton";
 
 interface DBQueryExtractionProps {
     isOpenModal: boolean;
@@ -13,11 +15,12 @@ const DBQueryExtraction: React.FC<DBQueryExtractionProps> = ({ isOpenModal, onCl
     if (!isOpenModal) return null;
 
     const ModalContent = () => (
-        <div className={styles.modal}>
+        <div className={styles.dbQueryExtraction}>
             <LineTitle text={"데이터베이스 쿼리 추출"} />
-            <section className={styles.modal__query}>
-                쿼리 들어갈거임
-            </section>
+            <span className={styles.dbQueryExtraction__copyButBox}>
+                <CopyButton url={"CREATE DATABASE Test"} />
+            </span>
+            <CodeEditor code={"CREATE DATABASE Test"} />
         </div>
     );
 

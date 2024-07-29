@@ -7,6 +7,8 @@ import LineTitle from "../../publicComponents/UI/LineTitle";
 import DataTab from "./Components/DataTab";
 import {formatDate} from "../../utils/utils";
 import RestApiTab from "./Components/RestApiTab";
+import QueryTab from "./Components/QueryTab";
+import Search from "../../publicComponents/layout/modal/Search/Search";
 
 // 데이터베이스 예시 데이터
 const dataBaseEntities: DataBaseEntity[] = [
@@ -181,6 +183,8 @@ const DataBase:React.FC = () => {
                 return ;
             case 2:
                 return <RestApiTab isExpanded={true} endpoint={"endpoint"} localPort={"url"} />;
+            case 3:
+                return <QueryTab selectedTable={selectedTable}/>;
         }
     };
 

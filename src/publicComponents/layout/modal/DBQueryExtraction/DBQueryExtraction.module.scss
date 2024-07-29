@@ -1,17 +1,15 @@
 @import "src/App.module";
 
-.modal {
+.dbQueryExtraction {
   width: 100%; height: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
 
-  &__query {
-    flex: 1;
-    background: #000101;
-    color: white;
-    margin: 10px;
-    @include border-radius(false, 2px, $color-blue-deep)
+  &__copyButBox {
+    position: absolute;
+    right: 2.5rem;
+    top: 6.4rem;
   }
 }
 

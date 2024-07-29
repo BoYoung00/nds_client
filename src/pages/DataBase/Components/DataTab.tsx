@@ -36,8 +36,6 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
             handleRefreshClick
         },
         modals: {
-            successMessage,
-            setSuccessMessage,
             questionMessage,
             setQuestionMessage,
             errorMessage,

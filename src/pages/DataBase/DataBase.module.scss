@@ -262,3 +262,35 @@
     }
   }
 }
+
+// 쿼리 탭 디자인
+.QueryTab {
+  @include tab-container;
+  display: flex;
+  flex-direction: column;
+
+  .tabContainer {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 1rem 0 1rem;
+
+    span {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+
+      .tabButton {
+        padding: .7rem 1.2rem;
+        border: none;
+        background-color: white;
+        color: #333;
+        cursor: pointer;
+      }
+
+      .active {
+        background-color: #00A3FF;
+        color: white;
+      }
+    }
+  }
+}
