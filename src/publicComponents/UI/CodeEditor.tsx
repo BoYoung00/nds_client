@@ -6,12 +6,11 @@ interface CodeEditorProps {
 }
 
 const CodeEditorContainer = styled.div`
-  flex: 1;
-  max-height: 36rem;
+  height: 62vh;
+  min-height: 23rem;
+  padding: .5rem;
   background: #000101;
   color: white;
-  margin: 10px;
-  padding: 10px;
   overflow: auto;
   border-radius: 2px;
   border: 1px solid #00A3FF;

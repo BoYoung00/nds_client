@@ -32,11 +32,9 @@ export function useQueryTab(selectedTable: TableData | null, activeTab: string) 
                     rows.push(data.join(', '));
                 };
 
-                console.log(rows)
-
                 return rows.map(row =>
                     `INSERT INTO ${table.name} (${columnNames}) VALUES (${row})`
-                ).join('; \n');
+                ).join('; \n') + ';';
             };
 
             const generateDTOClass = (table: TableData): string => {
@@ -62,7 +60,7 @@ export function useQueryTab(selectedTable: TableData | null, activeTab: string) 
                             break;
                         case 'MediaFile':
                         case 'JOIN_Column':
-                            javaType = 'String'; // Treat MediaFile and JOIN_Column as String
+                            javaType = 'String';
                             break;
                         default:
                             javaType = 'String';
@@ -79,7 +77,6 @@ export function useQueryTab(selectedTable: TableData | null, activeTab: string) 
 `;
             };
 
-            // Helper function to capitalize the first letter
             const capitalizeFirstLetter = (string: string) => {
                 return string.charAt(0).toUpperCase() + string.slice(1);
             };

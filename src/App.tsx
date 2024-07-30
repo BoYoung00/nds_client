@@ -44,7 +44,7 @@ const App: React.FC = () => {
             {user ? (
                 <>
                     <Header user={user} onLogout={() => setUser(null)} />
-                    <div className={styles.content}>
+                    <div className={styles.app__content}>
                         <Routes>
                             <Route path='/' element={<Navigate to="/database" />} />
                             <Route path="/database" element={<DataBase />} />

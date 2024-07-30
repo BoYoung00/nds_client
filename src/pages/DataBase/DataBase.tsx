@@ -192,7 +192,7 @@ const DataBase:React.FC = () => {
         <>
             <div className={styles.dataBase}>
                 <TabBar tabs={['Data', 'Like', 'Rest API', 'Query', 'Excel', 'Resource']} onTabSelect={(index) => setSelectedTab(index)}/>
-                <main className={styles.content}>
+                <main className={styles.dataBase__content}>
                     <DataBaseBlueSidebar
                         dataBases={dataBaseEntities}
                         setSelectedDataBase={setSelectedDataBase}
