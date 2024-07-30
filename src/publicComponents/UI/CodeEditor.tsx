@@ -6,8 +6,7 @@ interface CodeEditorProps {
 }
 
 const CodeEditorContainer = styled.div`
-  height: 62vh;
-  min-height: 23rem;
+  height: 100%;
   padding: .5rem;
   background: #000101;
   color: white;

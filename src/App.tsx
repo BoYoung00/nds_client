@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from "./App.module.scss";
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Main from "./pages/Main";
-import Login from "./pages/Login/Login";
+import UserAuth from "./pages/UserAuth/UserAuth";
 import DataBase from './pages/DataBase/DataBase';
 import Header from "./publicComponents/layout/Header";
 
@@ -11,8 +11,9 @@ const exampleUser: UserToken = {
     userEmail: "user1@example.com"
 };
 
+
 const App: React.FC = () => {
-    const [user, setUser] = useState<UserToken | null>(exampleUser);
+    const [user, setUser] = useState<UserToken | null>(exampleUser)
     // const [user, setUser] = useState<UserToken | null>(null);
     const [screenSize, setScreenSize] = useState({ width: window.screen.width, height: window.screen.height });
 
@@ -54,9 +55,9 @@ const App: React.FC = () => {
             ) : (
                 <>
                     <Routes>
-                        <Route path='/' element={<Navigate to="/login" />} />
+                        <Route path='/' element={<Navigate to="/auth" />} />
                         <Route path="/main" element={<Main />} />
-                        <Route path="/login" element={<Login />} />
+                        <Route path="/auth" element={<UserAuth />} />
                     </Routes>
                 </>
             )}

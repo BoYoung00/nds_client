@@ -20,7 +20,9 @@ const DBQueryExtraction: React.FC<DBQueryExtractionProps> = ({ isOpenModal, onCl
             <span className={styles.dbQueryExtraction__copyButBox}>
                 <CopyButton url={"CREATE DATABASE Test"} />
             </span>
-            <CodeEditor code={"CREATE DATABASE Test"} />
+            <span className={styles.dbQueryExtraction__codeEditorWrapper}>
+                <CodeEditor code={"CREATE DATABASE Test"} />
+            </span>
         </div>
     );
 

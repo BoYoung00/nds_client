@@ -28,7 +28,9 @@ const QueryTab: React.FC<QueryTabProps> = ({ selectedTable }) => {
                 />
                 <CopyButton url={query} />
             </div>
-            <CodeEditor code={query} />
+            <div className={styles.codeEditorWrapper}>
+                <CodeEditor code={query} />
+            </div>
         </div>
     );
 };

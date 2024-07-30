@@ -269,12 +269,18 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-
+  gap: 1rem;
 
   .tabContainer {
     display: flex;
     justify-content: space-between;
-    margin: .5rem;
+    margin: 0 .5rem;
     flex-shrink: 0;
+  }
+
+  .codeEditorWrapper {
+    width: 100%;
+    height: 60vh;
+    min-height: 25rem;
   }
 }
