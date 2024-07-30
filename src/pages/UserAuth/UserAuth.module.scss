@@ -78,6 +78,10 @@
             margin: 0 1.5rem;
             color: black;
             cursor: pointer;
+
+            &:hover {
+              text-decoration: underline;
+            }
           }
         }
 

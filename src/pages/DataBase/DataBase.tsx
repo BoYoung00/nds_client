@@ -8,7 +8,9 @@ import DataTab from "./Components/DataTab";
 import {formatDate} from "../../utils/utils";
 import RestApiTab from "./Components/RestApiTab";
 import QueryTab from "./Components/QueryTab";
-import Search from "../../publicComponents/layout/modal/Search/Search";
+import LikeTab from "./Components/LikeTab";
+import ExcelTab from "./Components/ExcelTab";
+import ResourceTab from "./Components/ResourceTab";
 
 // 데이터베이스 예시 데이터
 const dataBaseEntities: DataBaseEntity[] = [
@@ -16,13 +18,11 @@ const dataBaseEntities: DataBaseEntity[] = [
         id: 1,
         name: "Entity One",
         comment: "This is the first dataBase",
-        currentUserToken: "token123"
     },
     {
         id: 2,
         name: "Entity Two",
         comment: "This is the second dataBase",
-        currentUserToken: "token456"
     },
 ];
 
@@ -180,11 +180,17 @@ const DataBase:React.FC = () => {
             case 0:
                 return <DataTab selectedTable={selectedTable} />;
             case 1:
-                return ;
+                return <LikeTab selectedTable={selectedTable} />;
             case 2:
-                return <RestApiTab isExpanded={true} endpoint={"endpoint"} localPort={"url"} />;
+                return <RestApiTab selectedTable={selectedTable} isExpanded={true} endpoint={"endpoint"} localPort={"url"} />;
             case 3:
                 return <QueryTab selectedTable={selectedTable}/>;
+            case 4:
+                return <ExcelTab selectedTable={selectedTable}/>;
+            case 5:
+                return <ResourceTab selectedTable={selectedTable}/>;
+            default:
+                return null;
         }
     };
 
@@ -194,11 +200,9 @@ const DataBase:React.FC = () => {
                 <TabBar tabs={['Data', 'Like', 'Rest API', 'Query', 'Excel', 'Resource']} onTabSelect={(index) => setSelectedTab(index)}/>
                 <main className={styles.dataBase__content}>
                     <DataBaseBlueSidebar
-                        dataBases={dataBaseEntities}
                         setSelectedDataBase={setSelectedDataBase}
                     />
                     <DataBaseWhiteSidebar
-                        tables={tableData}
                         setSelectedTable={setSelectedTable}
                         parentsDataBase={selectedDataBase}
                     />
@@ -208,7 +212,6 @@ const DataBase:React.FC = () => {
                             { renderTabContent() }
                         </section>
                     }
-                    {/*<Search handleSelectData={()=> null} showSearch={true} setShowSearch={() => false} title={"조인 테이블 PK 검색"}/>*/}
                 </main>
             </div>
         </>

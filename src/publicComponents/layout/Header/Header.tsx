@@ -6,7 +6,7 @@ import { extractUserFromEmail } from '../../../utils/utils';
 import {useHeader} from "./useHeader";
 
 interface HeaderProps {
-    user: UserToken | null;
+    user: string | null;
     onLogout: () => void;
 }
 
@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
 
             {user && (
                 <div className={styles.header__userInfo} onClick={toggleMenu}>
-                    {extractUserFromEmail(user.userEmail)}
+                    {extractUserFromEmail(user)}
                     {showMenu && (
                         <div className={styles.dropdown}>
                             <Link to="/" onClick={onLogout}>

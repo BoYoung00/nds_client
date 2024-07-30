@@ -3,6 +3,7 @@ import styles from '../DataBase.module.scss';
 import CopyButton from "../../../publicComponents/UI/CopyButton";
 
 interface RestApiTabProps {
+    selectedTable: TableData | null;
     isExpanded?: boolean;
     localPort: string;
     endpoint: string;

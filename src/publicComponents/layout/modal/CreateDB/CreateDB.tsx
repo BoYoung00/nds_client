@@ -3,13 +3,15 @@ import BackgroundModal from "../../../UI/BackgroundModal";
 import styles from './CreateDB.module.scss';
 import LineTitle from "../../../UI/LineTitle";
 import {useDatabaseForm, useFileUpload} from "./useCreateDB";
+import {Notification} from "../Notification";
 
 interface CreateDBProps {
+    databases: DataBaseEntity[];
     isOpenModal: boolean;
     onCloseModal(isOpenModal: boolean): void;
 }
 
-const CreateDB: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal }) => {
+const CreateDB: React.FC<CreateDBProps> = ({ databases, isOpenModal, onCloseModal }) => {
     if (!isOpenModal) return null;
 
     return (
@@ -19,14 +21,32 @@ const CreateDB: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal }) => {
                 height={60}
                 onClose={onCloseModal}
             >
-                <CreateDBForm />
+                <CreateDBForm
+                    onCloseModal={onCloseModal}
+                    databases={databases}
+                />
             </BackgroundModal>
         </>
     );
 };
 
-const CreateDBForm: React.FC = () => {
-    const { dataBaseData, handleChange, handleSubmit } = useDatabaseForm();
+interface CreateDBFormProps {
+    databases: DataBaseEntity[];
+    onCloseModal(isOpenModal: boolean): void;
+}
+
+
+const CreateDBForm: React.FC<CreateDBFormProps> = ({ databases, onCloseModal }) => {
+    const { 
+        dataBaseData, 
+        handleChange, 
+        handleSubmit, 
+        successMessage, 
+        setSuccessMessage,
+        errorMessage,
+        setErrorMessage,
+    } = useDatabaseForm(databases);
+    
     const { selectedFile, handleFileChange } = useFileUpload();
 
     return (
@@ -67,6 +87,23 @@ const CreateDBForm: React.FC = () => {
                 </label>
                 {selectedFile && <span className={styles['modal__fileUploader--selectedFileName']}>{selectedFile.name}</span>}
             </div>
+
+            {/*성공 모달*/}
+            { successMessage &&
+            <Notification
+                onClose={()=> setSuccessMessage(null) }
+                onConfirm={()=> onCloseModal(false) }
+                type={'success'}
+                message={successMessage}
+            /> }
+            
+            {/*에러 모달*/}
+            { errorMessage &&
+                <Notification
+                    onClose={()=> setErrorMessage(null) }
+                    type={'error'}
+                    message={errorMessage}
+                />}
         </div>
     );
 };

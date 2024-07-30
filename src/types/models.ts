@@ -30,13 +30,6 @@ interface VideoEntity {
     tableID: number;
 }
 
-interface DataBaseEntity {
-    id?: number;
-    name: string;
-    comment: string;
-    currentUserToken: string;
-}
-
 interface TableEntity {
     id?: number;
     tableHash: string;
@@ -142,3 +135,10 @@ interface DataRequest {
 
 // 함수 타입
 type ConfirmFunction = () => void;
+
+// 데이터베이스 요청 타입
+interface DataBaseEntity {
+    id?: number | null;
+    name: string;
+    comment: string;
+}

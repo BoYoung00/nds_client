@@ -6,18 +6,10 @@ import UserAuth from "./pages/UserAuth/UserAuth";
 import DataBase from './pages/DataBase/DataBase';
 import Header from "./publicComponents/layout/Header";
 
-const exampleUser: UserToken = {
-    userToken: "1",
-    userEmail: "user1@example.com"
-};
-
-
 const App: React.FC = () => {
-    const [user, setUser] = useState<UserToken | null>(exampleUser)
-    // const [user, setUser] = useState<UserToken | null>(null);
+    const [user, setUser] = useState<string | null>(null);
     const [screenSize, setScreenSize] = useState({ width: window.screen.width, height: window.screen.height });
 
-    // 모니터 해상도에 따른 폰트 크기 조절
     useEffect(() => {
         const handleResize = () => {
             setScreenSize({ width: window.screen.width, height: window.screen.height });
@@ -26,6 +18,16 @@ const App: React.FC = () => {
         return () => {
             window.removeEventListener('resize', handleResize);
         };
+    }, []);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            console.log("token",token)
+            setUser(token);
+        } else {
+            setUser(null);
+        }
     }, []);
 
     useEffect(() => {
@@ -47,7 +49,7 @@ const App: React.FC = () => {
                     <Header user={user} onLogout={() => setUser(null)} />
                     <div className={styles.app__content}>
                         <Routes>
-                            <Route path='/' element={<Navigate to="/database" />} />
+                            <Route path='*' element={<Navigate to="/database" />} />
                             <Route path="/database" element={<DataBase />} />
                         </Routes>
                     </div>
@@ -55,7 +57,7 @@ const App: React.FC = () => {
             ) : (
                 <>
                     <Routes>
-                        <Route path='/' element={<Navigate to="/auth" />} />
+                        <Route path='*' element={<Navigate to="/auth" />} />
                         <Route path="/main" element={<Main />} />
                         <Route path="/auth" element={<UserAuth />} />
                     </Routes>

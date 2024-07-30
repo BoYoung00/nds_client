@@ -6,12 +6,12 @@ import {Notification} from "../../../publicComponents/layout/modal/Notification"
 import {useDataBaseBlueSidebar} from "../hooks/useDataBaseBlueSidebar";
 
 interface DataBaseBlueSidebarProps {
-    dataBases?: DataBaseEntity[],
     setSelectedDataBase: (dataBase: DataBaseEntity) => void;
 }
 
-const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ dataBases, setSelectedDataBase }) => {
+const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ setSelectedDataBase }) => {
     const {
+        databases,
         selectedId,
         modals: {
             isOpenCreateDBModal,
@@ -33,7 +33,7 @@ const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ dataBases, se
         <>
             <div className={`${styles.dataBaseSidebar} ${styles.blueSidebar}`}>
                 <section>
-                    {dataBases && dataBases.map((item) => (
+                    {databases && databases.map((item) => (
                         <div
                             key={item.id}
                             className={`${styles.item} ${selectedId === item.id ? styles.selected : ''}`}
@@ -42,7 +42,7 @@ const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ dataBases, se
                             {item.name}
                         </div>
                     ))}
-                    {(dataBases?.length ?? 0) <= 3 && (
+                    {(databases?.length ?? 0) <= 3 && (
                         <button className={styles.createButton} onClick={() => setIsOpenCreateDBModal(true)}>
                             CREATE DATABASE +
                         </button>
@@ -52,7 +52,7 @@ const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ dataBases, se
                 <footer>
                     <section className={styles.commentBox}>
                         <p>데이터베이스 설명</p>
-                        <span>{dataBases?.find(dataBase => dataBase.id == selectedId)?.comment} </span>
+                        <span>{databases?.find(dataBase => dataBase.id === selectedId)?.comment} </span>
                     </section>
                     <section className={styles.buttonBox}>
                         <button onClick={handleQuery}>쿼리 추출</button>
@@ -64,6 +64,7 @@ const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ dataBases, se
 
             {/* DB 생성 모달 */}
             <CreateDB
+                databases={databases}
                 isOpenModal={isOpenCreateDBModal}
                 onCloseModal={() => setIsOpenCreateDBModal(false)}
             />

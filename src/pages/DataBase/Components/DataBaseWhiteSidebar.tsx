@@ -6,13 +6,13 @@ import {CreateTable} from "../../../publicComponents/layout/modal/CreateTable";
 import {useDataBaseWhiteSidebar} from "../hooks/useDataBaseWhiteSidebar";
 
 interface DataBaseWhiteSidebarProps {
-    tables?: TableData[];
     setSelectedTable: (table: TableData | null) => void;
     parentsDataBase: DataBaseEntity | null;
 }
 
-const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({ tables=[], setSelectedTable, parentsDataBase }) => {
+const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({setSelectedTable, parentsDataBase }) => {
     const {
+        tables,
         selectedId,
         isOpenCreateTableModal,
         setIsOpenCreateTableModal,
@@ -23,7 +23,7 @@ const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({ tables=[], 
         onSelected,
         handleQuery,
         handleDelete
-    } = useDataBaseWhiteSidebar(tables, setSelectedTable, parentsDataBase);
+    } = useDataBaseWhiteSidebar(setSelectedTable, parentsDataBase);
 
     return (
         <>
@@ -48,7 +48,7 @@ const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({ tables=[], 
                 <footer>
                     <section className={styles.commentBox}>
                         <p>테이블 설명</p>
-                        <span>{tables?.find(dataBase => dataBase.id == selectedId)?.comment} </span>
+                        <span>{tables?.find(dataBase => dataBase.id === selectedId)?.comment} </span>
                     </section>
                     <section className={styles.buttonBox}>
                         <button onClick={handleQuery}>테이블 병합</button>

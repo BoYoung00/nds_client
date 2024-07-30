@@ -1,9 +1,15 @@
 import {useEffect, useState} from 'react';
+import {getTablesForDataBaseID} from "../../../services/api";
 
-export const useDataBaseWhiteSidebar = (tables: TableData[], setSelectedTable: (table: TableData | null) => void, parentsDataBase: DataBaseEntity | null) => {
+export const useDataBaseWhiteSidebar = (setSelectedTable: (table: TableData | null) => void, parentsDataBase: DataBaseEntity | null) => {
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const [tables, setTables] = useState<TableData[]>([]);
     const [selectedId, setSelectedId] = useState<number>(-1);
+
     const [isOpenCreateTableModal, setIsOpenCreateTableModal] = useState<boolean>(false);
     const [isOpenMergeModal, setIsOpenMergeModal] = useState<boolean>(false);
+
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const onSelected = (table: TableData) => {
@@ -27,8 +33,23 @@ export const useDataBaseWhiteSidebar = (tables: TableData[], setSelectedTable: (
         }
     }
 
+    // 테이블 리스트 통신
+    const fetchTables = async (parentsDataBase: DataBaseEntity) => {
+        try {
+            setLoading(true);
+            const data = await getTablesForDataBaseID(parentsDataBase.id!!);
+            console.log("테이블 리스트",data)
+            setTables(data);
+        } catch (error) {
+            setErrorMessage('테이블 목록을 가져오는 데 실패했습니다.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        console.log(parentsDataBase);
+        if (parentsDataBase)
+            fetchTables(parentsDataBase)
     }, [parentsDataBase]);
 
     useEffect(() => {
@@ -39,6 +60,8 @@ export const useDataBaseWhiteSidebar = (tables: TableData[], setSelectedTable: (
     }, [selectedId, tables, setSelectedTable]);
 
     return {
+        tables,
+        setTables,
         selectedId,
         isOpenCreateTableModal,
         setIsOpenCreateTableModal,
