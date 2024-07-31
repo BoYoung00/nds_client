@@ -1,12 +1,14 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
+import {tableStructure} from "../../../../services/api";
 
 // 테이블 생성 메인
-export const useCreateTable = (dataBase: DataBaseEntity | null) => {
+export const useCreateTable = (dataBase: DataBaseEntity | null, setTables: React.Dispatch<React.SetStateAction<TableData[]>>) => {
     const [columns , setColumns] = useState<RowState[]>([])
     const [tableData, setTableData] = useState({
         name: '',
         comment: '',
     });
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     // 테이블 이름, 설명 받기
@@ -19,10 +21,15 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
     };
 
     // 행 생성 유효성 검사
-    const validateData = () : { isError: boolean } => {
+    const validateData = () : boolean => {
         const columnNameSet: Set<string> = new Set();
         let hasEmptyColumnName = false;
         let hasDuplicates = false;
+
+        if (tableData.name.trim() === '') {
+            setErrorMessage('테이블명을 작성해주세요.')
+            return true;
+        }
 
         columns.forEach(row => {
             // columnName이 비어 있는지 체크
@@ -38,12 +45,12 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
 
         if (hasDuplicates) {
             setErrorMessage("중복된 이름을 가진 행이 존재합니다.");
-            return { isError: true };
+            return true;
         } else if(hasEmptyColumnName) {
             setErrorMessage("행 이름을 작성해주세요.");
-            return { isError: true };
+            return true;
         }
-        return { isError: false };
+        return false;
     }
 
     // 통신
@@ -51,20 +58,25 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
         e.preventDefault();
 
         // 유효성 검사
-        const validationResult = validateData();
-        if (validationResult.isError) return;
+        if (validateData()) return;
 
         // 통신 데이터 만들기
-        let obj = {
-            dataBaseID : dataBase!!.id,
+        let obj: TableRequest = {
+            dataBaseID : dataBase!.id!,
             name : tableData.name,
             comment : tableData.comment,
             columns : columns,
             tableHash : null,
         }
-        
-        // 통신 로직 넣기
         console.log("테이블 생성 : ", obj)
+        try {
+            const createdTable = await tableStructure(obj);
+            setTables(prevTables => [...prevTables, createdTable]);
+            setSuccessMessage('테이블 생성에 성공 하셨습니다.');
+        } catch (error) {
+            const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
+            setErrorMessage(errorMessage);
+        }
     };
 
     return {
@@ -74,6 +86,8 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
         setColumns,
         errorMessage,
         setErrorMessage,
+        successMessage,
+        setSuccessMessage,
     };
 };
 

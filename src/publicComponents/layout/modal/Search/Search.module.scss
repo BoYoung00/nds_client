@@ -2,9 +2,9 @@
 
 .search {
   position: absolute;
-  top: 3%;
-  right: 6rem;
-  width: 16rem; height: 22rem;
+  bottom: 2.5rem;
+  right: 0;
+  width: 16rem; height: 20rem;
   padding: .5rem;
   background: white;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
@@ -55,11 +55,11 @@
     overflow-y: scroll;
 
     div {
-      width: 80%;
-      margin: 0 auto;
+      width: 85%;
+      margin: .4rem auto;
 
       span {
-        font-size: .8rem;
+        font-size: .9rem;
         cursor: pointer;
       }
     }

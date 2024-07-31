@@ -13,6 +13,7 @@ interface DataBaseWhiteSidebarProps {
 const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({setSelectedTable, parentsDataBase }) => {
     const {
         tables,
+        setTables,
         selectedId,
         isOpenCreateTableModal,
         setIsOpenCreateTableModal,
@@ -59,6 +60,7 @@ const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({setSelectedT
 
             {/* 테이블 생성 모달 */}
             <CreateTable
+                setTables={setTables}
                 isOpenModal={isOpenCreateTableModal}
                 onCloseModal={() => setIsOpenCreateTableModal(false)}
                 dataBase={parentsDataBase}

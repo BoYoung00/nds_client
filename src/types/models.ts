@@ -79,59 +79,6 @@ interface TextData {
     lineHash: string;
 }
 
-// 테이블 생성 Column 통신 요청용 타입
-interface RowState {
-    name: string;
-    dataType: string;
-    isPkActive: boolean;
-    isFkActive: boolean;
-    isUkActive: boolean;
-    isNotNullActive: boolean;
-    isJoinTableHash: string | null;
-    [key: string]: any;
-}
-
-// 테이블, 행, 데이터 Response 타입
-interface ColumnData {
-    id?: number | null;
-    data: string;
-    createTime: string;
-    columnID: number;
-    lineHash: string;
-    dataType: string;
-}
-
-interface TableInnerStructure {
-    [key: string]: ColumnData[];
-}
-
-interface TableData {
-    id: number ;
-    name: string;
-    comment: string;
-    createTime: string;
-    tableHash: string;
-    tableInnerStructure: TableInnerStructure;
-}
-
-// 데이터 추가, 수정, 삭제 Request 타입
-interface DataDTO {
-    id?: number | null;
-    columnID: number;
-    columnHash: string;
-    data: string;
-    columnLine: number;
-    dataType: string;
-}
-
-interface DataRequest {
-    tableID: number;
-    tableHash: string;
-    createDataRequests: DataDTO[]; // 생성 데이터
-    updateDataRequests: DataDTO[]; // 수정 데이터
-    deleteDataRequests: DataDTO[]; // 삭제 데이터
-}
-
 // 함수 타입
 type ConfirmFunction = () => void;
 
@@ -148,4 +95,61 @@ interface JoinTable {
     tableName: string;
     pkColumnName: string;
     joinColumnDataType: string;
+}
+
+// 테이블 생성
+interface TableRequest {
+    dataBaseID: number;
+    name: string;
+    comment: string;
+    columns: RowState[];
+    tableHash: string | null;
+}
+interface RowState {
+    name: string;
+    dataType: string;
+    isPkActive: boolean;
+    isFkActive: boolean;
+    isUkActive: boolean;
+    isNotNullActive: boolean;
+    isJoinTableHash: string | null;
+    [key: string]: any;
+}
+
+// 테이블, 행, 데이터 Response 타입
+interface TableData {
+    id: number ;
+    name: string;
+    comment: string;
+    createTime: string;
+    tableHash: string;
+    tableInnerStructure: TableInnerStructure;
+}
+interface TableInnerStructure {
+    [key: string]: ColumnData[];
+}
+interface ColumnData {
+    id?: number | null;
+    data: string;
+    createTime: string;
+    columnID: number;
+    lineHash: string;
+    dataType: string;
+}
+
+// 데이터 추가, 수정, 삭제 Request 타입
+interface DataDTO {
+    id?: number | null;
+    columnID: number;
+    columnHash: string;
+    data: string;
+    columnLine: number;
+    dataType: string;
+}
+interface DataRequest {
+    tableID: number;
+    tableHash: string;
+    createDataRequests: DataDTO[]; // 생성 데이터
+    updateDataRequests: DataDTO[]; // 수정 데이터
+    deleteDataRequests: DataDTO[]; // 삭제 데이터
 }

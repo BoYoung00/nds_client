@@ -9,22 +9,23 @@ import {getJoinedTableData} from "../../../../services/api";
 
 // 모달 (메인)
 interface CreateDBProps {
+    setTables: React.Dispatch<React.SetStateAction<TableData[]>>;
     isOpenModal: boolean;
     onCloseModal(isOpenModal: boolean): void;
     dataBase: DataBaseEntity | null;
 }
 
-const CreateTable: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal, dataBase }) => {
+const CreateTable: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal, dataBase , setTables}) => {
     if (!isOpenModal) return null;
 
     return (
         <>
             <BackgroundModal
-                width={95}
-                height={70}
+                width={60}
+                height={75}
                 onClose={onCloseModal}
             >
-                <CreateTableForm dataBase={dataBase} />
+                <CreateTableForm dataBase={dataBase} setTables={setTables}/>
             </BackgroundModal>
         </>
     );
@@ -34,15 +35,21 @@ export default CreateTable;
 
 // 안에 내용 (상단)
 interface CreateTableFormProps {
+    setTables: React.Dispatch<React.SetStateAction<TableData[]>>;
     dataBase: DataBaseEntity | null;
 }
 
-export const CreateTableForm: React.FC<CreateTableFormProps> = ({dataBase}) => {
-    const { tableData, handleChange, handleSubmit, setColumns, errorMessage, setErrorMessage } = useCreateTable(dataBase);
-
-    const handleSetColumnData = (newData: RowState[]) => {
-        setColumns(newData);
-    };
+export const CreateTableForm: React.FC<CreateTableFormProps> = ({dataBase, setTables}) => {
+    const {
+        tableData,
+        handleChange,
+        handleSubmit,
+        setColumns,
+        errorMessage,
+        setErrorMessage,
+        successMessage,
+        setSuccessMessage,
+    } = useCreateTable(dataBase, setTables);
 
     return (
         <>
@@ -84,18 +91,24 @@ export const CreateTableForm: React.FC<CreateTableFormProps> = ({dataBase}) => {
                     <div className={styles.modal__form__group}>
                         <CreateTableColumn
                             dataBase={dataBase}
-                            handleSetColumnData={handleSetColumnData}
+                            handleSetColumnData={ (newData: RowState[]) => setColumns(newData) }
                         />
                     </div>
-                    <button className={styles.modal__form__submit} type="submit">테이블 생성</button>
+                    <button className={styles.modal__form__submit}>테이블 생성</button>
                 </form>
             </div>
 
-            {errorMessage && <Notification
+            { errorMessage && <Notification
                 onClose={() => setErrorMessage(null)}
                 type="error"
                 message={errorMessage}
-            />}
+            /> }
+
+            { successMessage && <Notification
+                onClose={() => setSuccessMessage(null)}
+                type="success"
+                message={successMessage}
+            /> }
         </>
     );
 };
@@ -118,9 +131,10 @@ const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ dataBase, handleS
     const fetchJoinTables = async (databaseID: number) => {
         try {
             const data = await getJoinedTableData(databaseID);
+            console.log("조인 테이블", data)
             setJoinTable(data);
         } catch (error) {
-            setErrorMessage('조인된 테이블 데이터를 가져오는 데 실패했습니다.');
+            setErrorMessage('조인 테이블 데이터를 가져오는 데 실패했습니다.');
         }
     };
 
@@ -156,7 +170,8 @@ const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ dataBase, handleS
                         {rows.map((row, index) => (
                             <TableRow
                                 joinTables={joinTables}
-                                setSelectedJoinTable={setSelectedJoinTableHash}
+                                selectedJoinTableHash={selectedJoinTableHash}
+                                setSelectedJoinTableHash={setSelectedJoinTableHash}
                                 key={index}
                                 index={index}
                                 row={row}
@@ -181,13 +196,14 @@ const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ dataBase, handleS
 // 테이블 컬럼 반복용
 interface TableRowProps {
     joinTables: JoinTable[];
-    setSelectedJoinTable: (selected: string) => void;
+    selectedJoinTableHash: string | null;
+    setSelectedJoinTableHash: (selected: string) => void;
     index: number;
     row: RowState;
     handleSelectChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, index: number) => void;
 }
 
-const TableRow: React.FC<TableRowProps> = ({ joinTables, setSelectedJoinTable, index, row, handleSelectChange }) => {
+const TableRow: React.FC<TableRowProps> = ({ joinTables, selectedJoinTableHash, setSelectedJoinTableHash, index, row, handleSelectChange }) => {
     const [showSearch, setShowSearch] = useState<boolean>(false);
 
     return (
@@ -247,28 +263,25 @@ const TableRow: React.FC<TableRowProps> = ({ joinTables, setSelectedJoinTable, i
             </td>
             <td className={styles.joinBox}>
                 <input
-                    style={{width: '10rem'}}
+                    style={{width: '90%'}}
                     type="text"
                     name="isJoinTableHash"
-                    value={row.isJoinTableHash ? row.isJoinTableHash : ''}
+                    value={selectedJoinTableHash ? selectedJoinTableHash : ''}
                     onChange={(e) => handleSelectChange(e, index)}
                     readOnly
                 />
 
-                <div className={styles.searchBox}>
-                    <span onClick={() => setShowSearch(!showSearch)}>
-                        검색
-                    </span>
+                <div className={styles.joinBox__searchButton} >
+                    <h5 onClick={() => setShowSearch(!showSearch)}>검색</h5>
                     <Search
                         title={"조인 테이블 검색"}
                         showSearch={showSearch}
                         setShowSearch={setShowSearch}
                         dataList={joinTables}
-                        handleSelectData={setSelectedJoinTable}
+                        handleSelectData={setSelectedJoinTableHash}
                         type={'joinTable'}
                     />
                 </div>
-
             </td>
         </tr>
     );

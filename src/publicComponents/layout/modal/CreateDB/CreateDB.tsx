@@ -17,7 +17,7 @@ const CreateDB: React.FC<CreateDBProps> = ({ setDatabases, isOpenModal, onCloseM
     return (
         <>
             <BackgroundModal
-                width={90}
+                width={60}
                 height={60}
                 onClose={onCloseModal}
             >

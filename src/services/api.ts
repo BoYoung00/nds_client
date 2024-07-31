@@ -21,6 +21,10 @@ export const createDataBase = async (name: string, comment: string) => {
         throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
     }
 };
+/*
+const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
+setErrorMessage(errorMessage);
+*/
 
 // 데이터베이스 리스트 불러오기
 export const getDataBasesForCurrentUser = async () => {
@@ -52,5 +56,24 @@ export const getJoinedTableData = async (databaseID: number) => {
     } catch (error) {
         console.error('조인된 테이블 데이터 조회 실패:', error);
         throw error;
+    }
+};
+
+// 테이블 생성
+export const tableStructure = async (tableRequest: TableRequest) => {
+    try {
+        const response = await client.post(`/api/tables`, tableRequest);
+        if (response.status === 200) {
+            return response.data; // 생성된 테이블 객체 반환
+        }
+        new Error(`${response.data.message}`)
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error)
+            throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
     }
 };

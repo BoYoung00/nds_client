@@ -22,7 +22,7 @@ const BackgroundModal: React.FC<BackgroundModalProps> = ({ width = 80, height = 
     };
 
     const modalContentStyle: React.CSSProperties = {
-        width: `${width}vmin`,
+        width: `${width}%`,
         height: `${height}%`,
         minWidth: '400px',
         minHeight: '600px',
