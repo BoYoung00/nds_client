@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from "./App.module.scss";
-import { Routes, Route, Navigate } from 'react-router-dom';
+import {Navigate, Route, Routes} from 'react-router-dom';
 import Main from "./pages/Main";
 import UserAuth from "./pages/UserAuth/UserAuth";
 import DataBase from './pages/DataBase/DataBase';
 import Header from "./publicComponents/layout/Header";
 
 const App: React.FC = () => {
-    const [user, setUser] = useState<string | null>(null);
+    const [token, setToken] = useState<string | null>(null);
     const [screenSize, setScreenSize] = useState({ width: window.screen.width, height: window.screen.height });
 
     useEffect(() => {
@@ -23,10 +23,9 @@ const App: React.FC = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            console.log("token",token)
-            setUser(token);
+            setToken(token);
         } else {
-            setUser(null);
+            setToken(null);
         }
     }, []);
 
@@ -44,9 +43,9 @@ const App: React.FC = () => {
 
     return (
         <div className={styles.app}>
-            {user ? (
+            {token ? (
                 <>
-                    <Header user={user} onLogout={() => setUser(null)} />
+                    <Header token={token} onLogout={() => setToken(null)} />
                     <div className={styles.app__content}>
                         <Routes>
                             <Route path='*' element={<Navigate to="/database" />} />

@@ -33,7 +33,7 @@ export const getDataBasesForCurrentUser = async () => {
     }
 };
 
-// 데이터베이스 ID를 통해 테이블 목록 가져오기
+// 테이블 목록 가져오기
 export const getTablesForDataBaseID = async (databaseID: number) => {
     try {
         const response = await client.get(`/api/tables/${databaseID}`);
@@ -44,10 +44,10 @@ export const getTablesForDataBaseID = async (databaseID: number) => {
     }
 };
 
-// 데이터베이스 ID와 테이블 ID를 통해 조인된 테이블 데이터 가져오기
-export const getJoinedTableData = async (databaseID: number, tableID: number) => {
+// 조인 테이블 데이터 가져오기
+export const getJoinedTableData = async (databaseID: number) => {
     try {
-        const response = await client.get(`/api/tables/join/${databaseID}/${tableID}`);
+        const response = await client.get(`/api/tables/join/${databaseID}`);
         return response.data; // 조인된 테이블 데이터 반환
     } catch (error) {
         console.error('조인된 테이블 데이터 조회 실패:', error);

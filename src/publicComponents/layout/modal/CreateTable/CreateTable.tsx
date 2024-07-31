@@ -4,6 +4,8 @@ import styles from './CreateTable.module.scss';
 import LineTitle from "../../../UI/LineTitle";
 import {useColumnData, useCreateTable, useRowState} from "./useCreateTable";
 import {Notification} from "../Notification";
+import Search from "../Search/Search";
+import {getJoinedTableData} from "../../../../services/api";
 
 // 모달 (메인)
 interface CreateDBProps {
@@ -36,10 +38,10 @@ interface CreateTableFormProps {
 }
 
 export const CreateTableForm: React.FC<CreateTableFormProps> = ({dataBase}) => {
-    const { tableData, handleChange, handleSubmit, setColumnData, errorMessage, setErrorMessage } = useCreateTable(dataBase);
+    const { tableData, handleChange, handleSubmit, setColumns, errorMessage, setErrorMessage } = useCreateTable(dataBase);
 
     const handleSetColumnData = (newData: RowState[]) => {
-        setColumnData(newData);
+        setColumns(newData);
     };
 
     return (
@@ -54,7 +56,6 @@ export const CreateTableForm: React.FC<CreateTableFormProps> = ({dataBase}) => {
                                 type="text"
                                 id="name"
                                 name="name"
-                                required
                                 onChange={handleChange}
                                 value={tableData.name}
                             />
@@ -81,7 +82,10 @@ export const CreateTableForm: React.FC<CreateTableFormProps> = ({dataBase}) => {
                         </section>
                     </div>
                     <div className={styles.modal__form__group}>
-                        <CreateTableColumn handleSetColumnData={handleSetColumnData}/>
+                        <CreateTableColumn
+                            dataBase={dataBase}
+                            handleSetColumnData={handleSetColumnData}
+                        />
                     </div>
                     <button className={styles.modal__form__submit} type="submit">테이블 생성</button>
                 </form>
@@ -98,12 +102,32 @@ export const CreateTableForm: React.FC<CreateTableFormProps> = ({dataBase}) => {
 
 // 테이블 컬럼
 interface CreateTableColumnProps {
+    dataBase: DataBaseEntity | null;
     handleSetColumnData: (newData: RowState[]) => void;
 }
 
-const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ handleSetColumnData }) => {
+const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ dataBase, handleSetColumnData }) => {
     const { rows, handleSelectChange, handleAddRow, handleRemoveRow } = useRowState();
-    useColumnData(rows, handleSetColumnData); // useEffect
+    useColumnData(rows, handleSetColumnData);
+
+    // 테이블 생성 조인 테이블 통신 연결하기
+    const [joinTables, setJoinTable] = useState<JoinTable[]>([]);
+    const [selectedJoinTableHash, setSelectedJoinTableHash] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    const fetchJoinTables = async (databaseID: number) => {
+        try {
+            const data = await getJoinedTableData(databaseID);
+            setJoinTable(data);
+        } catch (error) {
+            setErrorMessage('조인된 테이블 데이터를 가져오는 데 실패했습니다.');
+        }
+    };
+
+    useEffect(()=> {
+        if (dataBase?.id)
+            fetchJoinTables(dataBase.id)
+    }, [dataBase]);
 
     return (
         <>
@@ -111,8 +135,8 @@ const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ handleSetColumnDa
                 <section className={styles.createTableColumn__titleSection}>
                     <label>테이블 컬럼</label>
                     <div className={styles.createTableColumn__buttonBox}>
-                        <a onClick={handleAddRow}>+</a>
-                        <a onClick={() => handleRemoveRow(rows.length - 1)}>-</a>
+                        <span onClick={handleAddRow}>+</span>
+                        <span onClick={() => handleRemoveRow(rows.length - 1)}>-</span>
                     </div>
                 </section>
                 <section className={styles.createTableColumn__tableSection}>
@@ -131,6 +155,8 @@ const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ handleSetColumnDa
                         <tbody>
                         {rows.map((row, index) => (
                             <TableRow
+                                joinTables={joinTables}
+                                setSelectedJoinTable={setSelectedJoinTableHash}
                                 key={index}
                                 index={index}
                                 row={row}
@@ -141,26 +167,37 @@ const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ handleSetColumnDa
                     </table>
                 </section>
             </div>
+
+            {/*에러 모달*/}
+            { errorMessage && <Notification
+                onClose={() => setErrorMessage(null)}
+                type="error"
+                message={errorMessage}
+            /> }
         </>
     );
 };
 
 // 테이블 컬럼 반복용
 interface TableRowProps {
+    joinTables: JoinTable[];
+    setSelectedJoinTable: (selected: string) => void;
     index: number;
     row: RowState;
     handleSelectChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, index: number) => void;
 }
 
-const TableRow: React.FC<TableRowProps> = ({ index, row, handleSelectChange }) => {
+const TableRow: React.FC<TableRowProps> = ({ joinTables, setSelectedJoinTable, index, row, handleSelectChange }) => {
+    const [showSearch, setShowSearch] = useState<boolean>(false);
+
     return (
         <tr>
             <td>
                 <input
                     style={{border: 'none'}}
                     type="text"
-                    name="columnName"
-                    value={row.columnName}
+                    name="name"
+                    value={row.name}
                     onChange={(e) => handleSelectChange(e, index)}
                 />
             </td>
@@ -179,36 +216,60 @@ const TableRow: React.FC<TableRowProps> = ({ index, row, handleSelectChange }) =
             <td>
                 <input
                     type="checkbox"
-                    name="pk"
-                    checked={row.pk}
+                    name="isPkActive"
+                    checked={row.isPkActive}
                     onChange={(e) => handleSelectChange(e, index)}
                 />
             </td>
             <td>
                 <input
                     type="checkbox"
-                    name="fk"
-                    checked={row.fk}
+                    name="isFkActive"
+                    checked={row.isFkActive}
                     onChange={(e) => handleSelectChange(e, index)}
                 />
             </td>
             <td>
                 <input
                     type="checkbox"
-                    name="uk"
-                    checked={row.uk}
+                    name="isUkActive"
+                    checked={row.isUkActive}
                     onChange={(e) => handleSelectChange(e, index)}
                 />
             </td>
             <td>
                 <input
                     type="checkbox"
-                    name="isNotNull"
-                    checked={row.isNotNull}
+                    name="isNotNullActive"
+                    checked={row.isNotNullActive}
                     onChange={(e) => handleSelectChange(e, index)}
                 />
             </td>
-            <td>{/* 조인 나중에 넣을 예정... */}</td>
+            <td className={styles.joinBox}>
+                <input
+                    style={{width: '10rem'}}
+                    type="text"
+                    name="isJoinTableHash"
+                    value={row.isJoinTableHash ? row.isJoinTableHash : ''}
+                    onChange={(e) => handleSelectChange(e, index)}
+                    readOnly
+                />
+
+                <div className={styles.searchBox}>
+                    <span onClick={() => setShowSearch(!showSearch)}>
+                        검색
+                    </span>
+                    <Search
+                        title={"조인 테이블 검색"}
+                        showSearch={showSearch}
+                        setShowSearch={setShowSearch}
+                        dataList={joinTables}
+                        handleSelectData={setSelectedJoinTable}
+                        type={'joinTable'}
+                    />
+                </div>
+
+            </td>
         </tr>
     );
 };

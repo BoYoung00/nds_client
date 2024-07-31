@@ -81,14 +81,13 @@ interface TextData {
 
 // 테이블 생성 Column 통신 요청용 타입
 interface RowState {
-    columnName: string;
+    name: string;
     dataType: string;
-    pk: boolean;
-    fk: boolean;
-    uk: boolean;
-    isNotNull: boolean;
-    joinTable: string | null;
-    joinColumn : string | null;
+    isPkActive: boolean;
+    isFkActive: boolean;
+    isUkActive: boolean;
+    isNotNullActive: boolean;
+    isJoinTableHash: string | null;
     [key: string]: any;
 }
 
@@ -141,4 +140,12 @@ interface DataBaseEntity {
     id?: number | null;
     name: string;
     comment: string;
+}
+
+// 테이블 생성 조인 테이블
+interface JoinTable {
+    id: number;
+    tableName: string;
+    pkColumnName: string;
+    joinColumnDataType: string;
 }

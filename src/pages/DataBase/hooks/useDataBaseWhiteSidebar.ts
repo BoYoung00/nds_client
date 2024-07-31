@@ -34,10 +34,10 @@ export const useDataBaseWhiteSidebar = (setSelectedTable: (table: TableData | nu
     }
 
     // 테이블 리스트 통신
-    const fetchTables = async (parentsDataBase: DataBaseEntity) => {
+    const fetchTables = async (databaseID: number) => {
         try {
             setLoading(true);
-            const data = await getTablesForDataBaseID(parentsDataBase.id!!);
+            const data = await getTablesForDataBaseID(databaseID);
             console.log("테이블 리스트",data)
             setTables(data);
         } catch (error) {
@@ -49,7 +49,7 @@ export const useDataBaseWhiteSidebar = (setSelectedTable: (table: TableData | nu
 
     useEffect(() => {
         if (parentsDataBase)
-            fetchTables(parentsDataBase)
+            fetchTables(parentsDataBase.id!)
     }, [parentsDataBase]);
 
     useEffect(() => {

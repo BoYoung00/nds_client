@@ -6,13 +6,24 @@ import { extractUserFromEmail } from '../../../utils/utils';
 import {useHeader} from "./useHeader";
 
 interface HeaderProps {
-    user: string | null;
+    token: string;
     onLogout: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
-    const { selectedIndex, showMenu, toggleMenu, menuItems } = useHeader(); // Custom Hook 사용
+const Header: React.FC<HeaderProps> = ({ token, onLogout }) => {
+    const { selectedIndex, showMenu, toggleMenu, menuItems } = useHeader();
+    const [email, setEmail] = useState<string | null>(null);
 
+    const copyTokenToClipboard = (token: string) => {
+        navigator.clipboard.writeText(token)
+            .catch((err) => {
+                console.error('토큰 복사 실패:', err);
+            });
+    };
+
+    useEffect(()=> {
+        setEmail(localStorage.getItem('email'));
+    }, [token])
 
     return (
         <header className={styles.header}>
@@ -30,14 +41,17 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
                 ))}
             </ul>
 
-            {user && (
+            {token && email && (
                 <div className={styles.header__userInfo} onClick={toggleMenu}>
-                    {extractUserFromEmail(user)}
+                    {email}
                     {showMenu && (
                         <div className={styles.dropdown}>
                             <Link to="/" onClick={onLogout}>
                                 로그아웃
                             </Link>
+                            <a onClick={() => copyTokenToClipboard(token)}>
+                                토큰 복사
+                            </a>
                         </div>
                     )}
                 </div>

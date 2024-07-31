@@ -56,6 +56,7 @@ export const useDataBaseBlueSidebar = (setSelectedDataBase: (dataBase: DataBaseE
 
     return {
         databases,
+        setDatabases,
         selectedId,
         modals: {
             isOpenCreateDBModal,

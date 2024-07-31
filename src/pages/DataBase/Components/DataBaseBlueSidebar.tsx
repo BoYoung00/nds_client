@@ -12,6 +12,7 @@ interface DataBaseBlueSidebarProps {
 const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ setSelectedDataBase }) => {
     const {
         databases,
+        setDatabases,
         selectedId,
         modals: {
             isOpenCreateDBModal,
@@ -64,7 +65,7 @@ const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ setSelectedDa
 
             {/* DB 생성 모달 */}
             <CreateDB
-                databases={databases}
+                setDatabases={setDatabases}
                 isOpenModal={isOpenCreateDBModal}
                 onCloseModal={() => setIsOpenCreateDBModal(false)}
             />

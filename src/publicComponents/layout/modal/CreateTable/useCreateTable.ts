@@ -2,7 +2,7 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 
 // 테이블 생성 메인
 export const useCreateTable = (dataBase: DataBaseEntity | null) => {
-    const [columnData , setColumnData] = useState<RowState[]>([])
+    const [columns , setColumns] = useState<RowState[]>([])
     const [tableData, setTableData] = useState({
         name: '',
         comment: '',
@@ -24,18 +24,16 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
         let hasEmptyColumnName = false;
         let hasDuplicates = false;
 
-        columnData.forEach(row => {
+        columns.forEach(row => {
             // columnName이 비어 있는지 체크
-            if (row.columnName.trim() === '') {
+            if (row.name.trim() === '')
                 hasEmptyColumnName = true;
-            }
 
             // columnName 중복을 체크
-            if (columnNameSet.has(row.columnName)) {
+            if (columnNameSet.has(row.name))
                 hasDuplicates = true;
-            } else {
-                columnNameSet.add(row.columnName);
-            }
+            else
+                columnNameSet.add(row.name);
         });
 
         if (hasDuplicates) {
@@ -56,11 +54,13 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
         const validationResult = validateData();
         if (validationResult.isError) return;
 
+        // 통신 데이터 만들기
         let obj = {
-            tableName : tableData.name,
-            comment : tableData.comment,
-            columnList : columnData,
             dataBaseID : dataBase!!.id,
+            name : tableData.name,
+            comment : tableData.comment,
+            columns : columns,
+            tableHash : null,
         }
         
         // 통신 로직 넣기
@@ -68,10 +68,10 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
     };
 
     return {
-        tableData: tableData,
+        tableData,
         handleChange,
         handleSubmit,
-        setColumnData,
+        setColumns,
         errorMessage,
         setErrorMessage,
     };
@@ -79,14 +79,13 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
 
 // 테이블 컬럼 생성 부분
 const initialRowState: RowState = {
-    columnName: '',
+    name: '',
     dataType: 'TEXT',
-    pk: false,
-    fk: false,
-    uk: false,
-    isNotNull: false,
-    joinTable: null,
-    joinColumn: null,
+    isPkActive: false,
+    isFkActive: false,
+    isUkActive: false,
+    isNotNullActive: false,
+    isJoinTableHash: null,
 };
 
 export const useRowState = () => {
@@ -101,20 +100,18 @@ export const useRowState = () => {
         } else {
             updatedRows[index][name] = value;
         }
-
         setRows(updatedRows);
     };
 
     const handleAddRow = () => {
         const newRow: RowState = {
-            columnName: '',
+            name: '',
             dataType: 'TEXT',
-            pk: false,
-            fk: false,
-            uk: false,
-            isNotNull: false,
-            joinTable: null,
-            joinColumn: null,
+            isPkActive: false,
+            isFkActive: false,
+            isUkActive: false,
+            isNotNullActive: false,
+            isJoinTableHash: null,
         };
         setRows([...rows, newRow]);
     };

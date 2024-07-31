@@ -1,36 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, {useState} from 'react';
 import styles from './Search.module.scss';
 import searchIcon from '../../../../assets/images/search.png';
 
 // 임시 데이터
-interface Temp {
-    tableName: string;
-    pkColumnName: string;
-    joinColumnDataType: string;
-}
-const tempList: Temp[] = [
+const tempList: JoinTable[] = [
     {
+        id: 1,
         tableName: 'Users',
         pkColumnName: 'user_id',
         joinColumnDataType: 'INT'
     },
     {
+        id: 2,
         tableName: 'Orders',
         pkColumnName: 'order_id',
         joinColumnDataType: 'VARCHAR'
     },
     {
+        id: 3,
         tableName: 'Products',
         pkColumnName: 'product_id',
         joinColumnDataType: 'UUID'
     },
     {
+        id: 4,
         tableName: 'Orders2',
         pkColumnName: 'order_id2',
         joinColumnDataType: 'VARCHAR'
     },
     {
+        id: 5,
         tableName: 'Orders3',
         pkColumnName: 'order_id3',
         joinColumnDataType: 'VARCHAR'
@@ -39,23 +38,15 @@ const tempList: Temp[] = [
 
 interface SearchModalProps {
     title: string;
-    handleSelectData: (item: any | null) => void;
+    handleSelectData: (item: any) => void;
     showSearch: boolean;
     setShowSearch: (show: boolean) => void;
+    dataList: any[];
+    type: 'joinTable' | 'joinData' | 'media';
 }
 
-const Search: React.FC<SearchModalProps> = ({ handleSelectData, showSearch, setShowSearch, title }) => {
-    const { dataBaseID } = useParams<{ dataBaseID: string }>();
-    const [joinData, setJoinData] = useState<any[] | null>(tempList);
+const Search: React.FC<SearchModalProps> = ({ handleSelectData, showSearch, setShowSearch, title , dataList, type}) => {
     const [searchTerm, setSearchTerm] = useState<string>(''); // 검색어 상태 추가
-
-    const fetchSearchDataData = async () => {
-        // 데이터 가져오는 코드 (현재는 tempList 사용)
-    };
-
-    useEffect(() => {
-        fetchSearchDataData();
-    }, [dataBaseID]);
 
     const handleRowClick = (item: any | null) => {
         handleSelectData(item);
@@ -66,8 +57,22 @@ const Search: React.FC<SearchModalProps> = ({ handleSelectData, showSearch, setS
         setSearchTerm(event.target.value);
     };
 
-    // 검색어를 기반으로 joinData 필터링
-    const filteredData = joinData?.filter(item =>
+    //joinTable 검색 필터링
+    const joinTableFilter = dataList?.filter(item =>
+        item.tableName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.pkColumnName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.joinColumnDataType.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    //joinData 검색 필터링
+    const joinDataFilter = dataList?.filter(item =>
+        item.tableName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.pkColumnName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.joinColumnDataType.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    //mediaData 검색 필터링
+    const mediaDataFilter = dataList?.filter(item =>
         item.tableName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.pkColumnName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.joinColumnDataType.toLowerCase().includes(searchTerm.toLowerCase())
@@ -95,20 +100,22 @@ const Search: React.FC<SearchModalProps> = ({ handleSelectData, showSearch, setS
                 </div>
             </section>
             <section className={styles.search__listBox}>
-                <div>
-                    {filteredData && filteredData.length > 0 ? (
-                        filteredData.map((item, index) => (
+                {type === 'joinTable' &&
+                    <div>
+                    {joinTableFilter && joinTableFilter.length > 0 ? (
+                        joinTableFilter.map((item, index) => (
                             <p key={index}>
                                 <span onClick={() => handleRowClick(item)}>
                                     {item.tableName} / {item.pkColumnName} / {item.joinColumnDataType}
                                 </span>
-                                {index !== filteredData.length - 1 && <hr style={{ background: '#bdbdbd', height: '1px', border: 'none' }} />}
+                                {index !== joinTableFilter.length - 1 && <hr style={{ background: '#bdbdbd', height: '1px', border: 'none' }} />}
                             </p>
                         ))
                     ) : (
                         <p>데이터가 없습니다.</p>
                     )}
-                </div>
+                    </div>
+                }
             </section>
         </div>
     );

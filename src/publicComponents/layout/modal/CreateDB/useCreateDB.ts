@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import { createDataBase } from "../../../../services/api";
 
 // DataBaseData 타입 정의
@@ -7,7 +7,7 @@ interface DataBaseData {
     comment: string;
 }
 
-export const useDatabaseForm = (databases: DataBaseEntity[]) => {
+export const useDatabaseForm = (setDatabases: React.Dispatch<React.SetStateAction<DataBaseEntity[]>>) => {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -34,14 +34,18 @@ export const useDatabaseForm = (databases: DataBaseEntity[]) => {
                 ...prevState,
                 id: createdDataBase.id,
             }));
-
-            databases.push(dataBaseData); // set으로 수정해야 함
-            setSuccessMessage("데이터베이스 생성에 성공하셨습니다.");
         } catch (error) {
             const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
             setErrorMessage(errorMessage);
         }
     };
+
+    useEffect(() => {
+        if (dataBaseData.id !== null) {
+            setDatabases(prevDatabases => [...prevDatabases, dataBaseData]);
+            setSuccessMessage("데이터베이스 생성에 성공하셨습니다.");
+        }
+    }, [dataBaseData.id]);
 
     return {
         dataBaseData,
