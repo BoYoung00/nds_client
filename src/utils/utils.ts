@@ -1,9 +1,11 @@
 import {useCallback} from "react";
 
+// 이메일
 export function extractUserFromEmail(email: string): string {
     return email.split("@")[0];
 }
 
+// 날짜
 export function formatDate(inputDate: string) {
     const date = new Date(inputDate);
     const year = date.getUTCFullYear();
@@ -17,19 +19,39 @@ export function formatDate(inputDate: string) {
 
 // 컬럼 Key 값 자르기
 export const findColumnInfo = (columnKey: string) => {
-    const matches = columnKey.match(/ColumnResponse\(id=(\d+), name=([\w\s\uAC00-\uD7AF]+), type=(\w+), tableID=(\d+), columnHash=([\w\d]+)\)/);
+    // 정규 표현식을 업데이트하여 새로운 데이터 형식에 맞게 처리
+    const matches = columnKey.match(/ColumnResponse\(id=(\d+), name=([\w\s\uAC00-\uD7AF]+), type=(\w+), columnHash=([\w\d]+), tableID=(\d+), isPk=(true|false), isUk=(true|false), isFk=(true|false), isNotNull=(true|false), joinTableHash=(\w*|null)\)/);
+
     if (matches) {
         return {
             columnID: parseInt(matches[1]),
             name: matches[2],
             type: matches[3],
-            tableID: parseInt(matches[4]),
-            columnHash: matches[5]
+            columnHash: matches[4],
+            tableID: parseInt(matches[5]),
+            isPk: matches[6] === 'true',
+            isUk: matches[7] === 'true',
+            isFk: matches[8] === 'true',
+            isNotNull: matches[9] === 'true',
+            joinTableHash: matches[10] === 'null' ? null : matches[10]
         };
     }
 
-    return { columnID: 0, name: "", type: "", tableID: 0, columnHash: "" }; // Default values
+    // 기본 값으로 반환
+    return {
+        columnID: 0,
+        name: "",
+        type: "",
+        columnHash: "",
+        tableID: 0,
+        isPk: false,
+        isUk: false,
+        isFk: false,
+        isNotNull: false,
+        joinTableHash: null
+    };
 };
+
 
 // 함수 훅
 export function useConfirm(onConfirm: () => void | null) {

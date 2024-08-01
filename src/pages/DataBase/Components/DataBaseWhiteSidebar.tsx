@@ -6,14 +6,14 @@ import {CreateTable} from "../../../publicComponents/layout/modal/CreateTable";
 import {useDataBaseWhiteSidebar} from "../hooks/useDataBaseWhiteSidebar";
 
 interface DataBaseWhiteSidebarProps {
-    setSelectedTable: (table: TableData | null) => void;
+    tables: TableData[];
+    setTables: React.Dispatch<React.SetStateAction<TableData[]>>;
+    setSelectedTable: React.Dispatch<React.SetStateAction<TableData | null>>;
     parentsDataBase: DataBaseEntity | null;
 }
 
-const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({setSelectedTable, parentsDataBase }) => {
+const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({tables, setTables, setSelectedTable, parentsDataBase }) => {
     const {
-        tables,
-        setTables,
         selectedId,
         isOpenCreateTableModal,
         setIsOpenCreateTableModal,
@@ -24,7 +24,7 @@ const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({setSelectedT
         onSelected,
         handleQuery,
         handleDelete
-    } = useDataBaseWhiteSidebar(setSelectedTable, parentsDataBase);
+    } = useDataBaseWhiteSidebar(setSelectedTable, tables);
 
     return (
         <>
@@ -73,11 +73,11 @@ const DataBaseWhiteSidebar: React.FC<DataBaseWhiteSidebarProps> = ({setSelectedT
             />
 
             {/* 오류 모달 */}
-            {errorMessage && <Notification
+            { errorMessage && <Notification
                 onClose={() => setErrorMessage(null)}
                 type="error"
                 message={errorMessage}
-            />}
+            /> }
         </>
     );
 };

@@ -1,10 +1,9 @@
-import {useEffect, useState} from 'react';
-import {getTablesForDataBaseID} from "../../../services/api";
+import React, {useEffect, useState} from 'react';
 
-export const useDataBaseWhiteSidebar = (setSelectedTable: (table: TableData | null) => void, parentsDataBase: DataBaseEntity | null) => {
-    const [loading, setLoading] = useState<boolean>(false);
-
-    const [tables, setTables] = useState<TableData[]>([]);
+export function useDataBaseWhiteSidebar(
+    setSelectedTable: React.Dispatch<React.SetStateAction<TableData | null>>,
+    tables: TableData[],
+) {
     const [selectedId, setSelectedId] = useState<number>(-1);
 
     const [isOpenCreateTableModal, setIsOpenCreateTableModal] = useState<boolean>(false);
@@ -33,25 +32,6 @@ export const useDataBaseWhiteSidebar = (setSelectedTable: (table: TableData | nu
         }
     }
 
-    // 테이블 리스트 통신
-    const fetchTables = async (databaseID: number) => {
-        try {
-            setLoading(true);
-            const data = await getTablesForDataBaseID(databaseID);
-            console.log("테이블 리스트",data)
-            setTables(data);
-        } catch (error) {
-            setErrorMessage('테이블 목록을 가져오는 데 실패했습니다.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (parentsDataBase)
-            fetchTables(parentsDataBase.id!)
-    }, [parentsDataBase]);
-
     useEffect(() => {
         if (selectedId !== -1) {
             const selectedTable = tables.find(table => table.id === selectedId) || null;
@@ -60,8 +40,6 @@ export const useDataBaseWhiteSidebar = (setSelectedTable: (table: TableData | nu
     }, [selectedId, tables, setSelectedTable]);
 
     return {
-        tables,
-        setTables,
         selectedId,
         isOpenCreateTableModal,
         setIsOpenCreateTableModal,
@@ -73,4 +51,4 @@ export const useDataBaseWhiteSidebar = (setSelectedTable: (table: TableData | nu
         handleQuery,
         handleDelete
     };
-};
+}

@@ -77,3 +77,25 @@ export const tableStructure = async (tableRequest: TableRequest) => {
         throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
     }
 };
+
+// 테이블 데이터 추가, 수정, 삭제
+export const createData = async (dataRequest: DataRequest) => {
+    try {
+        console.log("전송 데이터", dataRequest)
+        const response = await client.post('/api/data', dataRequest);
+        if (response.status === 200) {
+            return response.data; // 성공적으로 생성된 테이블 객체 반환
+        }
+        new Error(`${response.data.message}`)
+    } catch (error) {
+        // Axios 오류인 경우
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        // 일반 Error의 경우
+        if (error instanceof Error) throw new Error(error.message);
+        // 알 수 없는 오류의 경우
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};

@@ -11,6 +11,8 @@ import QueryTab from "./Components/QueryTab";
 import LikeTab from "./Components/LikeTab";
 import ExcelTab from "./Components/ExcelTab";
 import ResourceTab from "./Components/ResourceTab";
+import {getTablesForDataBaseID} from "../../services/api";
+import {Notification} from "../../publicComponents/layout/modal/Notification";
 
 // 데이터베이스 예시 데이터
 const dataBaseEntities: DataBaseEntity[] = [
@@ -173,12 +175,35 @@ const tableData: TableData[] = [
 const DataBase:React.FC = () => {
     const [selectedTab, setSelectedTab] = useState(0);
     const [selectedDataBase, setSelectedDataBase] = useState<DataBaseEntity | null>(null);
+    const [tables, setTables] = useState<TableData[]>([]);
     const [selectedTable, setSelectedTable] = useState<TableData | null>(null);
+
+    const [loading, setLoading] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    // 테이블 리스트 통신
+    const fetchTables = async (databaseID: number) => {
+        try {
+            setLoading(true);
+            const data = await getTablesForDataBaseID(databaseID);
+            console.log("테이블 리스트", data)
+            setTables(data);
+        } catch (error) {
+            setErrorMessage('테이블 목록을 가져오는 데 실패했습니다.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (selectedDataBase)
+            fetchTables(selectedDataBase.id!)
+    }, [selectedDataBase]);
 
     const renderTabContent = () => {
         switch (selectedTab) {
             case 0:
-                return <DataTab selectedTable={selectedTable} />;
+                return <DataTab selectedTable={selectedTable} setTables={setTables}/>;
             case 1:
                 return <LikeTab selectedTable={selectedTable} />;
             case 2:
@@ -203,6 +228,8 @@ const DataBase:React.FC = () => {
                         setSelectedDataBase={setSelectedDataBase}
                     />
                     <DataBaseWhiteSidebar
+                        tables={tables}
+                        setTables={setTables}
                         setSelectedTable={setSelectedTable}
                         parentsDataBase={selectedDataBase}
                     />
@@ -214,6 +241,13 @@ const DataBase:React.FC = () => {
                     }
                 </main>
             </div>
+
+            {/* 오류 모달 */}
+            { errorMessage && <Notification
+                onClose={() => setErrorMessage(null)}
+                type="error"
+                message={errorMessage}
+            /> }
         </>
     );
 };

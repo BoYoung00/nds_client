@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, {useRef} from 'react';
 import styles from '../DataBase.module.scss';
 import refresh from '../../../assets/images/refresh.png';
 import addData from '../../../assets/images/addData.png';
@@ -6,26 +6,23 @@ import deleteData from '../../../assets/images/deleteData.png';
 import save from '../../../assets/images/save.png';
 import updateSave from '../../../assets/images/updateSave.png';
 import search from '../../../assets/images/search.png';
-import { Notification } from '../../../publicComponents/layout/modal/Notification';
-import { useDataTab } from "../hooks/useDataTab";
+import {Notification} from '../../../publicComponents/layout/modal/Notification';
+import {useAutoColumnWidth, useDataTab} from "../hooks/useDataTab";
 
 interface DataTabProps {
+    setTables: React.Dispatch<React.SetStateAction<TableData[]>>;
     selectedTable: TableData | null;
 }
 
-const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
+const DataTab: React.FC<DataTabProps> = ({ setTables, selectedTable }) => {
     const {
         hooks: {
             tableStructure,
             selectedRow,
             setSelectedRow,
             createDataList,
-            setCreateDataList,
             updateDataList,
-            setUpdateDataList,
             deleteDataList,
-            setDeleteDataList,
-            setTableStructure
         },
         handlers: {
             handleAddData,
@@ -33,43 +30,22 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
             handleSave,
             handleInputChange,
             handleInputBlur,
-            handleRefreshClick
+            handleRefreshClick,
+            handleResetTableData
         },
         modals: {
             questionMessage,
             setQuestionMessage,
             errorMessage,
             setErrorMessage,
+            successMessage,
+            setSuccessMessage,
         }
-    } = useDataTab(selectedTable);
+    } = useDataTab(selectedTable, setTables);
 
+    // input text 안의 값에 따라 너비 변경
     const inputRefs = useRef<{ [key: string]: HTMLInputElement }>({});
-
-    useEffect(() => {
-        const columnWidths: { [key: string]: number } = {};
-
-        Object.values(inputRefs.current).forEach(input => {
-            if (input) {
-                const columnKey = input.dataset.columnKey as string;
-                if (columnKey) {
-                    input.style.width = 'auto';
-                    const inputWidth = input.scrollWidth;
-                    if (!columnWidths[columnKey] || inputWidth > columnWidths[columnKey]) {
-                        columnWidths[columnKey] = inputWidth;
-                    }
-                }
-            }
-        });
-
-        Object.values(inputRefs.current).forEach(input => {
-            if (input) {
-                const columnKey = input.dataset.columnKey as string;
-                if (columnKey) {
-                    input.style.width = `${columnWidths[columnKey] || 100}px`;
-                }
-            }
-        });
-    }, [createDataList, updateDataList, deleteDataList]);
+    useAutoColumnWidth([createDataList, updateDataList, deleteDataList], inputRefs);
 
     if (!tableStructure) return null;
     const columns = tableStructure ? Object.keys(tableStructure) : [];
@@ -156,25 +132,26 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
             </div>
 
             {/*새로고침 모달*/}
-            {questionMessage && <Notification
+            { questionMessage && <Notification
                 onClose={() => setQuestionMessage(null)}
                 type="question"
                 message={questionMessage}
-                onConfirm={() => {
-                    setTableStructure(selectedTable?.tableInnerStructure);
-                    setCreateDataList([]);
-                    setUpdateDataList([]);
-                    setDeleteDataList([]);
-                    setSelectedRow(null);
-                }}
-            />}
+                onConfirm={handleResetTableData}
+            /> }
 
             {/*에러 모달*/}
-            {errorMessage && <Notification
+            { errorMessage && <Notification
                 onClose={() => setErrorMessage(null)}
                 type="error"
                 message={errorMessage}
-            />}
+            /> }
+
+            {/*성공 모달*/}
+            { successMessage && <Notification
+                onClose={() => setSuccessMessage(null)}
+                type="success"
+                message={successMessage}
+            /> }
         </>
     );
 };

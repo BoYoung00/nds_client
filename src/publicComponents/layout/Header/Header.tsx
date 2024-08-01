@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
 import styles from './Header.module.scss';
 import logo from '../../../assets/images/logo.png';
-import { extractUserFromEmail } from '../../../utils/utils';
 import {useHeader} from "./useHeader";
 
 interface HeaderProps {

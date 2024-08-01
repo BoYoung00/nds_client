@@ -1,5 +1,6 @@
-import {useEffect, useState} from 'react';
-import { findColumnInfo } from "../../../utils/utils";
+import React, {RefObject, useEffect, useState} from 'react';
+import {findColumnInfo} from "../../../utils/utils";
+import {createData} from "../../../services/api";
 
 const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
     const { columnID, type, columnHash } = findColumnInfo(columnKey);
@@ -13,7 +14,10 @@ const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
     };
 };
 
-export function useDataTab(selectedTable: TableData | null) {
+export function useDataTab(
+    selectedTable: TableData | null,
+    setTables: React.Dispatch<React.SetStateAction<TableData[]>>
+) {
     const [tableStructure, setTableStructure] = useState<TableInnerStructure | undefined>(undefined);
     const [editingCell, setEditingCell] = useState<{ columnKey: string; rowIndex: number } | null>(null);
     const [editedValue, setEditedValue] = useState<string>('');
@@ -30,8 +34,9 @@ export function useDataTab(selectedTable: TableData | null) {
     const [questionMessage, setQuestionMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+    // 다른 테이블 선택 시마다 초기화
     useEffect(() => {
-        setTableStructure(selectedTable?.tableInnerStructure);
+        handleResetTableData();
     }, [selectedTable])
 
     // 저장 (통신)
@@ -45,24 +50,48 @@ export function useDataTab(selectedTable: TableData | null) {
             updateDataRequests: updateDataList,
             deleteDataRequests: deleteDataList
         };
-
         console.log("requestData (SAVE)", requestData);
 
-        // 예제
-        // try {
-        //     await post('/url', { requestData });
-        //     setIsSuccessOpen(true);
-        //     setMessage('성공');
-        // } catch (error) {
-        //     setIsErrorOpen(true);
-        //     setMessage('실패');
-        // }
+        try {
+            const createdTableData = await createData(requestData);
+            console.log(createdTableData)
+            setSuccessMessage('데이터 저장에 성공하셨습니다.');
+            // 서버 수정하면 수정하기
+            await updateTable(createdTableData.id, createdTableData);
+            await handleResetTableData();
+        } catch (error) {
+            const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
+            setErrorMessage(errorMessage);
+        }
+    };
+
+    // 기존 테이블 리스트 업데이트
+    const updateTable = (id: number, updatedData: Partial<TableData>) => {
+        setTables(prevTables =>
+            prevTables.map(table =>
+                table.id === id
+                    ? { ...table, ...updatedData }
+                    : table
+            )
+        );
     };
 
     // 새로고침
     const handleRefreshClick = () => {
         setQuestionMessage("새로고침을 하시겠습니까?");
     };
+
+    // 리셋 함수
+    const handleResetTableData = () => {
+        if (selectedTable) {
+            setTableStructure(selectedTable.tableInnerStructure);
+            setCreateDataList([]);
+            setUpdateDataList([]);
+            setDeleteDataList([]);
+            setSelectedRow(null);
+            setCreateRowLine(0);
+        }
+    }
 
     // 행 추가
     const handleAddData = () => {
@@ -179,25 +208,18 @@ export function useDataTab(selectedTable: TableData | null) {
                     newData
                 ]);
             }
-
             setEditingCell(null);
         }
     };
 
     return {
         hooks: {
-            editingCell,
-            editedValue,
+            tableStructure,
             selectedRow,
             setSelectedRow,
-            tableStructure,
-            setTableStructure,
             createDataList,
-            setCreateDataList,
             updateDataList,
-            setUpdateDataList,
             deleteDataList,
-            setDeleteDataList,
         },
         handlers: {
             handleAddData,
@@ -205,7 +227,8 @@ export function useDataTab(selectedTable: TableData | null) {
             handleSave,
             handleInputChange,
             handleInputBlur,
-            handleRefreshClick
+            handleRefreshClick,
+            handleResetTableData
         },
         modals: {
             successMessage,
@@ -217,3 +240,39 @@ export function useDataTab(selectedTable: TableData | null) {
         }
     };
 }
+
+export function useAutoColumnWidth(
+    dependencies: any[],
+    inputRefs: RefObject<{ [key: string]: HTMLInputElement }>
+) {
+    useEffect(() => {
+        const columnWidths: { [key: string]: number } = {};
+
+        // inputRefs.current가 null이 아닌 경우에만 처리
+        if (inputRefs.current) {
+            Object.values(inputRefs.current).forEach(input => {
+                if (input) {
+                    const columnKey = input.dataset.columnKey as string;
+                    if (columnKey) {
+                        input.style.width = 'auto';
+                        const inputWidth = input.scrollWidth;
+                        if (!columnWidths[columnKey] || inputWidth > columnWidths[columnKey]) {
+                            columnWidths[columnKey] = inputWidth;
+                        }
+                    }
+                }
+            });
+
+            Object.values(inputRefs.current).forEach(input => {
+                if (input) {
+                    const columnKey = input.dataset.columnKey as string;
+                    if (columnKey) {
+                        input.style.width = `${columnWidths[columnKey] || 100}px`;
+                    }
+                }
+            });
+        }
+    }, dependencies);
+}
+
+
