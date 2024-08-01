@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { findColumnInfo } from "../../../utils/utils";
 
 const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
@@ -14,7 +14,7 @@ const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
 };
 
 export function useDataTab(selectedTable: TableData | null) {
-    const [tableStructure, setTableStructure] = useState<TableInnerStructure | undefined>(selectedTable?.tableInnerStructure);
+    const [tableStructure, setTableStructure] = useState<TableInnerStructure | undefined>(undefined);
     const [editingCell, setEditingCell] = useState<{ columnKey: string; rowIndex: number } | null>(null);
     const [editedValue, setEditedValue] = useState<string>('');
     const [selectedRow, setSelectedRow] = useState<number | null>(null);
@@ -29,6 +29,10 @@ export function useDataTab(selectedTable: TableData | null) {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [questionMessage, setQuestionMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    useEffect(() => {
+        setTableStructure(selectedTable?.tableInnerStructure);
+    }, [selectedTable])
 
     // 저장 (통신)
     const handleSave = async () => {

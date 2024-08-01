@@ -17,7 +17,7 @@ export function formatDate(inputDate: string) {
 
 // 컬럼 Key 값 자르기
 export const findColumnInfo = (columnKey: string) => {
-    const matches = columnKey.match(/ColumnResponse\(id=(\d+), name=([\w\s]+), type=(\w+), tableID=(\d+), columnHash=([\w\d]+)\)/);
+    const matches = columnKey.match(/ColumnResponse\(id=(\d+), name=([\w\s\uAC00-\uD7AF]+), type=(\w+), tableID=(\d+), columnHash=([\w\d]+)\)/);
     if (matches) {
         return {
             columnID: parseInt(matches[1]),

@@ -92,9 +92,21 @@ interface DataBaseEntity {
 // 테이블 생성 조인 테이블
 interface JoinTable {
     id: number;
-    tableName: string;
-    pkColumnName: string;
-    joinColumnDataType: string;
+    name: string;
+    tableHash: string;
+    pkColumn: ColumnResponse;
+}
+interface ColumnResponse {
+    id: number;
+    name: string;
+    type: string;
+    columnHash: string;
+    tableID: number;
+    isPk: boolean;
+    isUk: boolean;
+    isFk: boolean;
+    isNotNull: boolean;
+    joinTableHash?: string;
 }
 
 // 테이블 생성

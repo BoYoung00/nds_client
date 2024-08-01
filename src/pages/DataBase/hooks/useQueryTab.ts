@@ -9,14 +9,15 @@ export function useQueryTab(selectedTable: TableData | null, activeTab: string) 
                 // 행 구하기
                 let numRows = 0;
                 const columns = Object.entries(table.tableInnerStructure).map(([key, values]) => {
-                    const firstRow = values[0];
+                    const firstRow = values.length > 0 ? values[0] : { dataType: '', data: '' };
                     numRows = values.length;
                     return {
-                        name: key.match(/name=(\w+)/)?.[1] ?? '',
+                        name: key.match(/name=([\w가-힣]+)/)?.[1] ?? '',
                         dataType: firstRow.dataType,
                         value: firstRow.data
                     };
                 });
+
                 const columnNames = columns.map(col => col.name).join(', ');
 
                 // 데이터 구하기
@@ -24,14 +25,21 @@ export function useQueryTab(selectedTable: TableData | null, activeTab: string) 
                 for (let i = 0; i < numRows; i++) {
                     const data: string[] = [];
                     Object.entries(table.tableInnerStructure).map(([key, values]) => {
-                        if (values[i].dataType === 'TEXT' || values[i].dataType === 'MediaFile' || values[i].dataType === 'JOIN_Column')
-                            data.push(`'${values[i].data}'`);
-                        else
-                            data.push(values[i].data);
+                        if (values[i]) {
+                            if (values[i].dataType === 'TEXT' || values[i].dataType === 'MediaFile' || values[i].dataType === 'JOIN_Column')
+                                data.push(`'${values[i].data}'`);
+                            else
+                                data.push(values[i].data);
+                        } else {
+                            data.push('');
+                        }
                     });
                     rows.push(data.join(', '));
-                };
+                }
 
+                if (rows.length === 0) {
+                    return '';
+                }
                 return rows.map(row =>
                     `INSERT INTO ${table.name} (${columnNames}) VALUES (${row})`
                 ).join('; \n') + ';';
@@ -39,15 +47,15 @@ export function useQueryTab(selectedTable: TableData | null, activeTab: string) 
 
             const generateDTOClass = (table: TableData): string => {
                 const columns = Object.entries(table.tableInnerStructure).map(([key, values]) => {
-                    const firstRow = values[0];
+                    const firstRow = values.length > 0 ? values[0] : { dataType: '' };
                     return {
-                        name: key.match(/name=(\w+)/)?.[1] ?? '',
+                        name: key.match(/name=([\w가-힣]+)/)?.[1] ?? '',
                         type: firstRow.dataType
                     };
                 });
 
                 const fields = columns.map(col => {
-                    let javaType;
+                    let javaType: string;
                     switch (col.type) {
                         case 'INTEGER':
                             javaType = 'int';
@@ -73,8 +81,7 @@ export function useQueryTab(selectedTable: TableData | null, activeTab: string) 
                     return `\tpublic ${javaType} get${capitalizeFirstLetter(col.name)}() {\n\t\treturn ${col.name};\n\t}\n\n\tpublic void set${capitalizeFirstLetter(col.name)}(${javaType} ${col.name}) {\n\t\tthis.${col.name} = ${col.name};\n\t}\n`;
                 });
 
-                return `public class ${table.name}DTO {\n\t${fields.join('\n\t')} \n\n${gettersSetters.join('\n')}}
-`;
+                return `public class ${table.name}DTO {\n\t${fields.join('\n\t')} \n\n${gettersSetters.join('\n')}}`;
             };
 
             const capitalizeFirstLetter = (string: string) => {

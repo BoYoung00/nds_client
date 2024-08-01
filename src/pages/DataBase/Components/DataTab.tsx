@@ -108,7 +108,7 @@ const DataTab: React.FC<DataTabProps> = ({ selectedTable }) => {
                         <thead>
                         <tr>
                             {columns.map((columnKey, index) => {
-                                const columnNameMatch = columnKey.match(/name=(\w+),/);
+                                const columnNameMatch = columnKey.match(/name=([\w가-힣]+),/);
                                 const columnName = columnNameMatch ? columnNameMatch[1] : `Column ${index + 1}`;
                                 return <th key={index}>{columnName}</th>;
                             })}

@@ -1,11 +1,10 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import BackgroundModal from "../../../UI/BackgroundModal";
 import styles from './CreateTable.module.scss';
 import LineTitle from "../../../UI/LineTitle";
 import {useColumnData, useCreateTable, useRowState} from "./useCreateTable";
 import {Notification} from "../Notification";
 import Search from "../Search/Search";
-import {getJoinedTableData} from "../../../../services/api";
 
 // 모달 (메인)
 interface CreateDBProps {
@@ -120,28 +119,18 @@ interface CreateTableColumnProps {
 }
 
 const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ dataBase, handleSetColumnData }) => {
-    const { rows, handleSelectChange, handleAddRow, handleRemoveRow } = useRowState();
+    const {
+        rows,
+        handleSelectChange,
+        handleAddRow,
+        handleRemoveRow,
+        joinTables,
+        handleSelectJoinTable,
+        errorMessage,
+        setErrorMessage
+    } = useRowState(dataBase);
+
     useColumnData(rows, handleSetColumnData);
-
-    // 테이블 생성 조인 테이블 통신 연결하기
-    const [joinTables, setJoinTable] = useState<JoinTable[]>([]);
-    const [selectedJoinTableHash, setSelectedJoinTableHash] = useState<string | null>(null);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-    const fetchJoinTables = async (databaseID: number) => {
-        try {
-            const data = await getJoinedTableData(databaseID);
-            console.log("조인 테이블", data)
-            setJoinTable(data);
-        } catch (error) {
-            setErrorMessage('조인 테이블 데이터를 가져오는 데 실패했습니다.');
-        }
-    };
-
-    useEffect(()=> {
-        if (dataBase?.id)
-            fetchJoinTables(dataBase.id)
-    }, [dataBase]);
 
     return (
         <>
@@ -170,8 +159,7 @@ const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ dataBase, handleS
                         {rows.map((row, index) => (
                             <TableRow
                                 joinTables={joinTables}
-                                selectedJoinTableHash={selectedJoinTableHash}
-                                setSelectedJoinTableHash={setSelectedJoinTableHash}
+                                handleSelectJoinTable={handleSelectJoinTable}
                                 key={index}
                                 index={index}
                                 row={row}
@@ -196,14 +184,13 @@ const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ dataBase, handleS
 // 테이블 컬럼 반복용
 interface TableRowProps {
     joinTables: JoinTable[];
-    selectedJoinTableHash: string | null;
-    setSelectedJoinTableHash: (selected: string) => void;
+    handleSelectJoinTable: (selected: JoinTable, index: number) => void;
     index: number;
     row: RowState;
     handleSelectChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, index: number) => void;
 }
 
-const TableRow: React.FC<TableRowProps> = ({ joinTables, selectedJoinTableHash, setSelectedJoinTableHash, index, row, handleSelectChange }) => {
+const TableRow: React.FC<TableRowProps> = ({ joinTables, handleSelectJoinTable, index, row, handleSelectChange }) => {
     const [showSearch, setShowSearch] = useState<boolean>(false);
 
     return (
@@ -266,7 +253,7 @@ const TableRow: React.FC<TableRowProps> = ({ joinTables, selectedJoinTableHash, 
                     style={{width: '90%'}}
                     type="text"
                     name="isJoinTableHash"
-                    value={selectedJoinTableHash ? selectedJoinTableHash : ''}
+                    value={row.isJoinTableHash ? row.isJoinTableHash.split('-')[0] : ''}
                     onChange={(e) => handleSelectChange(e, index)}
                     readOnly
                 />
@@ -278,8 +265,9 @@ const TableRow: React.FC<TableRowProps> = ({ joinTables, selectedJoinTableHash, 
                         showSearch={showSearch}
                         setShowSearch={setShowSearch}
                         dataList={joinTables}
-                        handleSelectData={setSelectedJoinTableHash}
+                        handleSelectData={handleSelectJoinTable}
                         type={'joinTable'}
+                        index={index}
                     />
                 </div>
             </td>

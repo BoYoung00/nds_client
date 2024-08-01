@@ -1,9 +1,9 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {tableStructure} from "../../../../services/api";
+import {getJoinedTableData, tableStructure} from "../../../../services/api";
 
 // 테이블 생성 메인
 export const useCreateTable = (dataBase: DataBaseEntity | null, setTables: React.Dispatch<React.SetStateAction<TableData[]>>) => {
-    const [columns , setColumns] = useState<RowState[]>([])
+    const [columns , setColumns] = useState<RowState[]>([]);
     const [tableData, setTableData] = useState({
         name: '',
         comment: '',
@@ -53,30 +53,43 @@ export const useCreateTable = (dataBase: DataBaseEntity | null, setTables: React
         return false;
     }
 
-    // 통신
+    // 테이블 생성 통신
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // 유효성 검사
-        if (validateData()) return;
+        if (validateData()) return; // 유효성 검사
 
         // 통신 데이터 만들기
-        let obj: TableRequest = {
+        let columnObjs = columns.map(row => {
+           return {
+               ...row,
+               isJoinTableHash: row.isJoinTableHash? row.isJoinTableHash.split('-')[1] : null
+           }
+        });
+
+        let createTableObj: TableRequest = {
             dataBaseID : dataBase!.id!,
             name : tableData.name,
             comment : tableData.comment,
-            columns : columns,
+            columns : columnObjs,
             tableHash : null,
-        }
-        console.log("테이블 생성 : ", obj)
+        };
+        console.log("테이블 생성 : ", createTableObj);
         try {
-            const createdTable = await tableStructure(obj);
+            const createdTable = await tableStructure(createTableObj);
             setTables(prevTables => [...prevTables, createdTable]);
             setSuccessMessage('테이블 생성에 성공 하셨습니다.');
+            resetForm(); // 성공 후 초기화
         } catch (error) {
             const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
             setErrorMessage(errorMessage);
         }
+    };
+
+    // 폼 초기화
+    const resetForm = () => {
+        setTableData({ name: '', comment: '' });
+        setColumns([]);
     };
 
     return {
@@ -102,9 +115,38 @@ const initialRowState: RowState = {
     isJoinTableHash: null,
 };
 
-export const useRowState = () => {
+export const useRowState = (dataBase: DataBaseEntity | null) => {
     const [rows, setRows] = useState<RowState[]>([initialRowState]);
 
+    const [joinTables, setJoinTable] = useState<JoinTable[]>([]);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    // 테이블 생성 조인 테이블 통신 연결하기
+    const fetchJoinTables = async (databaseID: number) => {
+        try {
+            const data = await getJoinedTableData(databaseID);
+            console.log("조인 테이블", data)
+            setJoinTable(data);
+        } catch (error) {
+            setErrorMessage('조인 테이블 데이터를 가져오는 데 실패했습니다.');
+        }
+    };
+
+    // 디비 선택 후 조인 데이터 통신
+    useEffect(()=> {
+        if (dataBase?.id) fetchJoinTables(dataBase.id)
+    }, [dataBase]);
+
+    // 조인 테이블 데이터 선택 후 데이터 가공
+    const handleSelectJoinTable = (joinTable: JoinTable | null, index: number) => {
+        const updatedRows = [...rows];
+        updatedRows[index]['isJoinTableHash'] = joinTable
+            ? `${joinTable.name} / ${joinTable.pkColumn?.name} / ${joinTable.pkColumn?.type}-${joinTable.tableHash}`
+            : null;
+        setRows(updatedRows);
+    };
+
+    // 행 정보 받기
     const handleSelectChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, index: number) => {
         const { name, value, type, checked } = event.target as HTMLInputElement;
         const updatedRows = [...rows];
@@ -117,6 +159,7 @@ export const useRowState = () => {
         setRows(updatedRows);
     };
 
+    // 행 추가
     const handleAddRow = () => {
         const newRow: RowState = {
             name: '',
@@ -130,6 +173,7 @@ export const useRowState = () => {
         setRows([...rows, newRow]);
     };
 
+    // 행 삭제
     const handleRemoveRow = (index: number) => {
         if (rows.length > 1) {
             const updatedRows = rows.filter((_, idx) => idx !== index);
@@ -141,7 +185,11 @@ export const useRowState = () => {
         rows,
         handleSelectChange,
         handleAddRow,
-        handleRemoveRow
+        handleRemoveRow,
+        handleSelectJoinTable,
+        joinTables,
+        errorMessage,
+        setErrorMessage
     };
 };
 
