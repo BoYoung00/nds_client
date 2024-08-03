@@ -84,7 +84,7 @@ export const createData = async (dataRequest: DataRequest) => {
         console.log("전송 데이터", dataRequest)
         const response = await client.post('/api/data', dataRequest);
         if (response.status === 200) {
-            return response.data; // 성공적으로 생성된 테이블 객체 반환
+            return response.data;
         }
         new Error(`${response.data.message}`)
     } catch (error) {

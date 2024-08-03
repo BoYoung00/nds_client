@@ -40,9 +40,23 @@ const Header: React.FC<HeaderProps> = ({ token, onLogout }) => {
                 ))}
             </ul>
 
-            {token && email && (
+            {(token && email) ? (
+                    <div className={styles.header__userInfo} onClick={toggleMenu}>
+                        {email}
+                        {showMenu && (
+                            <div className={styles.dropdown}>
+                                <Link to="/" onClick={onLogout}>
+                                    로그아웃
+                                </Link>
+                                <a onClick={() => copyTokenToClipboard(token)}>
+                                    토큰 복사
+                                </a>
+                            </div>
+                        )}
+                    </div>
+                ) :
                 <div className={styles.header__userInfo} onClick={toggleMenu}>
-                    {email}
+                    NULL
                     {showMenu && (
                         <div className={styles.dropdown}>
                             <Link to="/" onClick={onLogout}>
@@ -54,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ token, onLogout }) => {
                         </div>
                     )}
                 </div>
-            )}
+            }
         </header>
     );
 };
