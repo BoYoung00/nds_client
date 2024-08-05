@@ -23,6 +23,7 @@ export function useDataTab(
     const [editedValue, setEditedValue] = useState<string>('');
     const [selectedRow, setSelectedRow] = useState<number | null>(null);
     const [createRowLine, setCreateRowLine] = useState<number>(0);
+    const [deletedRows, setDeletedRows] = useState<number[]>([]); // 삭제된 행 상태 추가
 
     // 통신 데이터
     const [createDataList, setCreateDataList] = useState<DataDTO[]>([]);
@@ -88,6 +89,7 @@ export function useDataTab(
             setCreateDataList([]);
             setUpdateDataList([]);
             setDeleteDataList([]);
+            setDeletedRows([]);
             setSelectedRow(null);
             setCreateRowLine(0);
         }
@@ -144,7 +146,7 @@ export function useDataTab(
             deletedDataList.push(newDeleteData);
             if (deletedData.id !== null) deleteDataList.push(newDeleteData);
 
-            updatedTableStructure[columnKey] = columnData.filter((_, index) => index !== selectedRow);
+            // updatedTableStructure[columnKey] = columnData.filter((_, index) => index !== selectedRow);
         });
 
         const deletedDataLines = Array.from(new Set(deletedDataList.map(data => data.columnLine)));
@@ -152,6 +154,7 @@ export function useDataTab(
             !deletedDataLines.includes(data.columnLine)
         ));
         setSelectedRow(null);
+        setDeletedRows(prev => [...prev, selectedRow]); // 삭제된 행 인덱스 추가
         setTableStructure(updatedTableStructure);
     };
 
@@ -220,6 +223,7 @@ export function useDataTab(
             createDataList,
             updateDataList,
             deleteDataList,
+            deletedRows,
         },
         handlers: {
             handleAddData,

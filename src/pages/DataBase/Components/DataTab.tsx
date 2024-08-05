@@ -12,9 +12,10 @@ import {useAutoColumnWidth, useDataTab} from "../hooks/useDataTab";
 interface DataTabProps {
     setTables: React.Dispatch<React.SetStateAction<TableData[]>>;
     selectedTable: TableData | null;
+    handleFetchTables: () => void;
 }
 
-const DataTab: React.FC<DataTabProps> = ({ setTables, selectedTable }) => {
+const DataTab: React.FC<DataTabProps> = ({ setTables, selectedTable, handleFetchTables }) => {
     const {
         hooks: {
             tableStructure,
@@ -23,6 +24,7 @@ const DataTab: React.FC<DataTabProps> = ({ setTables, selectedTable }) => {
             createDataList,
             updateDataList,
             deleteDataList,
+            deletedRows,
         },
         handlers: {
             handleAddData,
@@ -98,7 +100,7 @@ const DataTab: React.FC<DataTabProps> = ({ setTables, selectedTable }) => {
                                     return (
                                         <td
                                             key={cellData.id || columnKey + rowIndex}
-                                            className={selectedRow === rowIndex ? styles.selectedCell : ''}
+                                            className={`${selectedRow === rowIndex ? styles.selectedCell : ''} ${deletedRows.includes(rowIndex) ? styles.deletedCell : ''}`}
                                         >
                                             { cellData.dataType === 'MediaFile' ?
                                                 <span>{cellData.data}</span>
@@ -136,7 +138,10 @@ const DataTab: React.FC<DataTabProps> = ({ setTables, selectedTable }) => {
                 onClose={() => setQuestionMessage(null)}
                 type="question"
                 message={questionMessage}
-                onConfirm={handleResetTableData}
+                onConfirm={async () => {
+                    await handleFetchTables();
+                    handleResetTableData();
+                }}
             /> }
 
             {/*에러 모달*/}
