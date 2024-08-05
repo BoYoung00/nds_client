@@ -221,6 +221,7 @@
 // REST API 탭 디자인
 .RestApiTab {
   @include tab-container;
+  overflow: auto;
 
   .urlContainer {
     width: 95%; height: 95%;
@@ -259,6 +260,9 @@
       grid-row: 2;
       margin: .5rem 0 .5rem 2rem;
       font-size: 1.1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     span {

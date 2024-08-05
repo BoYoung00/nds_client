@@ -53,7 +53,7 @@ const DataBase:React.FC = () => {
             case 1:
                 return <LikeTab selectedTable={selectedTable} />;
             case 2:
-                return <RestApiTab selectedTable={selectedTable} isExpanded={true} endpoint={"endpoint"} localPort={"url"} />;
+                return <RestApiTab selectedTable={selectedTable} />;
             case 3:
                 return <QueryTab selectedTable={selectedTable}/>;
             case 4:

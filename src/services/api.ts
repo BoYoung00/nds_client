@@ -99,3 +99,19 @@ export const createData = async (dataRequest: DataRequest) => {
         throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
     }
 };
+
+// .nds 파일 스크립트 다운로드
+export const downloadNdsFile = async (databaseID: number) => {
+    try {
+        const response = await client.get(`/api/file/download/${databaseID}`, {
+            responseType: 'blob',
+        });
+        const disposition = response.headers['content-disposition'];
+        const fileName = disposition?.split('filename=')[1]?.replace(/"/g, '') || 'downloadedFile.nds';
+
+        return { blob: response.data, fileName };
+    } catch (error) {
+        console.error('파일 스크립트 다운로드 실패:', error);
+        throw error;
+    }
+};

@@ -23,7 +23,7 @@ export function useDataTab(
     const [editedValue, setEditedValue] = useState<string>('');
     const [selectedRow, setSelectedRow] = useState<number | null>(null);
     const [createRowLine, setCreateRowLine] = useState<number>(0);
-    const [deletedRows, setDeletedRows] = useState<number[]>([]); // 삭제된 행 상태 추가
+    const [deletedRows, setDeletedRows] = useState<number[]>([]); // 삭제된 행 상태
 
     // 통신 데이터
     const [createDataList, setCreateDataList] = useState<DataDTO[]>([]);
@@ -245,6 +245,7 @@ export function useDataTab(
     };
 }
 
+// 행 데이터 수정 시에 행 너비 조정
 export function useAutoColumnWidth(
     dependencies: any[],
     inputRefs: RefObject<{ [key: string]: HTMLInputElement }>
