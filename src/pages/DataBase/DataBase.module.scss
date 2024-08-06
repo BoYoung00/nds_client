@@ -1,7 +1,7 @@
 @import "src/App.module";
 
 @mixin tab-container {
-  width: 99%; height: 90%;
+  width: 99%; height: 85%;
   background: white;
   border: 1px solid #777777;
   margin-top: 1.3rem;
@@ -17,12 +17,15 @@
   background: #f4f4f4;
 
   &__content {
+    height: 100%; width: 100%;
     display: flex;
+    flex-direction: row;
     flex: 1;
 
     .tabContent {
-      flex: 1 0; // 부모로 부터 남은 너비를 모두 가득 채움
-      padding: 2rem 2.5rem;
+      height: 95%; width: 100%;
+      flex: 1; // 부모로 부터 남은 너비를 모두 가득 채움
+      margin: 2rem 2.5rem;
       min-width: 25rem;
     }
   }
@@ -260,8 +263,8 @@
       grid-row: 2;
       margin: .5rem 0 .5rem 2rem;
       font-size: 1.1rem;
-      white-space: nowrap;
       overflow: hidden;
+      white-space: nowrap;
       text-overflow: ellipsis;
     }
 
@@ -291,7 +294,7 @@
   .codeEditorWrapper {
     width: 100%;
     height: 60vh;
-    min-height: 25rem;
+    min-height: 80%;
   }
 }
 
@@ -308,4 +311,135 @@
 // Resource 탭 디자인
 .ResourceTab {
   @include tab-container;
+
+  .header {
+    display: grid;
+    grid-template-columns: 15fr 1fr;
+
+    .urlBox {
+      overflow: hidden;
+
+      div {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-bottom: 1rem;
+
+        span {
+          color: $color-blue-deep;
+          font-family: $font-KoPub-bold;
+          font-size: 1.5rem;
+          text-align: right;
+        }
+      }
+    }
+
+    .butBox {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .deleteBut {
+        border: none;
+        border-radius: 4px;
+        background: #FF0000;
+        color: white;
+        padding: 0.5rem 0;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .toggleBut {
+    width: 80px;
+    height: 30px;
+    background-color: #ccc;
+    border: 1px solid $color-blue-deep;
+    border-radius: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    @include flex-space-between;
+    padding: 0 5px;
+
+    &.on {
+      background-color: $color-blue-deep;
+
+      .label {
+        margin-left: 15px;
+      }
+    }
+
+    &.off {
+      background-color: white;
+
+      .label {
+        margin-right: 15px;
+        color: $color-blue-deep;
+      }
+    }
+
+    .circle {
+      width: 24px;
+      height: 24px;
+      background-color: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      transition: left 0.3s ease;
+    }
+
+    .circleOff {
+      background-color: $color-blue-deep;
+      left: 62px;
+    }
+
+    .label {
+      font-size: 12px;
+      color: white;
+      z-index: 1;
+      flex: 1;
+      text-align: center;
+    }
+  }
+
+  .main {
+    border: 1px solid #C1C1C1;
+    width: 100%;
+    height: 58vh;
+    min-height: 81%;
+    overflow-y: auto;
+
+    section {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+
+      img,
+      video,
+      .addBut {
+        width: 10rem;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+        height: 10rem;
+        margin: 2rem 0 0 2rem;
+        cursor: pointer;
+      }
+
+      .addBut {
+        @include flex-center;
+        color: $color-blue-deep;
+        font-family: $font-KoPub-bold;
+        font-size: 1.5rem;
+
+        input[type="file"] {
+          display: none;
+        }
+      }
+
+      .selected {
+        border: 4px solid $color-blue-deep;
+      }
+    }
+  }
 }

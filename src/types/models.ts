@@ -165,3 +165,10 @@ interface DataRequest {
     updateDataRequests: DataDTO[]; // 수정 데이터
     deleteDataRequests: DataDTO[]; // 삭제 데이터
 }
+
+// 이미지 경로 리스트 Response 타입
+interface MediaFile {
+    id: number;
+    fileName: string;
+    path: string;
+}

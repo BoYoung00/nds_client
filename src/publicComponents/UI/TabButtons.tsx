@@ -8,11 +8,11 @@ const TabButtonsContainer = styled.div`
   display: flex;
 `;
 
-const TabButton = styled.button<{ isActive: boolean }>`
+const TabButton = styled.button<{ $isActive: boolean }>`
   padding: .7rem 1.2rem;
   border: none;
-  background-color: ${({ isActive }) => (isActive ? '#00A3FF' : 'white')};
-  color: ${({ isActive }) => (isActive ? 'white' : '#333')};
+  background-color: ${({ $isActive }) => ($isActive ? '#00A3FF' : 'white')};
+  color: ${({ $isActive }) => ($isActive ? 'white' : '#333')};
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
 
@@ -33,7 +33,7 @@ const TabButtons: React.FC<TabButtonsProps> = ({ buttons, activeTab, onTabClick 
             {buttons.map(button => (
                 <TabButton
                     key={button}
-                    isActive={activeTab === button}
+                    $isActive={activeTab === button}
                     onClick={() => onTabClick(button)}
                 >
                     {button}

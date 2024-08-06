@@ -115,3 +115,75 @@ export const downloadNdsFile = async (databaseID: number) => {
         throw error;
     }
 };
+
+// 미디어 이미지 리스트 가져오기
+export const getImagesPathList = async (tableHash: string) => {
+    try {
+        const response = await client.get(`/api/medias/images/${tableHash}`);
+        return response.data; // 이미지 리스트 반환
+    } catch (error) {
+        console.error('이미지 리스트 조회 실패:', error);
+        throw error;
+    }
+};
+
+// 미디어 비디오 리스트 가져오기
+export const getVideoPathList = async (tableHash: string) => {
+    try {
+        const response = await client.get(`/api/medias/videos/${tableHash}`);
+        return response.data; // 비디오 리스트 반환
+    } catch (error) {
+        console.error('비디오 리스트 조회 실패:', error);
+        throw error;
+    }
+};
+
+// 이미지 파일 추가
+export const uploadImageFile = async (tableHash: string, file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('tableHash', tableHash);
+
+    try {
+        const response = await client.post('/api/medias/image', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        if (response.status === 200) {
+            return response.data; // 성공
+        }
+        new Error(`${response.data.message}`)
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
+
+// 비디오 파일 추가
+export const uploadVideoFile = async (tableHash: string, file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('tableHash', tableHash);
+
+    try {
+        const response = await client.post('/api/medias/video', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        if (response.status === 200) {
+            return response.data; // 성공
+        }
+        new Error(`${response.data.message}`)
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};

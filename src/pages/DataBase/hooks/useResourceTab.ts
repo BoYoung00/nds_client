@@ -1,5 +1,123 @@
-export function useResourceTab() {
-    return {
+import { useEffect, useState } from 'react';
+import { getImagesPathList, getVideoPathList, uploadImageFile, uploadVideoFile } from "../../../services/api";
 
+export const useResourceTab = (selectedTable: TableData | null) => {
+    const [loading, setLoading] = useState<boolean>(false);
+    const [isOn, setIsOn] = useState<boolean>(true);
+
+    const [imagePaths, setImagePaths] = useState<MediaFile[]>([]);
+    const [videoPaths, setVideoPaths] = useState<MediaFile[]>([]);
+
+    const [selectedImage, setSelectedImage] = useState<MediaFile | null>(null);
+    const [selectedVideo, setSelectedVideo] = useState<MediaFile | null>(null);
+
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (selectedTable?.tableHash) {
+            fetchImages(selectedTable.tableHash);
+            fetchVideos(selectedTable.tableHash);
+        }
+    }, [selectedTable]);
+
+    const toggle = () => {
+        setIsOn(!isOn);
     };
-}
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            handleUpload(e.target.files[0]);
+        }
+    };
+
+    const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            handleUpload(e.target.files[0])
+        }
+    };
+
+    const handleUpload = async (file: File) => {
+        if (!selectedTable?.tableHash) return;
+
+        if (isOn) {
+            try {
+                const response = await uploadImageFile(selectedTable.tableHash, file);
+                setSuccessMessage(response);
+                await fetchImages(selectedTable.tableHash);
+            } catch (error) {
+                const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
+                setErrorMessage(errorMessage);
+            }
+        } else {
+            try {
+                const response = await uploadVideoFile(selectedTable.tableHash, file);
+                setSuccessMessage(response);
+                await fetchVideos(selectedTable.tableHash);
+            } catch (error) {
+                const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
+                setErrorMessage(errorMessage);
+            }
+        }
+    };
+
+    const fetchImages = async (tableHash: string) => {
+        try {
+            setLoading(true);
+            const data = await getImagesPathList(tableHash);
+            setImagePaths(data);
+        } catch (error) {
+            setErrorMessage('이미지 경로 목록을 가져오는데 실패했습니다.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchVideos = async (tableHash: string) => {
+        try {
+            setLoading(true);
+            const data = await getVideoPathList(tableHash);
+            setVideoPaths(data);
+        } catch (error) {
+            setErrorMessage('비디오 경로 목록을 가져오는데 실패했습니다.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleFileDelete = () => {
+        if (isOn && selectedImage) {
+            console.log('이미지 파일 삭제 로직');
+        } else if (!isOn && selectedVideo) {
+            console.log('비디오 파일 삭제 로직');
+        } else {
+            setErrorMessage("선택된 파일이 없습니다.");
+        }
+    };
+
+    return {
+        hooks: {
+            loading,
+            isOn,
+            imagePaths,
+            videoPaths,
+            selectedImage,
+            selectedVideo,
+            setSelectedImage,
+            setSelectedVideo
+        },
+        handlers: {
+            toggle,
+            handleImageChange,
+            handleVideoChange,
+            handleUpload,
+            handleFileDelete
+        },
+        modals: {
+            errorMessage,
+            setErrorMessage,
+            successMessage,
+            setSuccessMessage
+        }
+    };
+};
