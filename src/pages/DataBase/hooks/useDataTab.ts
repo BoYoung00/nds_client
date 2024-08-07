@@ -51,13 +51,12 @@ export function useDataTab(
             updateDataRequests: updateDataList,
             deleteDataRequests: deleteDataList
         };
-        console.log("requestData (SAVE)", requestData);
+        // console.log("requestData (SAVE)", requestData);
 
         try {
             const createdTableData = await createData(requestData);
-            console.log(createdTableData)
+            // console.log(createdTableData)
             setSuccessMessage('데이터 저장에 성공하셨습니다.');
-            // 서버 수정하면 수정하기
             await updateTable(createdTableData.id, createdTableData);
             await handleResetTableData();
         } catch (error) {
@@ -145,8 +144,6 @@ export function useDataTab(
 
             deletedDataList.push(newDeleteData);
             if (deletedData.id !== null) deleteDataList.push(newDeleteData);
-
-            // updatedTableStructure[columnKey] = columnData.filter((_, index) => index !== selectedRow);
         });
 
         const deletedDataLines = Array.from(new Set(deletedDataList.map(data => data.columnLine)));
@@ -196,7 +193,7 @@ export function useDataTab(
                 dataType: type,
             };
 
-            console.log("행 수정", newData)
+            // console.log("행 수정", newData)
 
             if (newData.id === null) {
                 setCreateDataList(prevList => [

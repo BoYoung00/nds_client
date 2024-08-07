@@ -172,3 +172,13 @@ interface MediaFile {
     fileName: string;
     path: string;
 }
+
+// 필터 Request 타입
+interface FilterRequest {
+    filterColumnID: number;
+    filterColumnHash: string;
+    filterIntegerValue?: number | null;
+    filterIntegerOption?: string | null;
+    filterWordValue?: string | null;
+    filterWorldOption?: string | null;
+}
