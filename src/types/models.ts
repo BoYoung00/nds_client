@@ -193,3 +193,10 @@ interface FilterResponse {
     option: string;
     filterValue: string;
 }
+
+// CSV 엑셀 데이터 Request 타입
+interface CsvDataRequest {
+    tableID: number;
+    tableHash: string;
+    dataSet: Map<string, string[]>;
+}

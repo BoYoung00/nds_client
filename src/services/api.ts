@@ -232,3 +232,36 @@ export const saveFilteredTableData = async (tableHash: string, tableFilterReques
         throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
     }
 };
+
+
+// CSV 엑셀 다운로드
+export const exportTable = async (tableID: number) => {
+    try {
+        const response = await client.get(`/api/csv/export/${tableID}`, {
+            responseType: 'blob',
+        });
+        const disposition = response.headers['content-disposition'];
+        const fileName = disposition?.split('filename=')[1]?.replace(/"/g, '') || 'downloadedFile.xlsx';
+
+        return { blob: response.data, fileName };
+    } catch (error) {
+        throw error;
+    }
+};
+
+// CSV 엑셀 데이터 저장
+export const saveCsvData = async (csvDataRequest: CsvDataRequest) => {
+    try {
+        const response = await client.post('/api/csv/import', csvDataRequest);
+
+        if (response.status === 200)
+            return response.data;
+        new Error(`${response.data?.message || '데이터 저장에 실패했습니다.'}`);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data?.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};

@@ -47,6 +47,36 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
   align-items: center;
 }
 
+// 테이블 스타일
+@mixin table-styles($bg-color: $color-blue-deep) {
+  margin: .3rem;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  width: max-content;
+
+  th, td {
+    min-width: 14rem;
+    text-align: left;
+    width: max-content;
+  }
+
+  th {
+    padding: 0.5rem;
+    background-color: $bg-color;
+    color: white;
+  }
+
+  td {
+    padding: .5rem;
+  }
+
+  input {
+    border: none;
+    background: none;
+    overflow: hidden;
+  }
+}
+
 // 버튼 스타일 모두 없애기
 @mixin button-none-style($fontSize: 1rem, $color: $color-blue-deep, $isBold: true) {
   border: none;
@@ -81,6 +111,7 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
   border-radius: 4px;
   cursor: pointer;
   font-family: $font-KoPub-bold;
+  text-align: center;
 
   @if($isBlueBut) {
     background: $color-blue-deep;

@@ -12,7 +12,7 @@ const TableView: React.FC<TableViewProps> = ({ tableStructure }) => {
     const numRows = tableStructure[columns[0]]?.length || 0;
 
     return (
-        <div className={styles.tableView} style={{height: '100%'}}>
+        <div className={styles.tableView}>
             <main className={styles.tableView__main} style={{border: 'none', overflow: 'none',}}>
                 <table>
                     <thead>
@@ -30,21 +30,14 @@ const TableView: React.FC<TableViewProps> = ({ tableStructure }) => {
                             {columns.map((columnKey, colIndex) => {
                                 const cellData = tableStructure[columnKey][rowIndex] || { id: null, data: '', dataType: '' };
                                 return (
-                                    <td
-                                        key={colIndex}
-                                        className={`${cellData.dataType === 'selected' ? styles.selectedCell : ''} ${cellData.dataType === 'deleted' ? styles.deletedCell : ''}`}
-                                    >
-                                        {cellData.dataType === 'MediaFile' || cellData.dataType === 'JOIN_Column' ? (
-                                            <span>{cellData.data}</span>
-                                        ) : (
-                                            <input
-                                                type="text"
-                                                value={cellData.data}
-                                                readOnly
-                                                className={styles.readOnlyInput}
-                                                placeholder="NULL"
-                                            />
-                                        )}
+                                    <td key={colIndex} >
+                                        <input
+                                            type="text"
+                                            value={cellData.data}
+                                            readOnly
+                                            className={styles.readOnlyInput}
+                                            placeholder="NULL"
+                                        />
                                     </td>
                                 );
                             })}

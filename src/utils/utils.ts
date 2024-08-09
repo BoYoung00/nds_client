@@ -60,3 +60,23 @@ export function useConfirm(onConfirm: () => void | null) {
         onConfirm(); // 전달받은 onConfirm 함수 호출
     }, [onConfirm]);
 }
+
+// 파일 다운로드
+export const downloadFile = (fileBlob: Blob, fileName: string) => {
+    // Blob URL 생성
+    const url = URL.createObjectURL(fileBlob);
+
+    // 임시 링크 요소를 생성하여 파일 다운로드를 트리거
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = fileName; // 파일 이름 설정
+
+    // 링크를 문서에 추가하고 클릭하여 다운로드
+    document.body.appendChild(a);
+    a.click();
+
+    // 다운로드 후 링크 및 Blob URL을 정리
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+};

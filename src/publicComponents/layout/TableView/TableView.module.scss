@@ -1,2 +1,15 @@
 @import "src/pages/DataBase/DataBase.module";
 
+
+.tableView {
+  height: 100%;
+
+  &__main {
+    border: none;
+    overflow: hidden;
+
+    table {
+      @include table-styles;
+    }
+  }
+}
