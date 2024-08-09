@@ -273,9 +273,7 @@
       grid-row: 2;
       margin: .5rem 0 .5rem 2rem;
       font-size: 1.1rem;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      @include nowrap;
     }
 
     span {
@@ -316,7 +314,75 @@
   @include flex-center;
 
   .filterContainer {
-    @include insideBox(40%);
+    @include insideBox(40%, 69vh);
+    max-height: 100%;
+    padding: 0 .5rem;
+
+    .addRemoveButBox {
+      @include flex-right;
+      gap: 10px;
+      margin: .5rem 0 1rem 0;
+
+      span {
+        @include noDrag;
+        padding: 5px;
+        cursor: pointer;
+        font-family: $font-KoPub-bold;
+        font-size: 1.3rem;
+
+        &:hover { color: $color-blue-deep; }
+      }
+    }
+
+    .filterBox {
+      height: 77%;
+      overflow-y: auto;
+
+      .filterInputBox {
+        @include flex-center;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        gap: .5rem;
+        border-bottom: 1px solid #BDBDBD;
+
+        label {
+          width: 50%;
+          display: flex;
+          flex-direction: column;
+
+          span {
+            @include nowrap;
+            color: $color-blue-deep;
+            font-family: $font-KoPub-bold;
+          }
+        }
+
+        .filterSelectBox {
+          @include flex-center;
+          gap: .5rem;
+
+          select, input[type='text']{
+            height: 2.3rem;
+          }
+        }
+      }
+    }
+
+    .saveButBox {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      span {
+        white-space: nowrap;
+        font-size: .7rem;
+        color: #838383;
+      }
+
+      button {
+        @include button-style();
+      }
+    }
   }
 
   .doubleArrowImg {
@@ -325,7 +391,7 @@
   }
 
   .previewContainer {
-    @include insideBox(60%);
+    @include insideBox(60%, 69vh);
   }
 }
 
@@ -347,9 +413,7 @@
       overflow: hidden;
 
       div {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
+        @include nowrap;
         margin-bottom: 1rem;
 
         span {

@@ -96,13 +96,19 @@ export default Notification;
 // 사용 방법
 /*
 const [successMessage, setSuccessMessage] = useState<string | null>(null);
-const [questionMessage, setQuestionMessage] = useState<string | null>(null);
 const [errorMessage, setErrorMessage] = useState<string | null>(null);
+const [questionMessage, setQuestionMessage] = useState<string | null>(null);
 
     { successMessage && <Notification
         onClose={() => setSuccessMessage(null)}
         type="success"
         message={successMessage}
+    /> }
+
+    { errorMessage && <Notification
+        onClose={() => setErrorMessage(null)}
+        type="error"
+        message={errorMessage}
     /> }
 
     { questionMessage && <Notification
@@ -112,12 +118,6 @@ const [errorMessage, setErrorMessage] = useState<string | null>(null);
         onConfirm={() => {
             console.log('Confirmed');
         }}
-    /> }
-
-    { errorMessage && <Notification
-        onClose={() => setErrorMessage(null)}
-        type="error"
-        message={errorMessage}
     /> }
 
 */

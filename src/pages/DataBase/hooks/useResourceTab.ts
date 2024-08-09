@@ -1,5 +1,12 @@
-import { useEffect, useState } from 'react';
-import { getImagesPathList, getVideoPathList, uploadImageFile, uploadVideoFile } from "../../../services/api";
+import {useEffect, useState} from 'react';
+import {
+    deleteImage,
+    deleteVideo,
+    getImagesPathList,
+    getVideoPathList,
+    uploadImageFile,
+    uploadVideoFile
+} from "../../../services/api";
 
 export const useResourceTab = (selectedTable: TableData | null) => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -65,6 +72,7 @@ export const useResourceTab = (selectedTable: TableData | null) => {
         try {
             setLoading(true);
             const data = await getImagesPathList(tableHash);
+            // console.log('이미지 경로 리스트', data);
             setImagePaths(data);
         } catch (error) {
             setErrorMessage('이미지 경로 목록을 가져오는데 실패했습니다.');
@@ -77,6 +85,7 @@ export const useResourceTab = (selectedTable: TableData | null) => {
         try {
             setLoading(true);
             const data = await getVideoPathList(tableHash);
+            // console.log('비디오 경로 리스트', data);
             setVideoPaths(data);
         } catch (error) {
             setErrorMessage('비디오 경로 목록을 가져오는데 실패했습니다.');
@@ -85,11 +94,23 @@ export const useResourceTab = (selectedTable: TableData | null) => {
         }
     };
 
-    const handleFileDelete = () => {
+    const handleFetchFileDelete = async () => {
         if (isOn && selectedImage) {
-            console.log('이미지 파일 삭제 로직');
+            try {
+                await deleteImage(selectedImage.id);
+                setImagePaths(prevPaths => prevPaths.filter(image => image !== selectedImage));
+                setSuccessMessage("이미지 삭제에 성공하셨습니다.");
+            } catch (error) {
+                setErrorMessage('이미지 파일 삭제에 실패했습니다.');
+            }
         } else if (!isOn && selectedVideo) {
-            console.log('비디오 파일 삭제 로직');
+            try {
+                await deleteVideo(selectedVideo.id);
+                setVideoPaths(prevPaths => prevPaths.filter(video => video !== selectedVideo));
+                setSuccessMessage("비디오 삭제에 성공하셨습니다.");
+            } catch (error) {
+                setErrorMessage('비디오 파일 삭제에 실패했습니다.');
+            }
         } else {
             setErrorMessage("선택된 파일이 없습니다.");
         }
@@ -111,7 +132,7 @@ export const useResourceTab = (selectedTable: TableData | null) => {
             handleImageChange,
             handleVideoChange,
             handleUpload,
-            handleFileDelete
+            handleFetchFileDelete
         },
         modals: {
             errorMessage,

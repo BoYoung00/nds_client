@@ -32,7 +32,6 @@ export const getDataBasesForCurrentUser = async () => {
         const response = await client.get('/api/databases');
         return response.data; // 현재 사용자에 대한 데이터베이스 목록 반환
     } catch (error) {
-        console.error('데이터베이스 조회 실패:', error);
         throw error;
     }
 };
@@ -43,7 +42,6 @@ export const getTablesForDataBaseID = async (databaseID: number) => {
         const response = await client.get(`/api/tables/${databaseID}`);
         return response.data; // 테이블 목록 반환
     } catch (error) {
-        console.error('테이블 목록 조회 실패:', error);
         throw error;
     }
 };
@@ -54,7 +52,6 @@ export const getJoinedTableData = async (databaseID: number) => {
         const response = await client.get(`/api/tables/join/${databaseID}`);
         return response.data; // 조인된 테이블 데이터 반환
     } catch (error) {
-        console.error('조인된 테이블 데이터 조회 실패:', error);
         throw error;
     }
 };
@@ -81,7 +78,6 @@ export const tableStructure = async (tableRequest: TableRequest) => {
 // 테이블 데이터 추가, 수정, 삭제
 export const createData = async (dataRequest: DataRequest) => {
     try {
-        console.log("전송 데이터", dataRequest)
         const response = await client.post('/api/data', dataRequest);
         if (response.status === 200) {
             return response.data;
@@ -111,7 +107,6 @@ export const downloadNdsFile = async (databaseID: number) => {
 
         return { blob: response.data, fileName };
     } catch (error) {
-        console.error('파일 스크립트 다운로드 실패:', error);
         throw error;
     }
 };
@@ -122,7 +117,6 @@ export const getImagesPathList = async (tableHash: string) => {
         const response = await client.get(`/api/medias/images/${tableHash}`);
         return response.data; // 이미지 리스트 반환
     } catch (error) {
-        console.error('이미지 리스트 조회 실패:', error);
         throw error;
     }
 };
@@ -133,7 +127,6 @@ export const getVideoPathList = async (tableHash: string) => {
         const response = await client.get(`/api/medias/videos/${tableHash}`);
         return response.data; // 비디오 리스트 반환
     } catch (error) {
-        console.error('비디오 리스트 조회 실패:', error);
         throw error;
     }
 };
@@ -184,6 +177,58 @@ export const uploadVideoFile = async (tableHash: string, file: File) => {
             const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
             throw new Error(message);
         }
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
+
+// 이미지 삭제 함수
+export const deleteImage = async (imageID: number) => {
+    try {
+        const response = await client.delete(`/api/medias/images/${imageID}`);
+        return response.data; // 삭제된 이미지의 응답 데이터 반환
+    } catch (error) {
+        throw error;
+    }
+};
+
+// 비디오 삭제 함수
+export const deleteVideo = async (videoID: number) => {
+    try {
+        const response = await client.delete(`/api/medias/videos/${videoID}`);
+        return response.data; // 삭제된 비디오의 응답 데이터 반환
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+// Like 필터링 데이터 가져오기
+export const getUserLikeFilters = async (tableHash: string) => {
+    try {
+        const response = await client.get(`/api/json/like/filter/${tableHash}`);
+        return response.data; // 필터링 리스트 반환
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Like 필터링 데이터 저장
+export const saveFilteredTableData = async (tableHash: string, tableFilterRequests: FilterRequest[]) => {
+    try {
+        const response = await client.post(`/api/json/like/${tableHash}`, tableFilterRequests);
+        if (response.status === 200) {
+            return response.data;
+        }
+        new Error(`${response.data.message}`)
+    } catch (error) {
+        // Axios 오류인 경우
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        // 일반 Error의 경우
+        if (error instanceof Error) throw new Error(error.message);
+        // 알 수 없는 오류의 경우
         throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
     }
 };

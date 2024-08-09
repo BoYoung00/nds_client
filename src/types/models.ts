@@ -182,3 +182,14 @@ interface FilterRequest {
     filterWordValue?: string | null;
     filterWorldOption?: string | null;
 }
+
+// 필터 Response 타입
+interface FilterResponse {
+    filterTableHash: string;
+    filterType: number;
+    filterColumnID: number;
+    filterColumnName: string;
+    filterColumnHash: string;
+    option: string;
+    filterValue: string;
+}

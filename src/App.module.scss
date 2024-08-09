@@ -117,6 +117,21 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
   outline: none;
 }
 
+// 글자 ...으로 가리기
+@mixin nowrap {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+// 글자 드래그 막기
+@mixin noDrag {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+  user-select: none;
+}
+
 
 body {
   font-size: 1rem;

@@ -23,7 +23,7 @@ const ResourceTab: React.FC<ResourceTabProps> = ({ selectedTable }) => {
             toggle,
             handleImageChange,
             handleVideoChange,
-            handleFileDelete
+            handleFetchFileDelete
         },
         modals: {
             errorMessage,
@@ -61,7 +61,7 @@ const ResourceTab: React.FC<ResourceTabProps> = ({ selectedTable }) => {
                             <div className={`${styles.circle} ${!isOn ? styles.circleOff : ''}`}></div>
                             <span className={styles.label}>{isOn ? 'Image' : 'Video'}</span>
                         </div>
-                        <button className={styles.deleteBut} onClick={handleFileDelete}>DELETE</button>
+                        <button className={styles.deleteBut} onClick={handleFetchFileDelete}>DELETE</button>
                     </section>
                 </header>
                 <main className={styles.main}>
