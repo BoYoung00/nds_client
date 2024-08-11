@@ -198,5 +198,5 @@ interface FilterResponse {
 interface CsvDataRequest {
     tableID: number;
     tableHash: string;
-    dataSet: Map<string, string[]>;
+    dataSet: { [key: string]: string[] };
 }

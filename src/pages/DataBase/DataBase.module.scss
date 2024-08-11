@@ -376,6 +376,7 @@
   &__previewContainer {
     @include insideBox(60%, 68vh);
     min-height: 100%;
+    overflow: auto;
   }
 }
 
@@ -567,6 +568,8 @@
         margin: 2rem 0 0 2rem;
         cursor: pointer;
       }
+
+      video { width: 17.8rem; }
 
       .addBut {
         @include flex-center;

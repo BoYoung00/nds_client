@@ -11,7 +11,7 @@ const ResourceTab: React.FC<ResourceTabProps> = ({ selectedTable }) => {
     const {
         hooks: {
             loading,
-            isOn,
+            isImage,
             imagePaths,
             videoPaths,
             selectedImage,
@@ -42,11 +42,11 @@ const ResourceTab: React.FC<ResourceTabProps> = ({ selectedTable }) => {
                     <section className={styles.urlBox}>
                         <div>
                             <span>Submit URL : </span>
-                            {isOn ? `${apiUrl}/api/medias/image` : `${apiUrl}/api/medias/video`}
+                            {isImage ? `${apiUrl}/api/medias/image` : `${apiUrl}/api/medias/video`}
                         </div>
                         <div>
                             <span>URL : </span>
-                            {isOn
+                            {isImage
                                 ? selectedImage
                                     ? selectedImage.path
                                     : '이미지를 클릭하여 접근 URL을 확인 하세요.'
@@ -57,15 +57,15 @@ const ResourceTab: React.FC<ResourceTabProps> = ({ selectedTable }) => {
                         </div>
                     </section>
                     <section className={styles.butBox}>
-                        <div className={`${styles.toggleBut} ${isOn ? styles.on : styles.off}`} onClick={toggle}>
-                            <div className={`${styles.circle} ${!isOn ? styles.circleOff : ''}`}></div>
-                            <span className={styles.label}>{isOn ? 'Image' : 'Video'}</span>
+                        <div className={`${styles.toggleBut} ${isImage ? styles.on : styles.off}`} onClick={toggle}>
+                            <div className={`${styles.circle} ${!isImage ? styles.circleOff : ''}`}></div>
+                            <span className={styles.label}>{isImage ? 'Image' : 'Video'}</span>
                         </div>
                         <button className={styles.deleteBut} onClick={handleFetchFileDelete}>DELETE</button>
                     </section>
                 </header>
                 <main className={styles.main}>
-                    {isOn ? (
+                    {isImage ? (
                         <section>
                             {imagePaths.map((image) => (
                                 <img
@@ -77,7 +77,7 @@ const ResourceTab: React.FC<ResourceTabProps> = ({ selectedTable }) => {
                                 />
                             ))}
                             <label className={styles.addBut}>
-                                + <input type="file" accept="image/*" onChange={handleImageChange} />
+                                + <input key='image' type="file" accept="image/*" onChange={handleImageChange} />
                             </label>
                         </section>
                     ) : (
@@ -92,8 +92,8 @@ const ResourceTab: React.FC<ResourceTabProps> = ({ selectedTable }) => {
                                     <source src={video.path} type="video/mp4" />
                                 </video>
                             ))}
-                            <label className={styles.addBut}>
-                                + <input type="file" accept="video/*" onChange={handleVideoChange} />
+                            <label className={styles.addBut} style={{width: '17.8rem'}}>
+                                + <input key='video' type="file" accept="video/*" onChange={handleVideoChange} />
                             </label>
                         </section>
                     )}

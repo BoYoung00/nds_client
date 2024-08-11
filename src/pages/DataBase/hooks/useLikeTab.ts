@@ -87,7 +87,11 @@ export function useLikeTab(selectedTable: TableData | null) {
         if (!tableStructure) return;
 
         let filteredIndices: Set<number> = new Set();
-        let newFilteredStructure: TableInnerStructure = {};
+
+        // 첫 번째 필터링에 모든 인덱스를 추가하여 시작
+        for (let i = 0; i < Object.values(tableStructure)[0].length; i++) {
+            filteredIndices.add(i);
+        }
 
         Object.keys(tableStructure).forEach(key => {
             const columnInfo = findColumnInfo(key);
@@ -96,6 +100,9 @@ export function useLikeTab(selectedTable: TableData | null) {
 
             const inputValue = inputValues[index];
             const option = selectOptions[index];
+
+            // 새로운 임시 Set을 만들어서 현재 열에서 조건을 만족하는 인덱스만 유지
+            let currentFilteredIndices: Set<number> = new Set();
 
             tableStructure[key].forEach((colData, dataIndex) => {
                 const value = colData.data;
@@ -114,18 +121,23 @@ export function useLikeTab(selectedTable: TableData | null) {
                 }
 
                 if (isValid) {
-                    filteredIndices.add(dataIndex);
+                    currentFilteredIndices.add(dataIndex);
                 }
             });
+
+            // AND 연산: 기존의 filteredIndices와 현재 필터 조건의 결과인 currentFilteredIndices의 교집합을 구함
+            filteredIndices = new Set(Array.from(filteredIndices).filter(index => currentFilteredIndices.has(index)));
         });
 
+        // 결과를 필터링된 인덱스들로 재구성
+        let newFilteredStructure: TableInnerStructure = {};
         Object.keys(tableStructure).forEach(key => {
             newFilteredStructure[key] = tableStructure[key].filter((_, index) => filteredIndices.has(index));
         });
 
-        console.log('newFilteredStructure', newFilteredStructure);
         setFilteredTableStructure(newFilteredStructure);
     };
+
 
     // 핸들러 함수들
     const handleSelectChange = (index: number, event: React.ChangeEvent<HTMLSelectElement>) => {

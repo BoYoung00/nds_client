@@ -2,11 +2,10 @@
 
 
 .tableView {
-  height: 100%;
+  height: 99%;
 
   &__main {
     border: none;
-    overflow: hidden;
 
     table {
       @include table-styles;
