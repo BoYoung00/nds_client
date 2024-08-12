@@ -5,6 +5,10 @@ import Main from "./pages/Main";
 import UserAuth from "./pages/UserAuth/UserAuth";
 import DataBase from './pages/DataBase/DataBase';
 import Header from "./publicComponents/layout/Header";
+import ApiArchive from "./pages/ApiArchive";
+import Version from "./pages/Version";
+import Erd from "./pages/Erd";
+import Template from "./pages/Template";
 
 const App: React.FC = () => {
     const [token, setToken] = useState<string | null>(null);
@@ -50,6 +54,10 @@ const App: React.FC = () => {
                         <Routes>
                             <Route path='*' element={<Navigate to="/database" />} />
                             <Route path="/database" element={<DataBase />} />
+                            <Route path="/version" element={<Version />} />
+                            <Route path="/erd" element={<Erd />} />
+                            <Route path="/api" element={<ApiArchive />} />
+                            <Route path="/template" element={<Template />} />
                         </Routes>
                     </div>
                 </>
