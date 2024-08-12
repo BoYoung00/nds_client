@@ -2,12 +2,12 @@ import { useState } from 'react';
 import * as XLSX from 'xlsx';
 import { exportTable, saveCsvData } from '../../../services/api';
 import { downloadFile } from '../../../utils/utils';
+import {useDataBase} from "../../../contexts/DataBaseContext";
 
-interface UseExcelTabProps {
-    selectedTable: TableData | null;
-}
 
-export const useExcelTab = ({ selectedTable }: UseExcelTabProps) => {
+export const useExcelTab = () => {
+    const { selectedTable } = useDataBase();
+
     const [loading, setLoading] = useState<boolean>(false);
 
     const [file, setFile] = useState<File | null>(null);

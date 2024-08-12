@@ -1,13 +1,10 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import { createDataBase } from "../../../../services/api";
+import {createDataBase} from "../../../../services/api";
+import {useDataBase} from "../../../../contexts/DataBaseContext";
 
-// DataBaseData 타입 정의
-interface DataBaseData {
-    name: string;
-    comment: string;
-}
+export const useDatabaseForm = () => {
+    const { setDatabases } = useDataBase();
 
-export const useDatabaseForm = (setDatabases: React.Dispatch<React.SetStateAction<DataBaseEntity[]>>) => {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 

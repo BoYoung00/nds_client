@@ -7,8 +7,11 @@ import {
     uploadImageFile,
     uploadVideoFile
 } from "../../../services/api";
+import {useDataBase} from "../../../contexts/DataBaseContext";
 
-export const useResourceTab = (selectedTable: TableData | null) => {
+export const useResourceTab = () => {
+    const { selectedTable } = useDataBase();
+
     const [loading, setLoading] = useState<boolean>(false);
     const [isImage, setIsImage] = useState<boolean>(true);
 

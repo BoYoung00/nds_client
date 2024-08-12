@@ -1,13 +1,11 @@
 import React from 'react';
 import styles from '../DataBase.module.scss';
-import CopyButton from "../../../publicComponents/UI/CopyButton";
 import ApiSection from "../../../publicComponents/UI/ApiSection";
+import {useDataBase} from "../../../contexts/DataBaseContext";
 
-interface RestApiTabProps {
-    selectedTable: TableData | null;
-}
+const RestApiTab: React.FC = () => {
+    const { selectedTable } = useDataBase();
 
-const RestApiTab: React.FC<RestApiTabProps> = ({ selectedTable }) => {
     const apiUrl = process.env.REACT_APP_API_URL;
     const url = `${apiUrl}/api/json/${selectedTable?.tableHash}`;
 

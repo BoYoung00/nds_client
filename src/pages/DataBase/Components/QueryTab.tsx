@@ -4,15 +4,12 @@ import CodeEditor from '../../../publicComponents/UI/CodeEditor';
 import CopyButton from '../../../publicComponents/UI/CopyButton';
 import TabButtons from '../../../publicComponents/UI/TabButtons';
 import {useQueryTab} from "../hooks/useQueryTab";
+import {useDataBase} from "../../../contexts/DataBaseContext";
 
-interface QueryTabProps {
-    selectedTable: TableData | null;
-}
-
-const QueryTab: React.FC<QueryTabProps> = ({ selectedTable }) => {
+const QueryTab: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string>('SQL');
 
-    const { query } = useQueryTab(selectedTable, activeTab);
+    const { query } = useQueryTab(activeTab);
 
     const handleTabClick = (tab: string) => {
         setActiveTab(tab);

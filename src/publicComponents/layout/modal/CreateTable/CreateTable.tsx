@@ -5,16 +5,16 @@ import LineTitle from "../../../UI/LineTitle";
 import {useColumnData, useCreateTable, useRowState} from "./useCreateTable";
 import {Notification} from "../Notification";
 import Search from "../Search/Search";
+import {useDataBase} from "../../../../contexts/DataBaseContext";
 
 // 모달 (메인)
 interface CreateDBProps {
-    setTables: React.Dispatch<React.SetStateAction<TableData[]>>;
     isOpenModal: boolean;
     onCloseModal(isOpenModal: boolean): void;
-    dataBase: DataBaseEntity | null;
 }
 
-const CreateTable: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal, dataBase , setTables}) => {
+const CreateTable: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal }) => {
+
     if (!isOpenModal) return null;
 
     return (
@@ -24,7 +24,7 @@ const CreateTable: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal, dataB
                 height={75}
                 onClose={onCloseModal}
             >
-                <CreateTableForm dataBase={dataBase} setTables={setTables}/>
+                <CreateTableForm />
             </BackgroundModal>
         </>
     );
@@ -33,12 +33,9 @@ const CreateTable: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal, dataB
 export default CreateTable;
 
 // 안에 내용 (상단)
-interface CreateTableFormProps {
-    setTables: React.Dispatch<React.SetStateAction<TableData[]>>;
-    dataBase: DataBaseEntity | null;
-}
+export const CreateTableForm: React.FC = ({}) => {
+    const { selectedDataBase } = useDataBase();
 
-export const CreateTableForm: React.FC<CreateTableFormProps> = ({dataBase, setTables}) => {
     const {
         tableData,
         handleChange,
@@ -48,7 +45,7 @@ export const CreateTableForm: React.FC<CreateTableFormProps> = ({dataBase, setTa
         setErrorMessage,
         successMessage,
         setSuccessMessage,
-    } = useCreateTable(dataBase, setTables);
+    } = useCreateTable(selectedDataBase);
 
     return (
         <>
@@ -70,7 +67,7 @@ export const CreateTableForm: React.FC<CreateTableFormProps> = ({dataBase, setTa
                             <label>데이터베이스명</label>
                             <input
                                 type="text"
-                                value={dataBase ? dataBase.name : ''}
+                                value={selectedDataBase ? selectedDataBase.name : ''}
                                 disabled
                             />
                         </section>
@@ -88,10 +85,7 @@ export const CreateTableForm: React.FC<CreateTableFormProps> = ({dataBase, setTa
                         </section>
                     </div>
                     <div className={styles.modal__form__group}>
-                        <CreateTableColumn
-                            dataBase={dataBase}
-                            handleSetColumnData={ (newData: RowState[]) => setColumns(newData) }
-                        />
+                        <CreateTableColumn handleSetColumnData={ (newData: RowState[]) => setColumns(newData) }/>
                     </div>
                     <button className={styles.modal__form__submit}>테이블 생성</button>
                 </form>
@@ -114,11 +108,10 @@ export const CreateTableForm: React.FC<CreateTableFormProps> = ({dataBase, setTa
 
 // 테이블 컬럼
 interface CreateTableColumnProps {
-    dataBase: DataBaseEntity | null;
     handleSetColumnData: (newData: RowState[]) => void;
 }
 
-const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ dataBase, handleSetColumnData }) => {
+const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ handleSetColumnData }) => {
     const {
         rows,
         handleSelectChange,
@@ -128,7 +121,7 @@ const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ dataBase, handleS
         handleSelectJoinTable,
         errorMessage,
         setErrorMessage
-    } = useRowState(dataBase);
+    } = useRowState();
 
     useColumnData(rows, handleSetColumnData);
 

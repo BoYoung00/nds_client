@@ -5,11 +5,7 @@ import csv from '../../../assets/images/CSV.png';
 import { Notification } from '../../../publicComponents/layout/modal/Notification';
 import {useExcelTab} from "../hooks/useExcelTab";
 
-interface ExcelTabProps {
-    selectedTable: TableData | null;
-}
-
-const ExcelTab: React.FC<ExcelTabProps> = ({ selectedTable }) => {
+const ExcelTab: React.FC = () => {
     const {
         loading,
         file,
@@ -21,7 +17,7 @@ const ExcelTab: React.FC<ExcelTabProps> = ({ selectedTable }) => {
         setSuccessMessage,
         errorMessage,
         setErrorMessage,
-    } = useExcelTab({ selectedTable });
+    } = useExcelTab();
 
     const displayExcelData = (data: string[][]) => {
         return (

@@ -3,11 +3,7 @@ import styles from '../DataBase.module.scss';
 import { Notification } from "../../../publicComponents/layout/modal/Notification";
 import {useResourceTab} from "../hooks/useResourceTab";
 
-interface ResourceTabProps {
-    selectedTable: TableData | null;
-}
-
-const ResourceTab: React.FC<ResourceTabProps> = ({ selectedTable }) => {
+const ResourceTab: React.FC = () => {
     const {
         hooks: {
             loading,
@@ -31,7 +27,7 @@ const ResourceTab: React.FC<ResourceTabProps> = ({ selectedTable }) => {
             successMessage,
             setSuccessMessage
         }
-    } = useResourceTab(selectedTable);
+    } = useResourceTab();
 
     const apiUrl = process.env.REACT_APP_API_URL;
 

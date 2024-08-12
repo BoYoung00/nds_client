@@ -9,6 +9,8 @@ import ApiArchive from "./pages/ApiArchive";
 import Version from "./pages/Version";
 import Erd from "./pages/Erd";
 import Template from "./pages/Template";
+import {DataBaseProvider} from "./contexts/DataBaseContext";
+import {ErdProvider} from "./contexts/ErdContext";
 
 const App: React.FC = () => {
     const [token, setToken] = useState<string | null>(null);
@@ -53,9 +55,9 @@ const App: React.FC = () => {
                     <div className={styles.app__content}>
                         <Routes>
                             <Route path='*' element={<Navigate to="/database" />} />
-                            <Route path="/database" element={<DataBase />} />
+                            <Route path="/database" element={<DataBaseProvider> <DataBase /> </DataBaseProvider>} />
                             <Route path="/version" element={<Version />} />
-                            <Route path="/erd" element={<Erd />} />
+                            <Route path="/erd" element={<DataBaseProvider> <Erd /> </ DataBaseProvider>} />
                             <Route path="/api" element={<ApiArchive />} />
                             <Route path="/template" element={<Template />} />
                         </Routes>

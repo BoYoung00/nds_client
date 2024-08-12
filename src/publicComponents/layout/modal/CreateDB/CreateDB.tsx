@@ -6,12 +6,11 @@ import {useDatabaseForm, useFileUpload} from "./useCreateDB";
 import {Notification} from "../Notification";
 
 interface CreateDBProps {
-    setDatabases: React.Dispatch<React.SetStateAction<DataBaseEntity[]>>
     isOpenModal: boolean;
     onCloseModal(isOpenModal: boolean): void;
 }
 
-const CreateDB: React.FC<CreateDBProps> = ({ setDatabases, isOpenModal, onCloseModal }) => {
+const CreateDB: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal }) => {
     if (!isOpenModal) return null;
 
     return (
@@ -21,22 +20,17 @@ const CreateDB: React.FC<CreateDBProps> = ({ setDatabases, isOpenModal, onCloseM
                 height={60}
                 onClose={onCloseModal}
             >
-                <CreateDBForm
-                    onCloseModal={onCloseModal}
-                    setDatabases={setDatabases}
-                />
+                <CreateDBForm onCloseModal={onCloseModal} />
             </BackgroundModal>
         </>
     );
 };
 
 interface CreateDBFormProps {
-    setDatabases: React.Dispatch<React.SetStateAction<DataBaseEntity[]>>;
     onCloseModal(isOpenModal: boolean): void;
 }
 
-
-const CreateDBForm: React.FC<CreateDBFormProps> = ({ setDatabases, onCloseModal }) => {
+const CreateDBForm: React.FC<CreateDBFormProps> = ({ onCloseModal }) => {
     const { 
         dataBaseData, 
         handleChange, 
@@ -45,7 +39,7 @@ const CreateDBForm: React.FC<CreateDBFormProps> = ({ setDatabases, onCloseModal 
         setSuccessMessage,
         errorMessage,
         setErrorMessage,
-    } = useDatabaseForm(setDatabases);
+    } = useDatabaseForm();
     
     const { selectedFile, handleFileChange } = useFileUpload();
 

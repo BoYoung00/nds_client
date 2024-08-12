@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
+import {useDataBase} from "../../../contexts/DataBaseContext";
 
 export function useDataBaseWhiteSidebar(
-    setSelectedTable: React.Dispatch<React.SetStateAction<TableData | null>>,
     tables: TableData[],
 ) {
+    const { setSelectedTable } = useDataBase();
+
     const [selectedId, setSelectedId] = useState<number>(-1);
 
     const [isOpenCreateTableModal, setIsOpenCreateTableModal] = useState<boolean>(false);

@@ -1,6 +1,7 @@
 import React, {RefObject, useEffect, useState} from 'react';
 import {findColumnInfo} from "../../../utils/utils";
 import {createData} from "../../../services/api";
+import {useDataBase} from "../../../contexts/DataBaseContext";
 
 const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
     const { columnID, type, columnHash } = findColumnInfo(columnKey);
@@ -14,10 +15,9 @@ const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
     };
 };
 
-export function useDataTab(
-    selectedTable: TableData | null,
-    setTables: React.Dispatch<React.SetStateAction<TableData[]>>
-) {
+export function useDataTab() {
+    const {selectedTable, fetchTables, setTables} = useDataBase();
+
     const [tableStructure, setTableStructure] = useState<TableInnerStructure | undefined>(undefined);
     const [editingCell, setEditingCell] = useState<{ columnKey: string; rowIndex: number } | null>(null);
     const [editedValue, setEditedValue] = useState<string>('');
@@ -67,7 +67,7 @@ export function useDataTab(
 
     // 기존 테이블 리스트 업데이트
     const updateTable = (id: number, updatedData: Partial<TableData>) => {
-        setTables(prevTables =>
+        setTables((prevTables: TableData[]) =>
             prevTables.map(table =>
                 table.id === id
                     ? { ...table, ...updatedData }

@@ -1,6 +1,9 @@
 import {useEffect, useState} from "react";
+import {useDataBase} from "../../../contexts/DataBaseContext";
 
-export function useQueryTab(selectedTable: TableData | null, activeTab: string) {
+export function useQueryTab(activeTab: string) {
+    const { selectedTable } = useDataBase();
+
     const [query, setQuery] = useState<string>('');
 
     useEffect(() => {

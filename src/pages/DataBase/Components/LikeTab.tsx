@@ -5,11 +5,7 @@ import TableView from "../../../publicComponents/layout/TableView";
 import {Notification} from "../../../publicComponents/layout/modal/Notification";
 import {useLikeTab} from "../hooks/useLikeTab";
 
-interface LikeTabProps {
-    selectedTable: TableData | null;
-}
-
-const LikeTab: React.FC<LikeTabProps> = ({ selectedTable }) => {
+const LikeTab: React.FC = () => {
     const {
         hooks: {
             loading,
@@ -35,7 +31,7 @@ const LikeTab: React.FC<LikeTabProps> = ({ selectedTable }) => {
             errorMessage,
             setErrorMessage
         }
-    } = useLikeTab(selectedTable);
+    } = useLikeTab();
 
     if (!tableStructure) return null;
 

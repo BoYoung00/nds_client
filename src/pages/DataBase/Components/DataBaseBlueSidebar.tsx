@@ -5,11 +5,8 @@ import {CreateDB} from "../../../publicComponents/layout/modal/CreateDB";
 import {Notification} from "../../../publicComponents/layout/modal/Notification";
 import {useDataBaseBlueSidebar} from "../hooks/useDataBaseBlueSidebar";
 
-interface DataBaseBlueSidebarProps {
-    setSelectedDataBase: (dataBase: DataBaseEntity) => void;
-}
 
-const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ setSelectedDataBase }) => {
+const DataBaseBlueSidebar: React.FC = () => {
     const {
         databases,
         setDatabases,
@@ -28,7 +25,7 @@ const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ setSelectedDa
             handleScript,
             handleDelete,
         }
-    } = useDataBaseBlueSidebar(setSelectedDataBase);
+    } = useDataBaseBlueSidebar();
 
     return (
         <>
@@ -65,7 +62,6 @@ const DataBaseBlueSidebar: React.FC<DataBaseBlueSidebarProps> = ({ setSelectedDa
 
             {/* DB 생성 모달 */}
             <CreateDB
-                setDatabases={setDatabases}
                 isOpenModal={isOpenCreateDBModal}
                 onCloseModal={() => setIsOpenCreateDBModal(false)}
             />

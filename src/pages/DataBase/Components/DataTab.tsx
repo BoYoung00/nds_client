@@ -8,14 +8,12 @@ import updateSave from '../../../assets/images/updateSave.png';
 import search from '../../../assets/images/search.png';
 import {Notification} from '../../../publicComponents/layout/modal/Notification';
 import {useAutoColumnWidth, useDataTab} from "../hooks/useDataTab";
+import {useDataBase} from "../../../contexts/DataBaseContext";
 
-interface DataTabProps {
-    setTables: React.Dispatch<React.SetStateAction<TableData[]>>;
-    selectedTable: TableData | null;
-    handleFetchTables: () => void;
-}
 
-const DataTab: React.FC<DataTabProps> = ({ setTables, selectedTable, handleFetchTables }) => {
+const DataTab: React.FC = () => {
+    const { fetchTables } = useDataBase();
+
     const {
         hooks: {
             tableStructure,
@@ -43,7 +41,7 @@ const DataTab: React.FC<DataTabProps> = ({ setTables, selectedTable, handleFetch
             successMessage,
             setSuccessMessage,
         }
-    } = useDataTab(selectedTable, setTables);
+    } = useDataTab();
 
     // input text 안의 값에 따라 너비 변경
     const inputRefs = useRef<{ [key: string]: HTMLInputElement }>({});
@@ -139,7 +137,7 @@ const DataTab: React.FC<DataTabProps> = ({ setTables, selectedTable, handleFetch
                 type="question"
                 message={questionMessage}
                 onConfirm={async () => {
-                    await handleFetchTables();
+                    await fetchTables();
                     handleResetTableData();
                 }}
             /> }

@@ -1,8 +1,11 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {getJoinedTableData, tableStructure} from "../../../../services/api";
+import {useDataBase} from "../../../../contexts/DataBaseContext";
 
 // 테이블 생성 메인
-export const useCreateTable = (dataBase: DataBaseEntity | null, setTables: React.Dispatch<React.SetStateAction<TableData[]>>) => {
+export const useCreateTable = (dataBase: DataBaseEntity | null) => {
+    const { setTables } = useDataBase();
+
     const [columns , setColumns] = useState<RowState[]>([]);
     const [tableData, setTableData] = useState({
         name: '',
@@ -115,7 +118,9 @@ const initialRowState: RowState = {
     isJoinTableHash: null,
 };
 
-export const useRowState = (dataBase: DataBaseEntity | null) => {
+export const useRowState = () => {
+    const { selectedDataBase } = useDataBase();
+
     const [rows, setRows] = useState<RowState[]>([initialRowState]);
 
     const [joinTables, setJoinTable] = useState<JoinTable[]>([]);
@@ -134,8 +139,8 @@ export const useRowState = (dataBase: DataBaseEntity | null) => {
 
     // 디비 선택 후 조인 데이터 통신
     useEffect(()=> {
-        if (dataBase?.id) fetchJoinTables(dataBase.id)
-    }, [dataBase]);
+        if (selectedDataBase?.id) fetchJoinTables(selectedDataBase.id)
+    }, [selectedDataBase]);
 
     // 조인 테이블 데이터 선택 후 데이터 가공
     const handleSelectJoinTable = (joinTable: JoinTable | null, index: number) => {
