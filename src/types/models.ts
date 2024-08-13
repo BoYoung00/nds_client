@@ -49,7 +49,7 @@ interface RowState {
 
 // 테이블, 행, 데이터 Response 타입
 interface TableData {
-    id: number ;
+    id: number;
     name: string;
     comment: string;
     createTime: string;
