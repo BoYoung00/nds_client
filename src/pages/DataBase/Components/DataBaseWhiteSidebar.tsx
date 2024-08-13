@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import styles from '../DataBase.module.scss';
 import {DBQueryExtraction} from "../../../publicComponents/layout/modal/DBQueryExtraction";
 import {Notification} from "../../../publicComponents/layout/modal/Notification";

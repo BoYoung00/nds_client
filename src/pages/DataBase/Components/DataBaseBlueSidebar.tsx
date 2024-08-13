@@ -4,12 +4,13 @@ import {DBQueryExtraction} from "../../../publicComponents/layout/modal/DBQueryE
 import {CreateDB} from "../../../publicComponents/layout/modal/CreateDB";
 import {Notification} from "../../../publicComponents/layout/modal/Notification";
 import {useDataBaseBlueSidebar} from "../hooks/useDataBaseBlueSidebar";
+import {useDataBase} from "../../../contexts/DataBaseContext";
 
 
 const DataBaseBlueSidebar: React.FC = () => {
+    const { databases } = useDataBase();
+
     const {
-        databases,
-        setDatabases,
         selectedId,
         modals: {
             isOpenCreateDBModal,

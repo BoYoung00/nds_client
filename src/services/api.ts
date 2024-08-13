@@ -111,6 +111,30 @@ export const downloadNdsFile = async (databaseID: number) => {
     }
 };
 
+// .nds 파일 스크립트로 데이터베이스 생성
+export const saveStructureToDatabase = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const response = await client.post('/api/file/upload', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        if (response.status === 200) {
+            return response.data; // 성공
+        }
+        new Error(`${response.data.message}`)
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
+
 // 미디어 이미지 리스트 가져오기
 export const getImagesPathList = async (tableHash: string) => {
     try {

@@ -11,23 +11,7 @@ export const useDataBaseBlueSidebar = () => {
     const [isOpenQueryModal, setIsOpenQueryModal] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const [databases, setDatabases] = useState<DataBaseEntity[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    const fetchData = async () => {
-        try {
-            const data = await getDataBasesForCurrentUser();
-            setDatabases(data);
-        } catch (err) {
-            setErrorMessage('데이터베이스를 가져오는 중 오류가 발생했습니다.');
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const onSelected = (dataBase: DataBaseEntity) => {
         setSelectedDatabaseID(dataBase.id!!);
@@ -65,8 +49,6 @@ export const useDataBaseBlueSidebar = () => {
     }
 
     return {
-        databases,
-        setDatabases,
         selectedId: selectedDatabaseID,
         modals: {
             isOpenCreateDBModal,
