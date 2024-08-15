@@ -1,15 +1,11 @@
 @import "src/App.module";
 
 .search {
-  position: absolute;
-  bottom: 2.5rem;
-  right: 0;
   width: 16rem; height: 20rem;
   padding: .5rem;
   background: white;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
-  z-index: 99;
 
   &__title {
     font-size: 1.1rem;
@@ -49,12 +45,19 @@
     div {
       width: 85%;
       margin: .4rem auto;
+      cursor: pointer;
+      font-size: .9rem;
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+      border-bottom: 1px solid #bdbdbd;
+      padding: .5rem;
 
-      span {
-        font-size: .9rem;
-        cursor: pointer;
-      }
+      img { width: 4rem; }
+      video { width: 6rem }
+
     }
+
     &__cancel {
       margin-left: 1.2rem;
       color: red;

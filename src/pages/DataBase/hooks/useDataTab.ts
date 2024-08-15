@@ -1,6 +1,6 @@
 import React, {RefObject, useEffect, useState} from 'react';
 import {findColumnInfo} from "../../../utils/utils";
-import {createData} from "../../../services/api";
+import {createData, getImagesPathList, getVideoPathList} from "../../../services/api";
 import {useDataBase} from "../../../contexts/DataBaseContext";
 
 const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
@@ -16,7 +16,10 @@ const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
 };
 
 export function useDataTab() {
-    const {selectedTable, fetchTables, setTables} = useDataBase();
+    const [loading, setLoading] = useState<boolean>(false);
+    const {selectedTable, setTables, tables} = useDataBase();
+    const [imagePaths, setImagePaths] = useState<MediaFile[]>([]);
+    const [videoPaths, setVideoPaths] = useState<MediaFile[]>([]);
 
     const [tableStructure, setTableStructure] = useState<TableInnerStructure | undefined>(undefined);
     const [editingCell, setEditingCell] = useState<{ columnKey: string; rowIndex: number } | null>(null);
@@ -38,6 +41,7 @@ export function useDataTab() {
     // 다른 테이블 선택 시마다 초기화
     useEffect(() => {
         handleResetTableData();
+        fetchMedias();
     }, [selectedTable])
 
     // 저장 (통신)
@@ -212,6 +216,69 @@ export function useDataTab() {
         }
     };
 
+    // 조인 데이터 리스트 찾기
+    const findJoinDataList = (tableHash: string): string[] => {
+        const matchingTable = tables.find((table) => table.tableHash === tableHash);
+
+        if (!matchingTable) {
+            return [];
+        }
+
+        const dataList: string[] = [];
+
+        for (const key in matchingTable.tableInnerStructure) {
+            const { isPk } = findColumnInfo(key)
+            const columns = matchingTable.tableInnerStructure[key];
+
+            if (isPk) {
+                columns.forEach((column) => {
+                    dataList.push(column.data);
+                });
+            }
+        }
+        return dataList;
+    };
+
+    // 테이블 이미지 리스트 가져오기
+    const fetchMedias = async () => {
+        if (!selectedTable?.tableHash) return;
+
+        try {
+            setLoading(true);
+            const images = await getImagesPathList(selectedTable.tableHash)
+            const videos = await getVideoPathList(selectedTable.tableHash);
+            setImagePaths(images);
+            setVideoPaths(videos);
+        } catch (error) {
+            setErrorMessage('미디어 경로 목록을 가져오는데 실패했습니다.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // 검색 모달에서 데이터 선택
+    const handleSelectData = async (selectedData: string, columnKey: string, rowIndex: number) => {
+        if (tableStructure) {
+            const updatedTableStructure = { ...tableStructure };
+
+            const updatedCellData = [...(tableStructure[columnKey] || [])];
+
+            // 이미 같은 데이터가 있는지 체크
+            if (updatedCellData[rowIndex]?.data === selectedData) return;
+
+            // 선택한 데이터를 해당 셀에 업데이트
+            updatedCellData[rowIndex] = { ...updatedCellData[rowIndex], data: selectedData };
+            updatedTableStructure[columnKey] = updatedCellData;
+
+            // 업데이트된 테이블 구조를 반영
+            setTableStructure(updatedTableStructure);
+            setEditingCell({ columnKey, rowIndex });
+
+            // 데이터 저장
+            await handleInputBlur();
+        }
+    };
+
     return {
         hooks: {
             tableStructure,
@@ -221,6 +288,8 @@ export function useDataTab() {
             updateDataList,
             deleteDataList,
             deletedRows,
+            imagePaths,
+            videoPaths
         },
         handlers: {
             handleAddData,
@@ -229,7 +298,9 @@ export function useDataTab() {
             handleInputChange,
             handleInputBlur,
             handleRefreshClick,
-            handleResetTableData
+            handleResetTableData,
+            handleSelectData,
+            findJoinDataList
         },
         modals: {
             successMessage,

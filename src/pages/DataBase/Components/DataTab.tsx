@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import styles from '../DataBase.module.scss';
 import refresh from '../../../assets/images/refresh.png';
 import addData from '../../../assets/images/addData.png';
@@ -9,6 +9,7 @@ import search from '../../../assets/images/search.png';
 import {Notification} from '../../../publicComponents/layout/modal/Notification';
 import {useAutoColumnWidth, useDataTab} from "../hooks/useDataTab";
 import {useDataBase} from "../../../contexts/DataBaseContext";
+import Search from "../../../publicComponents/layout/modal/Search/Search";
 
 
 const DataTab: React.FC = () => {
@@ -23,6 +24,8 @@ const DataTab: React.FC = () => {
             updateDataList,
             deleteDataList,
             deletedRows,
+            imagePaths,
+            videoPaths
         },
         handlers: {
             handleAddData,
@@ -31,7 +34,9 @@ const DataTab: React.FC = () => {
             handleInputChange,
             handleInputBlur,
             handleRefreshClick,
-            handleResetTableData
+            handleResetTableData,
+            handleSelectData,
+            findJoinDataList
         },
         modals: {
             questionMessage,
@@ -94,18 +99,34 @@ const DataTab: React.FC = () => {
                         {columns.length > 0 && tableStructure[columns[0]].map((_, rowIndex) => (
                             <tr key={rowIndex} onClick={() => setSelectedRow(rowIndex)}>
                                 {columns.map(columnKey => {
+                                    const joinTableHashMatch = columnKey.match(/joinTableHash=([\w가-힣]+)/);
+                                    const joinTableHash = joinTableHashMatch ? joinTableHashMatch[1] : `null`;
                                     const cellData = tableStructure[columnKey][rowIndex] || { id: null, data: '' };
                                     return (
                                         <td
                                             key={cellData.id || columnKey + rowIndex}
                                             className={`${selectedRow === rowIndex ? styles.selectedCell : ''} ${deletedRows.includes(rowIndex) ? styles.deletedCell : ''}`}
                                         >
-                                            { cellData.dataType === 'MediaFile' ?
-                                                <span>{cellData.data}</span>
+                                            { joinTableHash !== 'null' ?
+                                                <DataCell
+                                                    type={'join'}
+                                                    value={cellData.data}
+                                                    columnKey={columnKey}
+                                                    rowIndex={rowIndex}
+                                                    dataList={findJoinDataList(joinTableHash)}
+                                                    handleSelectData={handleSelectData}
+                                                />
                                                 :
                                                 <>
-                                                    { cellData.dataType === 'JOIN_Column' ?
-                                                        <span>{cellData.data}</span>
+                                                    { cellData.dataType === 'MediaFile' ?
+                                                        <DataCell
+                                                            type={'media'}
+                                                            value={cellData.data}
+                                                            columnKey={columnKey}
+                                                            rowIndex={rowIndex}
+                                                            dataList={[...imagePaths, ...videoPaths]}
+                                                            handleSelectData={handleSelectData}
+                                                        />
                                                         :
                                                         <input
                                                             ref={el => {
@@ -160,3 +181,51 @@ const DataTab: React.FC = () => {
 };
 
 export default DataTab;
+
+interface DataCellProps {
+    type: 'join' | 'media';
+    value: string;
+    columnKey: string;
+    rowIndex: number;
+    dataList: any[];
+    handleSelectData: (selectedData: string, columnKey: string, rowIndex: number) => void;
+}
+
+const DataCell: React.FC<DataCellProps> = ({
+   type,
+   value,
+   columnKey,
+   rowIndex,
+   dataList,
+   handleSelectData,
+}) => {
+    const [showSearch, setShowSearch] = useState<boolean>(false);
+
+    return (
+        <div className={styles.dataBox}>
+            <input
+                type="text"
+                value={value}
+                placeholder='NULL'
+                readOnly
+            />
+            <button
+                className={styles.searchBut}
+                onClick={() => setShowSearch(!showSearch)}
+            >
+                {type === 'join' ? 'Join' : 'Media'}
+            </button>
+            <span className={styles.searchBox}>
+                <Search
+                    title={type === 'join' ? '조인 데이터 검색' : '미디어 데이터 검색'}
+                    showSearch={showSearch}
+                    setShowSearch={setShowSearch}
+                    dataList={dataList}
+                    handleSelectData={(selectedData) => handleSelectData(selectedData, columnKey, rowIndex)}
+                    type={type === 'join' ? 'joinData' : 'media'}
+                    index={rowIndex}
+                />
+            </span>
+        </div>
+    );
+};

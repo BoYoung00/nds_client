@@ -33,7 +33,7 @@ const CreateTable: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal }) => 
 export default CreateTable;
 
 // 안에 내용 (상단)
-export const CreateTableForm: React.FC = ({}) => {
+export const CreateTableForm: React.FC = () => {
     const { selectedDataBase } = useDataBase();
 
     const {
@@ -253,15 +253,17 @@ const TableRow: React.FC<TableRowProps> = ({ joinTables, handleSelectJoinTable, 
 
                 <div className={styles.joinBox__searchButton} >
                     <h5 onClick={() => setShowSearch(!showSearch)}>검색</h5>
-                    <Search
-                        title={"조인 테이블 검색"}
-                        showSearch={showSearch}
-                        setShowSearch={setShowSearch}
-                        dataList={joinTables}
-                        handleSelectData={handleSelectJoinTable}
-                        type={'joinTable'}
-                        index={index}
-                    />
+                    <span className={styles.searchBox}>
+                        <Search
+                            title={"조인 테이블 검색"}
+                            showSearch={showSearch}
+                            setShowSearch={setShowSearch}
+                            dataList={joinTables}
+                            handleSelectData={handleSelectJoinTable}
+                            type={'joinTable'}
+                            index={index}
+                        />
+                    </span>
                 </div>
             </td>
         </tr>

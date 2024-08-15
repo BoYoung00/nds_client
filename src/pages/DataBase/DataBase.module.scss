@@ -190,6 +190,26 @@
     table {
       @include table-styles;
 
+      .dataBox {
+        @include flex-space-between;
+        position: relative;
+
+        & > input[type='text'] {
+          width: 65%;
+        }
+
+        .searchBut {
+          @include button-style(true, 30%, .9rem);
+        }
+
+        .searchBox {
+          position: absolute;
+          right: 0;
+          top: 2.8rem;
+          z-index: 1;
+        }
+      }
+
       .selectedCell {
         background: #eaeff8;
       }

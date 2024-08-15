@@ -124,10 +124,10 @@ const CreateDBForm: React.FC<CreateDBFormProps> = ({ onCloseModal }) => {
                                 <tr key={columnIndex}>
                                     <td>{column.name}</td>
                                     <td>{column.dataType}</td>
-                                    <td>{column.isPkActive ? 'true' : 'false'}</td>
-                                    <td>{column.isFkActive ? 'true' : 'false'}</td>
-                                    <td>{column.isUkActive ? 'true' : 'false'}</td>
-                                    <td>{column.isNotNullActive ? 'true' : 'false'}</td>
+                                    <td>{column.isPkActive ? 'yes' : 'no'}</td>
+                                    <td>{column.isFkActive ? 'yes' : 'no'}</td>
+                                    <td>{column.isUkActive ? 'yes' : 'no'}</td>
+                                    <td>{column.isNotNullActive ? 'yes' : 'no'}</td>
                                 </tr>
                             ))}
                             </tbody>

@@ -130,7 +130,7 @@ export const useRowState = () => {
     const fetchJoinTables = async (databaseID: number) => {
         try {
             const data = await getJoinedTableData(databaseID);
-            console.log("조인 테이블", data)
+            // console.log("조인 테이블", data)
             setJoinTable(data);
         } catch (error) {
             setErrorMessage('조인 테이블 데이터를 가져오는 데 실패했습니다.');
