@@ -44,6 +44,13 @@ export function useDataTab() {
         fetchMedias();
     }, [selectedTable])
 
+    // 데이터 저장 (비동기 처리)
+    useEffect(() => {
+        if (editingCell && tableStructure) {
+            handleInputBlur();
+        }
+    }, [tableStructure]);
+
     // 저장 (통신)
     const handleSave = async () => {
         if (!selectedTable) return;
@@ -113,7 +120,7 @@ export function useDataTab() {
                 return acc;
             }, {} as TableInnerStructure);
 
-            console.log(newData)
+            // console.log(newData)
 
             setCreateRowLine(createRowLine + 1);
             setTableStructure(newData);
@@ -257,27 +264,22 @@ export function useDataTab() {
     };
 
     // 검색 모달에서 데이터 선택
-    const handleSelectData = async (selectedData: string, columnKey: string, rowIndex: number) => {
+    const handleSelectData =  (selectedData: string, columnKey: string, rowIndex: number) => {
         if (tableStructure) {
+            setEditingCell({ columnKey, rowIndex });
+            setEditedValue(selectedData);
+
+            // 테이블 구조 업데이트
             const updatedTableStructure = { ...tableStructure };
-
-            const updatedCellData = [...(tableStructure[columnKey] || [])];
-
-            // 이미 같은 데이터가 있는지 체크
-            if (updatedCellData[rowIndex]?.data === selectedData) return;
-
-            // 선택한 데이터를 해당 셀에 업데이트
+            const updatedCellData = [...(updatedTableStructure[columnKey] || [])];
             updatedCellData[rowIndex] = { ...updatedCellData[rowIndex], data: selectedData };
             updatedTableStructure[columnKey] = updatedCellData;
 
-            // 업데이트된 테이블 구조를 반영
+            // 상태 업데이트 한 번에 처리
             setTableStructure(updatedTableStructure);
-            setEditingCell({ columnKey, rowIndex });
-
-            // 데이터 저장
-            await handleInputBlur();
         }
     };
+
 
     return {
         hooks: {
