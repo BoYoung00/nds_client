@@ -42,9 +42,9 @@ const ExcelTab: React.FC = () => {
     return (
         <>
             <div className={styles.excelTab}>
-        <span className={styles.excelDownload} onClick={handleExportTable}>
-          테이블 엑셀 추출
-        </span>
+                <span className={styles.excelDownload} onClick={handleExportTable}>
+                  테이블 엑셀 추출
+                </span>
                 <main>
                     <section className={styles.excelTab__fileContainer}>
                         <div className={styles.description}>

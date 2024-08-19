@@ -264,15 +264,17 @@ export function useDataTab() {
     };
 
     // 검색 모달에서 데이터 선택
-    const handleSelectData =  (selectedData: string, columnKey: string, rowIndex: number) => {
+    const handleSelectData = (selectedData: string | null, columnKey: string, rowIndex: number) => {
         if (tableStructure) {
             setEditingCell({ columnKey, rowIndex });
-            setEditedValue(selectedData);
+
+            const finalData = selectedData !== null ? selectedData : '';
+            setEditedValue(finalData);
 
             // 테이블 구조 업데이트
             const updatedTableStructure = { ...tableStructure };
             const updatedCellData = [...(updatedTableStructure[columnKey] || [])];
-            updatedCellData[rowIndex] = { ...updatedCellData[rowIndex], data: selectedData };
+            updatedCellData[rowIndex] = { ...updatedCellData[rowIndex], data: finalData };
             updatedTableStructure[columnKey] = updatedCellData;
 
             // 상태 업데이트 한 번에 처리

@@ -40,8 +40,10 @@ const App: React.FC = () => {
 
         if (screenSize.width > 1920) {
             html.style.fontSize = '20px';
+        } else if (screenSize.width > 1680) {
+            html.style.fontSize = '16px';
         } else if (screenSize.width > 1280) {
-            html.style.fontSize = '14px';
+            html.style.fontSize = '12px';
         } else {
             html.style.fontSize = '11px';
         }
