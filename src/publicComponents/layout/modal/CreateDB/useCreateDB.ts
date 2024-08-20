@@ -130,15 +130,6 @@ export const useFileUpload = () => {
         return database;
     };
 
-    const handleFetchCreateDBFile = async (file: File) => {
-        try {
-            await saveStructureToDatabase(file);
-            return '';
-        } catch (error) {
-            return (error as Error).message || '알 수 없는 오류가 발생했습니다.';
-        }
-    };
-
     return {
         selectedFile,
         handleFileChange,

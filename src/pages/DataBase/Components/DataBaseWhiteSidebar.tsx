@@ -5,6 +5,7 @@ import {Notification} from "../../../publicComponents/layout/modal/Notification"
 import {CreateTable} from "../../../publicComponents/layout/modal/CreateTable";
 import {useDataBaseWhiteSidebar} from "../hooks/useDataBaseWhiteSidebar";
 import {useDataBase} from "../../../contexts/DataBaseContext";
+import Merge from "../../../publicComponents/layout/modal/Merge/Merge";
 
 const DataBaseWhiteSidebar: React.FC = () => {
     const { tables, selectedDataBase } = useDataBase();
@@ -60,8 +61,8 @@ const DataBaseWhiteSidebar: React.FC = () => {
                 onCloseModal={() => setIsOpenCreateTableModal(false)}
             />
 
-            {/* 쿼리 추출 모달 */}
-            <DBQueryExtraction
+            {/* 병합 모달 */}
+            <Merge
                 isOpenModal={isOpenMergeModal}
                 onCloseModal={() => setIsOpenMergeModal(false)}
             />

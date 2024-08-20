@@ -32,7 +32,6 @@ interface CreateDBFormProps {
     onCloseModal(isOpenModal: boolean): void;
 }
 
-
 const CreateDBForm: React.FC<CreateDBFormProps> = ({ onCloseModal }) => {
     const {
         dataBaseData,
