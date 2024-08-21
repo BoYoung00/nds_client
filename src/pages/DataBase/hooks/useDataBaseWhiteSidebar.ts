@@ -4,7 +4,7 @@ import {useDataBase} from "../../../contexts/DataBaseContext";
 export function useDataBaseWhiteSidebar(
     tables: TableData[],
 ) {
-    const { setSelectedTable } = useDataBase();
+    const { selectedDataBase, setSelectedTable } = useDataBase();
 
     const [selectedId, setSelectedId] = useState<number>(-1);
 
@@ -18,9 +18,9 @@ export function useDataBaseWhiteSidebar(
         setSelectedTable(table);
     }
 
-    const handleQuery = () => {
-        if (selectedId === -1) {
-            setErrorMessage("선택한 테이블이 없습니다.");
+    const handleMerge = () => {
+        if (!selectedDataBase) {
+            setErrorMessage('선택된 데이터베이스가 없습니다.');
         } else {
             setIsOpenMergeModal(true);
         }
@@ -50,7 +50,7 @@ export function useDataBaseWhiteSidebar(
         errorMessage,
         setErrorMessage,
         onSelected,
-        handleQuery,
+        handleQuery: handleMerge,
         handleDelete
     };
 }

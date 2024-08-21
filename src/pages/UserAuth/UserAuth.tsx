@@ -28,7 +28,7 @@ const UserAuth: React.FC = () => {
                 <span />
             </div>
             <div className={styles.userAuth__container}>
-                <section className={styles.userAuth__container__imaSide}>
+                <section className={styles.userAuth__container__imgSide}>
                     <span
                         style={{
                             background: `url(${activeForm === 'login' ? login_img1 : login_img2}) no-repeat center center`

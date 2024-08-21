@@ -78,7 +78,7 @@ const Search: React.FC<SearchModalProps> = ({ handleSelectData, showSearch, setS
             <section className={styles.search__listBox}>
                 {filteredData.length > 0 ? (
                     filteredData.map((item, index) => (
-                        <div key={index} onClick={() => handleRowClick(item.path)}>
+                        <div key={index} onClick={() => handleRowClick(item)}>
                             {type === 'joinTable' ? (
                                 <>
                                     {item.name} / {item.pkColumn?.name} / {item.pkColumn?.type}

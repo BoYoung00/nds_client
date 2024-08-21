@@ -289,3 +289,55 @@ export const saveCsvData = async (csvDataRequest: CsvDataRequest) => {
         throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
     }
 };
+
+// 테이블 병합 컨펌
+export const tableMergeConfirm = async (tableMergeConfirmRequest: TableMergeConfirmRequest) => {
+    try {
+        const response = await client.post('/api/tables/merge/confirm', tableMergeConfirmRequest);
+        if (response.status === 200)
+            return response.data;
+        new Error(`${response.data.message}`)
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
+
+// 테이블 병합 프리뷰
+export const tableMergePreview = async (tableMergeRequest: TableMergeConfirmRequest) => {
+    try {
+        const response = await client.post('/ssr/merge/confirm', tableMergeRequest);
+        if (response.status === 200)
+            return response.data;
+        new Error(`${response.data.message}`)
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
+
+// 테이블 병합 저장
+export const tableMergeSave = async (tableMergeSaveRequest: TableMergeSaveRequest) => {
+    try {
+        const response = await client.post('/api/tables/merge/save', tableMergeSaveRequest);
+        if (response.status === 200)
+            return response.data;
+        new Error(`${response.data.message}`)
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
+

@@ -28,40 +28,63 @@
 
   .mergeChoiceContainer {
     width: 75%;
-    height: 100%;
-    @include flex-space-between;
-    flex-direction: column;
+    height: 95%;
     border: 1px solid $color-gray-middle;
     border-radius: 4px;
 
     .tableChoiceMainBox {
       width: 100%;
-      height: 100%;
+      height: 90%;
       @include flex-center;
+
+      @media (max-width: 1024px) {
+        display: block;
+        height: 32rem;
+        overflow-y: scroll;
+        overflow-x: hidden;
+      }
 
       .tableChoiceBox {
         width: 30%;
         height: 90%;
-        display: flex;
+        @include flex-space-between;
         flex-direction: column;
 
-        .tables {
+        @media (max-width: 1024px) {
+          width: 100%; height: 30rem;
+        }
+
+        .tableBox {
           border: 1px solid $color-gray-middle;
           border-radius: 4px;
-          height: 90%;
-          overflow: auto;
+          height: 85%; width: 100%;
+          @include flex-space-between;
+          flex-direction: column;
 
-          .table {
-            width: 90%;
-            display: flex;
-            padding: .8rem;
-            font-size: 1.3rem;
+          .tables {
+            width: 100%; height: 80%;
+            overflow: auto;
 
-            input[type='checkbox'] {
-              width: 1.5rem;
-              height: 1.5rem;
-              margin-right: 1rem;
+            .table {
+              width: auto;
+              display: flex;
+              padding: .8rem;
+              font-size: 1.3rem;
+
+              input[type='checkbox'] {
+                width: 1.5rem;
+                height: 1.5rem;
+                margin-right: 1rem;
+              }
             }
+          }
+          .comment {
+            width: 100%;
+            bottom: 0;
+            border-radius: 4px;
+            padding: 0 .5rem;
+
+            p { margin: 0; }
           }
         }
 
@@ -74,6 +97,10 @@
       .doubleArrowImg {
         width: 2.5rem;
         transform: rotate(-90deg);
+
+        @media (max-width: 1024px) {
+          transform: rotate(0);
+        }
       }
 
       .previewBox {
@@ -81,17 +108,22 @@
         height: 90%;
         border: 1px solid $color-gray-middle;
         border-radius: 4px;
+        overflow: auto;
+
+        @media (max-width: 1024px) {
+          width: 100%; height: 50rem;
+        }
       }
     }
   }
 
   .mergeInfoContainer {
-    width: 25%; height: 100%;
+    width: 25%; height: 95%;
     @include flex-space-between;
     flex-direction: column;
 
     .mergeInfoBox {
-      width: 100%; height: 90%;
+      width: 100%; height: 87%;
       border: 1px solid $color-gray-middle;
       border-radius: 4px;
 
@@ -115,4 +147,3 @@
     }
   }
 }
-

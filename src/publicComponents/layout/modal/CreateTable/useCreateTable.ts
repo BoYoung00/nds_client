@@ -77,7 +77,7 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
             columns : columnObjs,
             tableHash : null,
         };
-        console.log("테이블 생성 : ", createTableObj);
+        // console.log("테이블 생성 : ", createTableObj);
         try {
             const createdTable = await tableStructure(createTableObj);
             setTables(prevTables => [...prevTables, createdTable]);
@@ -119,12 +119,25 @@ const initialRowState: RowState = {
 };
 
 export const useRowState = () => {
-    const { selectedDataBase } = useDataBase();
+    const { selectedDataBase, tables } = useDataBase();
 
     const [rows, setRows] = useState<RowState[]>([initialRowState]);
 
     const [joinTables, setJoinTable] = useState<JoinTable[]>([]);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    // 테이블 생성 후 초기화
+    useEffect(()=> {
+        setRows([{
+            name: '',
+            dataType: 'TEXT',
+            isPkActive: false,
+            isFkActive: false,
+            isUkActive: false,
+            isNotNullActive: false,
+            isJoinTableHash: null
+        }]);
+    }, [tables]);
 
     // 테이블 생성 조인 테이블 통신 연결하기
     const fetchJoinTables = async (databaseID: number) => {
@@ -137,13 +150,14 @@ export const useRowState = () => {
         }
     };
 
-    // 디비 선택 후 조인 데이터 통신
+    // 디비 선택, 테이블 생성 후 조인 데이터 통신
     useEffect(()=> {
         if (selectedDataBase?.id) fetchJoinTables(selectedDataBase.id)
-    }, [selectedDataBase]);
+    }, [selectedDataBase, tables]);
 
     // 조인 테이블 데이터 선택 후 데이터 가공
     const handleSelectJoinTable = (joinTable: JoinTable | null, index: number) => {
+        // console.log('joinTable', joinTable);
         const updatedRows = [...rows];
         updatedRows[index]['isJoinTableHash'] = joinTable
             ? `${joinTable.name} / ${joinTable.pkColumn?.name} / ${joinTable.pkColumn?.type}-${joinTable.tableHash}`

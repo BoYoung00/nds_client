@@ -34,7 +34,7 @@ const Notification: React.FC<NotificationProps> = ({ onClose, type, message, onC
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 99,
+        zIndex: 100,
     };
 
     return (

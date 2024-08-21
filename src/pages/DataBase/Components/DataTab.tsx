@@ -188,7 +188,7 @@ interface DataCellProps {
     columnKey: string;
     rowIndex: number;
     dataList: any[];
-    handleSelectData: (selectedData: string, columnKey: string, rowIndex: number) => void;
+    handleSelectData: (selectedData: MediaFile, columnKey: string, rowIndex: number) => void;
 }
 
 const DataCell: React.FC<DataCellProps> = ({

@@ -144,3 +144,27 @@ interface FileDataBaseSet {
     comment: string;
     tableList: FileTableSet[];
 }
+
+// 테이블 병합 확인 요청
+interface TableMergeConfirmRequest {
+    parentTableID: number | null;
+    childTableID: number | null;
+}
+
+// 테이블 병합 확인 반환
+interface TableMergeConfirmResponse {
+    tableMergeCode: number;
+    tableConfirmMessage: string;
+    tableConfirmResult: boolean;
+    tableMergeImprovement: TableInnerStructure;
+}
+
+// 테이블 병합 저장 요청
+interface TableMergeSaveRequest {
+    newTableName: string;
+    newTableComment: string;
+    parentTableID: number;
+    childTableID: number;
+}
+
+

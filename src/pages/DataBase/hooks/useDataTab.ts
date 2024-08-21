@@ -264,11 +264,11 @@ export function useDataTab() {
     };
 
     // 검색 모달에서 데이터 선택
-    const handleSelectData = (selectedData: string | null, columnKey: string, rowIndex: number) => {
+    const handleSelectData = (selectedData: MediaFile | null, columnKey: string, rowIndex: number) => {
         if (tableStructure) {
             setEditingCell({ columnKey, rowIndex });
 
-            const finalData = selectedData !== null ? selectedData : '';
+            const finalData = selectedData !== null ? selectedData.path : '';
             setEditedValue(finalData);
 
             // 테이블 구조 업데이트

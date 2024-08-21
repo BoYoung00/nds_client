@@ -29,7 +29,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
 
-    &__imaSide {
+    &__imgSide {
       flex: 1;
       @include flex-right;
 
@@ -100,7 +100,7 @@
   @media (max-width: 60rem) {
     .userAuth__container {
       width: 30rem;
-      .userAuth__container__imaSide {
+      &__imgSide {
         display: none;
       }
     }
