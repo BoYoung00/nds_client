@@ -4,8 +4,7 @@ import styles from './Merge.module.scss';
 import {useDataBase} from "../../../../contexts/DataBaseContext";
 import LineTitle from "../../../UI/LineTitle";
 import doubleArrow from "../../../../assets/images/doubleArrow.png";
-import TableView from "../../TableView";
-import {saveCsvData, tableMergeConfirm, tableMergePreview, tableMergeSave} from "../../../../services/api";
+import {tableMergeConfirm, tableMergePreview, tableMergeSave} from "../../../../services/api";
 import {Notification} from "../Notification";
 
 interface MergeProps {
@@ -19,7 +18,7 @@ interface TableInfo {
 }
 
 const Merge: React.FC<MergeProps> = ({ isOpenModal, onCloseModal }) => {
-    const { tables } = useDataBase();
+    const { tables, setTables } = useDataBase();
     const [tableInfo, setTableInfo] = useState<TableInfo>({
         name: '',
         comment: '',
@@ -39,6 +38,7 @@ const Merge: React.FC<MergeProps> = ({ isOpenModal, onCloseModal }) => {
     };
 
     const handleCheckboxChange = (table: TableData) => {
+        console.log('선택',table)
         setSelectedTables(prevSelectedTables => {
             if (prevSelectedTables.includes(table)) {
                 // 이미 선택된 테이블이면 제거
@@ -113,15 +113,18 @@ const Merge: React.FC<MergeProps> = ({ isOpenModal, onCloseModal }) => {
             newTableName: tableInfo.name,
             newTableComment: tableInfo.comment,
         };
-
-        console.log('tableMergeSaveRequest', tableMergeSaveRequest);
-
+        // console.log('tableMergeSaveRequest', tableMergeSaveRequest);
         try {
             const response = await tableMergeSave(tableMergeSaveRequest);
+            setTables((prevTables) => {
+                const filteredTables = prevTables.filter(item =>
+                    !selectedTables.some(selected => selected.id === item.id)
+                );
+                return [...filteredTables, response];
+            });
             setSuccessMessage('병합에 성공하셨습니다.')
         } catch (error) {
             const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
-            console.log('병합 저장 오류', errorMessage)
             setErrorMessage(errorMessage);
         }
     };
@@ -143,7 +146,7 @@ const Merge: React.FC<MergeProps> = ({ isOpenModal, onCloseModal }) => {
                                 <p>병합 테이블 선택</p>
                             </section>
                             <section className={styles.tableChoiceMainBox}>
-                                <div className={styles.tableChoiceBox}>
+                                <section className={styles.tableChoiceBox}>
                                     <div className={styles.tableBox}>
                                         <div className={styles.tables}>
                                             { tables.map((table, index) => (
@@ -165,11 +168,13 @@ const Merge: React.FC<MergeProps> = ({ isOpenModal, onCloseModal }) => {
                                         </span>
                                     </div>
                                     <button className={styles.previewBut} onClick={() => handleFetchTableMergeConfirm(false)}>프리뷰 보기</button>
-                                </div>
-                                <img className={styles.doubleArrowImg} src={doubleArrow} alt="화살표" />
-                                <div className={styles.previewBox} style={{ padding: '0' }}>
+                                </section>
+                                <section className={styles.doubleArrowImgBox}>
+                                    <img className={styles.doubleArrowImg} src={doubleArrow} alt="화살표" />
+                                </section>
+                                <section className={styles.previewBox} style={{ padding: '0' }}>
                                     <div id='merge-preview' />
-                                </div>
+                                </section>
                             </section>
                         </main>
                         <aside className={styles.mergeInfoContainer}>
