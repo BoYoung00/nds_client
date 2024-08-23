@@ -167,4 +167,13 @@ interface TableMergeSaveRequest {
     childTableID: number;
 }
 
+// 커밋
+interface VcsFileEntity {
+    id: number;
+    path: string;
+    checkSum: string;
+    createTime: string;
+    isCurrent: string;
+    databaseID: number;
+}
 

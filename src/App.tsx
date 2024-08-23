@@ -6,11 +6,11 @@ import UserAuth from "./pages/UserAuth/UserAuth";
 import DataBase from './pages/DataBase/DataBase';
 import Header from "./publicComponents/layout/Header";
 import ApiArchive from "./pages/ApiArchive";
-import Version from "./pages/Version";
+import Version from "./pages/Revision";
 import Erd from "./pages/Erd";
 import Template from "./pages/Template";
 import {DataBaseProvider} from "./contexts/DataBaseContext";
-import {ErdProvider} from "./contexts/ErdContext";
+import {TableProvider} from "./contexts/TableContext";
 
 const App: React.FC = () => {
     const [token, setToken] = useState<string | null>(null);
@@ -37,7 +37,6 @@ const App: React.FC = () => {
 
     useEffect(() => {
         const html = document.documentElement;
-
         if (screenSize.width > 1920) {
             html.style.fontSize = '20px';
         } else if (screenSize.width > 1680) {
@@ -57,9 +56,9 @@ const App: React.FC = () => {
                     <div className={styles.app__content}>
                         <Routes>
                             <Route path='*' element={<Navigate to="/database" />} />
-                            <Route path="/database" element={<DataBaseProvider> <DataBase /> </DataBaseProvider>} />
-                            <Route path="/version" element={<Version />} />
-                            <Route path="/erd" element={<DataBaseProvider> <Erd /> </ DataBaseProvider>} />
+                            <Route path="/database" element={<TableProvider><DataBase /> </TableProvider> } />
+                            <Route path="/revision" element={<Version />} />
+                            <Route path="/erd" element={<Erd />} />
                             <Route path="/api" element={<ApiArchive />} />
                             <Route path="/template" element={<Template />} />
                         </Routes>

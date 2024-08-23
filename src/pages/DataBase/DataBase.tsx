@@ -11,10 +11,10 @@ import QueryTab from "./Components/QueryTab";
 import LikeTab from "./Components/LikeTab";
 import ExcelTab from "./Components/ExcelTab";
 import ResourceTab from "./Components/ResourceTab";
-import {useDataBase} from "../../contexts/DataBaseContext";
+import {useTable} from "../../contexts/TableContext";
 
 const DataBase:React.FC = () => {
-    const { selectedTable } = useDataBase();
+    const { selectedTable } = useTable();
     const [selectedTab, setSelectedTab] = useState(0);
 
     const renderTabContent = () => {

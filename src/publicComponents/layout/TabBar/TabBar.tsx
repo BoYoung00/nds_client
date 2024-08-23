@@ -1,9 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useTabBar} from './useTabBar';
 import styles from './TabBar.module.scss';
 import CreateDB from "../modal/CreateDB/CreateDB";
-import {useErd} from "../../../contexts/ErdContext";
-import {useDataBase} from "../../../contexts/DataBaseContext";
 
 interface TabBarProps {
     tabs: string[];
@@ -17,7 +15,6 @@ const TabBar: React.FC<TabBarProps> = ({ tabs, onTabSelect, width = 5 }) => {
         onTabSelect,
     });
     const [isOpenCreateDBModal, setIsOpenCreateDBModal] = useState<boolean>(false);
-
 
     return (
         <div className={styles.tabBar}>

@@ -1,0 +1,109 @@
+@import "src/App.module";
+
+$widthSize: 80%;
+
+@mixin container {
+  background: white;
+  box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.revision {
+  height: 100%;
+  flex: 1;
+  background: #F5F5F5;
+  @include flex-center;
+  flex-direction: column;
+  caret-color: transparent; // 커서 깜빰임
+  gap: 1.5rem;
+}
+
+// 헤더
+.revisionHeader {
+  width: $widthSize;
+  @include flex-space-between;
+  border-bottom: 1px solid #ABABAB;
+  padding-bottom: 1rem;
+
+  .databaseSelectBox {
+    width: 20%;
+    min-width: 10rem;
+  }
+
+  .tabContainer {
+
+  }
+}
+
+// 히스토리 테이블
+.historyTable {
+  @include container;
+  width: $widthSize; height: 47%;
+  overflow-x: auto;
+
+  .container {
+    margin: .5rem 1rem;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      .item {
+        cursor: pointer;
+      }
+
+      thead {
+        border-bottom: 2px solid #ABABAB;
+
+        .checkout {
+          font-size: .8rem;
+          text-align: center;
+        }
+      }
+
+
+      th {
+        text-align: center;
+      }
+
+      // 각 열의 너비 설정
+      .checkout {
+        width: 5%; // 제일 작은 너비
+      }
+
+      .message {
+        width: 50%; // 제일 넓은 너비
+      }
+
+      .date, .hash {
+        width: auto;
+      }
+
+      tbody {
+        tr {
+          border-radius: 10px;
+          margin: .5rem;
+        }
+
+        td {
+          padding: 0.5rem;
+          border-bottom: none;
+          text-align: center;
+        }
+      } // tbody
+    } // table
+  } // container
+
+
+  // 선택된 행 스타일
+  .selected {
+    background-color: #62C6FF;
+    border-radius: 10px; // 둥근 모서리
+  }
+}
+
+// 정보 레이어
+.information {
+  width: $widthSize; height: 30%;
+  @include container;
+}

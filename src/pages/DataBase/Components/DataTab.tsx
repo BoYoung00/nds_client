@@ -10,10 +10,11 @@ import {Notification} from '../../../publicComponents/layout/modal/Notification'
 import {useAutoColumnWidth, useDataTab} from "../hooks/useDataTab";
 import {useDataBase} from "../../../contexts/DataBaseContext";
 import Search from "../../../publicComponents/layout/modal/Search/Search";
+import {useTable} from "../../../contexts/TableContext";
 
 
 const DataTab: React.FC = () => {
-    const { fetchTables } = useDataBase();
+    const { fetchTables } = useTable();
 
     const {
         hooks: {

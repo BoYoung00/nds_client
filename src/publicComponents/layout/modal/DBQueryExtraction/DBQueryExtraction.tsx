@@ -6,6 +6,7 @@ import CodeEditor from "../../../UI/CodeEditor";
 import CopyButton from "../../../UI/CopyButton";
 import { useDataBase } from "../../../../contexts/DataBaseContext";
 import { findColumnInfo } from "../../../../utils/utils";
+import {useTable} from "../../../../contexts/TableContext";
 
 interface DBQueryExtractionProps {
     isOpenModal: boolean;
@@ -13,7 +14,8 @@ interface DBQueryExtractionProps {
 }
 
 const DBQueryExtraction: React.FC<DBQueryExtractionProps> = ({ isOpenModal, onCloseModal }) => {
-    const { selectedDataBase, tables } = useDataBase();
+    const { selectedDataBase } = useDataBase();
+    const { tables } = useTable();
     const [sqlQuery, setSqlQuery] = useState<string>("");
 
     useEffect(() => {

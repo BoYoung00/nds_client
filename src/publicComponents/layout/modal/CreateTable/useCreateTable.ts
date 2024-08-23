@@ -1,10 +1,11 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {getJoinedTableData, tableStructure} from "../../../../services/api";
 import {useDataBase} from "../../../../contexts/DataBaseContext";
+import {useTable} from "../../../../contexts/TableContext";
 
 // 테이블 생성 메인
 export const useCreateTable = (dataBase: DataBaseEntity | null) => {
-    const { setTables } = useDataBase();
+    const { setTables } = useTable();
 
     const [columns , setColumns] = useState<RowState[]>([]);
     const [tableData, setTableData] = useState({
@@ -119,7 +120,8 @@ const initialRowState: RowState = {
 };
 
 export const useRowState = () => {
-    const { selectedDataBase, tables } = useDataBase();
+    const { selectedDataBase } = useDataBase();
+    const { tables } = useTable();
 
     const [rows, setRows] = useState<RowState[]>([initialRowState]);
 

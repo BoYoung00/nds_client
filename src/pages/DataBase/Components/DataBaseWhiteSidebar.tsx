@@ -6,9 +6,11 @@ import {CreateTable} from "../../../publicComponents/layout/modal/CreateTable";
 import {useDataBaseWhiteSidebar} from "../hooks/useDataBaseWhiteSidebar";
 import {useDataBase} from "../../../contexts/DataBaseContext";
 import Merge from "../../../publicComponents/layout/modal/Merge/Merge";
+import {useTable} from "../../../contexts/TableContext";
 
 const DataBaseWhiteSidebar: React.FC = () => {
-    const { tables, selectedDataBase } = useDataBase();
+    const { selectedDataBase } = useDataBase();
+    const { tables } = useTable();
 
     const {
         selectedId,

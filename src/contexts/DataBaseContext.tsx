@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import {getDataBasesForCurrentUser, getTablesForDataBaseID} from "../services/api";
+import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react';
+import {getDataBasesForCurrentUser} from "../services/api";
 import {Notification} from "../publicComponents/layout/modal/Notification";
 
 
@@ -8,13 +8,8 @@ interface DataBaseContextType {
     setDatabases: React.Dispatch<React.SetStateAction<DataBaseEntity[]>>;
     selectedDataBase: DataBaseEntity | null;
     setSelectedDataBase: (db: DataBaseEntity | null) => void;
-    tables: TableData[];
-    setTables: React.Dispatch<React.SetStateAction<TableData[]>>;
-    selectedTable: TableData | null;
-    setSelectedTable: (table: TableData | null) => void;
     loading: boolean;
     errorMessage: string | null;
-    fetchTables: () => void;
     fetchDatabases: () => void;
 }
 
@@ -26,8 +21,6 @@ export const DataBaseProvider: React.FC<{ children: ReactNode }> = ({ children }
 
     const [databases, setDatabases] = useState<DataBaseEntity[]>([]);
     const [selectedDataBase, setSelectedDataBase] = useState<DataBaseEntity | null>(null);
-    const [tables, setTables] = useState<TableData[]>([]);
-    const [selectedTable, setSelectedTable] = useState<TableData | null>(null);
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -43,27 +36,9 @@ export const DataBaseProvider: React.FC<{ children: ReactNode }> = ({ children }
         }
     };
 
-    const fetchTables = async () => {
-        if (!selectedDataBase) return;
-        try {
-            setLoading(true);
-            const data = await getTablesForDataBaseID(selectedDataBase.id!);
-            setTables(data);
-            // console.log('테이블 리스트', data);
-        } catch (error) {
-            setErrorMessage('테이블 목록을 가져오는 데 실패했습니다.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
         fetchDatabases();
     }, []);
-
-    useEffect(() => {
-        fetchTables();
-    }, [selectedDataBase]);
 
     return (
         <>
@@ -71,13 +46,8 @@ export const DataBaseProvider: React.FC<{ children: ReactNode }> = ({ children }
                 value={{
                     selectedDataBase,
                     setSelectedDataBase,
-                    tables,
-                    setTables,
-                    selectedTable,
-                    setSelectedTable,
                     loading,
                     errorMessage,
-                    fetchTables,
                     databases,
                     setDatabases,
                     fetchDatabases

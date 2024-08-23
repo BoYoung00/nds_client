@@ -2,6 +2,7 @@ import React, {RefObject, useEffect, useState} from 'react';
 import {findColumnInfo} from "../../../utils/utils";
 import {createData, getImagesPathList, getVideoPathList} from "../../../services/api";
 import {useDataBase} from "../../../contexts/DataBaseContext";
+import {useTable} from "../../../contexts/TableContext";
 
 const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
     const { columnID, type, columnHash } = findColumnInfo(columnKey);
@@ -17,7 +18,7 @@ const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
 
 export function useDataTab() {
     const [loading, setLoading] = useState<boolean>(false);
-    const {selectedTable, setTables, tables} = useDataBase();
+    const {selectedTable, setTables, tables} = useTable();
     const [imagePaths, setImagePaths] = useState<MediaFile[]>([]);
     const [videoPaths, setVideoPaths] = useState<MediaFile[]>([]);
 

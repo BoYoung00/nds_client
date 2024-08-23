@@ -1,41 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import styles from './Erd.module.scss';
 import TabBar from "../../publicComponents/layout/TabBar";
-import {getDataBasesForCurrentUser} from "../../services/api";
 import {Notification} from "../../publicComponents/layout/modal/Notification";
+import {useDataBase} from "../../contexts/DataBaseContext";
 
 const Erd: React.FC = () => {
+    const { databases } = useDataBase();
+
     const [loading, setLoading] = useState<boolean>(false);
 
-    const [databases, setDatabases] = useState<DataBaseEntity[]>([]);
     const [databaseNames, setDatabaseNames] = useState<string[]>([]);
     const [selectedTab, setSelectedTab] = useState<number>(0);
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     useEffect(() => {
-        fetchDatabases();
-    }, []);
-
-    useEffect(() => {
         const names = databases.map(db => db.name);
-
         if (names.length < 4) names.push('');
-
         setDatabaseNames(names);
     }, [databases]);
-
-    const fetchDatabases = async () => {
-        try {
-            setLoading(true);
-            const data = await getDataBasesForCurrentUser();
-            setDatabases(data);
-        } catch (error) {
-            setErrorMessage('데이터베이스를 가져오는 중 오류가 발생했습니다.');
-        } finally {
-            setLoading(false);
-        }
-    };
 
     return (
         <>

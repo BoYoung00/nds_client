@@ -1,11 +1,11 @@
 import React, {ChangeEvent, useState} from 'react';
 import BackgroundModal from "../../../UI/BackgroundModal";
 import styles from './Merge.module.scss';
-import {useDataBase} from "../../../../contexts/DataBaseContext";
 import LineTitle from "../../../UI/LineTitle";
 import doubleArrow from "../../../../assets/images/doubleArrow.png";
 import {tableMergeConfirm, tableMergePreview, tableMergeSave} from "../../../../services/api";
 import {Notification} from "../Notification";
+import {useTable} from "../../../../contexts/TableContext";
 
 interface MergeProps {
     isOpenModal: boolean;
@@ -18,7 +18,7 @@ interface TableInfo {
 }
 
 const Merge: React.FC<MergeProps> = ({ isOpenModal, onCloseModal }) => {
-    const { tables, setTables } = useDataBase();
+    const { tables, setTables } = useTable();
     const [tableInfo, setTableInfo] = useState<TableInfo>({
         name: '',
         comment: '',

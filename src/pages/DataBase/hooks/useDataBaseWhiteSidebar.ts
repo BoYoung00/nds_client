@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useDataBase} from "../../../contexts/DataBaseContext";
+import {useTable} from "../../../contexts/TableContext";
 
 export function useDataBaseWhiteSidebar(
     tables: TableData[],
 ) {
-    const { selectedDataBase, setSelectedTable } = useDataBase();
+    const { selectedDataBase } = useDataBase();
+    const { setSelectedTable } = useTable();
 
     const [selectedId, setSelectedId] = useState<number>(-1);
 

@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import * as XLSX from 'xlsx';
-import { exportTable, saveCsvData } from '../../../services/api';
-import { downloadFile } from '../../../utils/utils';
-import {useDataBase} from "../../../contexts/DataBaseContext";
+import {exportTable, saveCsvData} from '../../../services/api';
+import {downloadFile} from '../../../utils/utils';
+import {useTable} from "../../../contexts/TableContext";
 
 
 export const useExcelTab = () => {
-    const { selectedTable } = useDataBase();
+    const { selectedTable } = useTable();
 
     const [loading, setLoading] = useState<boolean>(false);
 

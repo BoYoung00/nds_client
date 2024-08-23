@@ -8,7 +8,7 @@ interface MenuItem {
 
 const maxMenuItems: MenuItem[] = [
     { path: '/database', text: 'DATABASE' },
-    { path: '/version', text: 'VERSION' },
+    { path: '/revision', text: 'REVISION' },
     { path: '/erd', text: 'ERD' },
     { path: '/api', text: 'API ARCHIVE' },
     { path: '/template', text: 'TEMPLATE' }
@@ -16,7 +16,7 @@ const maxMenuItems: MenuItem[] = [
 
 const minMenuItems: MenuItem[] = [
     { path: '/database', text: 'DB' },
-    { path: '/version', text: 'VCS' },
+    { path: '/revision', text: 'REV' },
     { path: '/erd', text: 'ERD' },
     { path: '/api', text: 'API' },
     { path: '/template', text: 'TEMP' }

@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { findColumnInfo } from "../../../utils/utils";
-import { getUserLikeFilters, saveFilteredTableData } from "../../../services/api";
-import {useDataBase} from "../../../contexts/DataBaseContext";
+import {useEffect, useState} from 'react';
+import {findColumnInfo} from "../../../utils/utils";
+import {getUserLikeFilters, saveFilteredTableData} from "../../../services/api";
+import {useTable} from "../../../contexts/TableContext";
 
 
 export function useLikeTab() {
-    const { selectedTable } = useDataBase();
+    const { selectedTable } = useTable();
 
     const [loading, setLoading] = useState<boolean>(false);
 
