@@ -55,7 +55,7 @@ const App: React.FC = () => {
                     <Header token={token} onLogout={() => setToken(null)} />
                     <div className={styles.app__content}>
                         <Routes>
-                            <Route path='*' element={<Navigate to="/database" />} />
+                            <Route path='/' element={<Navigate to="/database" />} />
                             <Route path="/database" element={<TableProvider><DataBase /> </TableProvider> } />
                             <Route path="/revision" element={<Version />} />
                             <Route path="/erd" element={<Erd />} />
@@ -67,7 +67,7 @@ const App: React.FC = () => {
             ) : (
                 <>
                     <Routes>
-                        <Route path='*' element={<Navigate to="/auth" />} />
+                        <Route path='/' element={<Navigate to="/auth" />} />
                         <Route path="/main" element={<Main />} />
                         <Route path="/auth" element={<UserAuth />} />
                     </Routes>

@@ -29,3 +29,70 @@
     margin-top: 1.4rem;
   }
 }
+
+// 일자 버튼 스타일
+.tabButtonsContainer {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+
+  .tabButton {
+    font-family: $font-KoPub-bold;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+
+    &:focus {
+      outline: none;
+    }
+
+    &.active {
+      background-color: #00A3FF;
+      color: white;
+    }
+  }
+}
+
+// 라인 탭 디자인
+.tabLinesContainer {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 98%;
+  border-bottom: 1px solid #D8D8D8;
+
+  .tab {
+    width: 7rem;
+    text-align: center;
+    padding: .5rem 0;
+    cursor: pointer;
+    transition: color 0.3s;
+    color: #333; // 기본 글자 색상
+
+    &.active {
+      color: $color-blue-deep; // 선택된 탭의 글자 색상
+    }
+  }
+
+  .activeLine {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    height: 2px;
+    width: 7rem;
+    background-color: $color-blue-deep; // 활성화된 탭 밑줄 색상
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+}
+
+
+
+
+
+
+
