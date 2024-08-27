@@ -196,11 +196,11 @@
         position: relative;
 
         & > input[type='text'] {
-          width: 65%;
+          width: 75%;
         }
 
         .searchBut {
-          @include button-style(true, 30%, .9rem);
+          @include button-style(true, 22%, .9rem);
         }
 
         .searchBox {

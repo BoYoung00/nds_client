@@ -222,7 +222,7 @@ const DataCell: React.FC<DataCellProps> = ({
                     showSearch={showSearch}
                     setShowSearch={setShowSearch}
                     dataList={dataList}
-                    handleSelectData={(selectedData) => handleSelectData(selectedData, columnKey, rowIndex)}
+                    handleSelectData={(item) => handleSelectData(item, columnKey, rowIndex)}
                     type={type === 'join' ? 'joinData' : 'media'}
                     index={rowIndex}
                 />

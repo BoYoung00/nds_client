@@ -35,7 +35,7 @@ const useUserAuth = () => {
             const authToken = response.data;
             localStorage.setItem('email', authToken.email);
             localStorage.setItem('token', authToken.token);
-            window.location.href="/"
+            window.location.href="/database"
         } catch (error) {
             setErrorMessage('일치하는 토큰이 존재하지 않습니다.');
         }

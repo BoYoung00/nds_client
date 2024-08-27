@@ -3,18 +3,18 @@ import React, {useEffect, useState} from "react";
 import {useDataBase} from "../../../contexts/DataBaseContext";
 import TabButtons from "../../../publicComponents/UI/TabButtons";
 
-const RevisionHeader: React.FC = () => {
+interface RevisionHeaderProps {
+    activeTab: string;
+    setActiveTab: (tab: string) => void;
+}
+
+const RevisionHeader: React.FC<RevisionHeaderProps> = ({ activeTab, setActiveTab }) => {
     const { databases, selectedDataBase } = useDataBase();
 
-    const [activeTab, setActiveTab] = useState<string>('History');
     const [selectedDatabaseId, setSelectedDatabaseId] = useState<number | null>(null);
 
-    const handleTabClick = (tab: string) => {
-        setActiveTab(tab);
-    };
-
     useEffect(() => {
-        const sessionDBId: number = Number(sessionStorage.getItem("selectedProjectId"));
+        const sessionDBId: number = Number(sessionStorage.getItem("selectedDatabaseId"));
         if (sessionDBId !== null)
             setSelectedDatabaseId(sessionDBId);
         else if (databases.length > 0) {
@@ -25,7 +25,7 @@ const RevisionHeader: React.FC = () => {
     const handleDatabaseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const projectId: number = parseInt(e.target.value);
         setSelectedDatabaseId(projectId);
-        sessionStorage.setItem("selectedProjectId", String(projectId));
+        sessionStorage.setItem("selectedDatabaseId", String(projectId));
     };
 
     return (
@@ -41,7 +41,7 @@ const RevisionHeader: React.FC = () => {
                 <TabButtons
                     buttons={['History', 'Stamping', 'Search']}
                     activeTab={activeTab}
-                    onTabClick={handleTabClick}
+                    onTabClick={setActiveTab}
                 />
             </div>
         </div>

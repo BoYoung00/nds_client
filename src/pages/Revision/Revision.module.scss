@@ -9,13 +9,19 @@ $widthSize: 80%;
 }
 
 .revision {
-  height: 100%;
+  width: 100%; height: 100%;
   flex: 1;
   background: #F5F5F5;
   @include flex-center;
-  flex-direction: column;
-  caret-color: transparent; // 커서 깜빰임
-  gap: 1.5rem;
+
+  .revisionContainer {
+    height: 95%; width: 100%;
+    min-width: 35rem;
+    @include flex-center;
+    flex-direction: column;
+    caret-color: transparent; // 커서 깜빰임
+    gap: 1rem;
+  }
 }
 
 // 헤더
@@ -38,7 +44,7 @@ $widthSize: 80%;
 // 히스토리 테이블
 .historyTable {
   @include container;
-  width: $widthSize; height: 47%;
+  width: $widthSize; height: 52%;
   overflow-x: auto;
 
   .container {
@@ -104,6 +110,82 @@ $widthSize: 80%;
 
 // 정보 레이어
 .information {
-  width: $widthSize; height: 30%;
+  width: $widthSize; height: 37%;
   @include container;
+  display: flex;
+  flex-direction: column;
+
+  .stamping {
+    display: flex;
+    flex-direction: column;
+    margin-top: .7rem;
+
+    p {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: .5rem;
+      font-family: $font-KoPub-bold;
+      font-size: .9rem;
+    }
+
+    span:first-child {
+      text-align: right;
+      width: 7rem;
+      display: inline-block;
+      color: #929292;
+    }
+
+    span:last-child {
+      flex: 1;
+      padding-left: 1rem;
+    }
+  }
+
+  .changes, .tables {
+    display: flex;
+    flex: 1;
+  }
+
+  .tableListBox {
+    width: 16%;
+    min-width: 10rem;
+    border-right: 1px solid #D8D8D8;
+
+    ul {
+      overflow: scroll;
+      max-height: 25vh;
+
+      li { cursor: pointer; }
+
+      .selected { font-size: 1.1rem; font-weight: bold; }
+    }
+  }
+}
+
+// 검색 바
+.searchBar {
+  height: 7%; width: $widthSize;
+  @include container;
+
+  .container {
+    padding: .5rem;
+    @include flex-center;
+    gap: .5rem;
+
+    select { width: 15%}
+
+    input[type='text'] { width: 70% }
+
+    button {
+      background: grey;
+      color: white;
+      width: 15%;
+      padding: .5rem;
+      border: none;
+      border-radius: 4px;
+      font-family: $font-KoPub-bold;
+    }
+  }
+
 }

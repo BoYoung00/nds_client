@@ -265,11 +265,19 @@ export function useDataTab() {
     };
 
     // 검색 모달에서 데이터 선택
-    const handleSelectData = (selectedData: MediaFile | null, columnKey: string, rowIndex: number) => {
+    const handleSelectData = (selectedData: any, columnKey: string, rowIndex: number) => {
         if (tableStructure) {
             setEditingCell({ columnKey, rowIndex });
 
-            const finalData = selectedData !== null ? selectedData.path : '';
+            let finalData: string;
+
+            // `selectedData`가 `MediaFile` 타입인지 체크
+            if (selectedData && typeof selectedData === 'object' && 'path' in selectedData) {
+                finalData = selectedData.path;  // `MediaFile` 타입일 경우
+            } else {
+                finalData = selectedData as string;  // `string` 타입일 경우
+            }
+
             setEditedValue(finalData);
 
             // 테이블 구조 업데이트
@@ -282,6 +290,7 @@ export function useDataTab() {
             setTableStructure(updatedTableStructure);
         }
     };
+
 
 
     return {
