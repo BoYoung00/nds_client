@@ -59,7 +59,7 @@ const HistoryTable: React.FC = () => {
     return (
         <>
             <div className={styles.historyTable}>
-                <div className={styles.container}>
+                <div className={styles.historyTable__container}>
                     <table>
                         <thead>
                         <tr>

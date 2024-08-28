@@ -4,6 +4,8 @@ import RevisionHeader from "./Components/RevisionHeader";
 import HistoryTable from "./Components/HistoryTable";
 import Information from "./Components/Information";
 import SearchBar from "./Components/SearchBar";
+import StampingChange from "./Components/StampingChange";
+import StampingMassage from "./Components/StampingMassage";
 
 const Revision: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string>('History');
@@ -15,12 +17,23 @@ const Revision: React.FC = () => {
 
                 { activeTab === 'History' &&
                     <>
-                        {/*<SearchBar />*/}
                         <HistoryTable />
                         <Information />
                     </>
                 }
-
+                { activeTab === 'Stamping' &&
+                    <>
+                        <StampingChange />
+                        <StampingMassage />
+                    </>
+                }
+                { activeTab === 'Search' &&
+                    <>
+                        <SearchBar />
+                        <HistoryTable />
+                        <Information />
+                    </>
+                }
             </div>
         </div>
     );

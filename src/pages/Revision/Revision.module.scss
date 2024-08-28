@@ -47,7 +47,7 @@ $widthSize: 80%;
   width: $widthSize; height: 52%;
   overflow-x: auto;
 
-  .container {
+  &__container {
     margin: .5rem 1rem;
 
     table {
@@ -115,51 +115,18 @@ $widthSize: 80%;
   display: flex;
   flex-direction: column;
 
-  .stamping {
-    display: flex;
-    flex-direction: column;
-    margin-top: .7rem;
-
-    p {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: .5rem;
-      font-family: $font-KoPub-bold;
-      font-size: .9rem;
-    }
-
-    span:first-child {
-      text-align: right;
-      width: 7rem;
-      display: inline-block;
-      color: #929292;
-    }
-
-    span:last-child {
-      flex: 1;
-      padding-left: 1rem;
-    }
-  }
-
   .changes, .tables {
     display: flex;
     flex: 1;
   }
 
-  .tableListBox {
-    width: 16%;
+  .tableListInfoWrap {
+    width: 20%;
     min-width: 10rem;
-    border-right: 1px solid #D8D8D8;
+  }
 
-    ul {
-      overflow: scroll;
-      max-height: 25vh;
-
-      li { cursor: pointer; }
-
-      .selected { font-size: 1.1rem; font-weight: bold; }
-    }
+  .tableChangeView, .tablePreView {
+    border-left: 1px solid #D8D8D8;
   }
 }
 
@@ -168,24 +135,76 @@ $widthSize: 80%;
   height: 7%; width: $widthSize;
   @include container;
 
-  .container {
-    padding: .5rem;
+  &__container {
+    margin: .5rem;
     @include flex-center;
     gap: .5rem;
 
-    select { width: 15%}
+    select { width: 15%; padding: .2rem}
 
-    input[type='text'] { width: 70% }
+    input[type='text'] { width: 70%; padding: .2rem }
 
     button {
-      background: grey;
-      color: white;
-      width: 15%;
+      @include button-style(true, 15%, 1rem, .2rem)
+    }
+  } //__container
+}
+
+// 변경 사항 컨테이너
+.stampingChange {
+  @include container();
+  width: $widthSize;
+  height: 60%;
+  display: flex;
+
+  .leftContainer {
+    width: 20%;
+    min-width: 10rem;
+    @include flex-center;
+    flex-direction: column;
+
+    .title {
+      background: $color-blue-deep;
+      margin: 0;
       padding: .5rem;
-      border: none;
-      border-radius: 4px;
-      font-family: $font-KoPub-bold;
+      color: white;
+    }
+
+    & > div {
+      width: 100%;
+      height: 50%;
     }
   }
 
+  .rightContainer {
+    width: 80%;
+    border-left: 1px solid #CDCDCD;
+  }
+}
+
+// 스탬핑 메세지 (커밋)
+.stampingMassage {
+  @include container;
+  width: $widthSize;
+  height: 30%;
+
+  &__container {
+    margin: 1rem;
+    height: 85%;
+
+    .messageInput {
+      margin-top: 1rem;
+      height: 50%;
+      resize: none;
+    }
+
+    .stampingButWrap {
+      width: 100%;
+      text-align: right;
+
+      .stampingBut {
+        @include button-style(true, 12rem, 1rem, .2rem);
+      }
+    } //stampingButWrap
+  } //__container
 }

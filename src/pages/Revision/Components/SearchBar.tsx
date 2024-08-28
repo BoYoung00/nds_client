@@ -3,7 +3,7 @@ import styles from '../Revision.module.scss';
 const SearchBar = () => {
     return (
         <div className={styles.searchBar}>
-            <div className={styles.container}>
+            <div className={styles.searchBar__container}>
                 <select>
                     <option>메세지</option>
                     <option>해시</option>

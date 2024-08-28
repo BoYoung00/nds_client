@@ -90,6 +90,54 @@
   }
 }
 
+// 스탬핑 정보 디자인
+.stamping {
+  display: flex;
+  flex-direction: column;
+  margin-top: .7rem;
+  overflow: auto;
+  max-height: 18vh;
+
+  p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: .5rem;
+    font-family: $font-KoPub-bold;
+    font-size: .9rem;
+  }
+
+  span:first-child {
+    text-align: right;
+    width: 5rem;
+    display: inline-block;
+    color: #929292;
+  }
+
+  span:last-child {
+    flex: 1;
+    padding-left: 1rem;
+    min-width: 10rem;
+  }
+}
+
+// 테이블 선택 리스트 디자인
+.tableListInfo {
+  width: 100%;
+  height: 100%;
+
+  ul {
+    height: 60%;
+    overflow: auto;
+    max-height: 25vh;
+    white-space: nowrap;
+
+    li { cursor: pointer; }
+
+    .selected { font-size: 1.1rem; font-weight: bold; }
+  }
+}
+
 
 
 
