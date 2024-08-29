@@ -12,7 +12,7 @@ const StampingChange = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     useEffect(() => {
-        handleFetchStampingPreview();
+        // handleFetchStampingPreview();
     }, []);
 
     // 변경 사항 프리뷰 통신
