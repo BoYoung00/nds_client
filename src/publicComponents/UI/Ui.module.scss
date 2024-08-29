@@ -92,11 +92,11 @@
 
 // 스탬핑 정보 디자인
 .stamping {
+  height: 80%;
   display: flex;
   flex-direction: column;
   margin-top: .7rem;
   overflow: auto;
-  max-height: 18vh;
 
   p {
     display: flex;
@@ -125,11 +125,9 @@
 .tableListInfo {
   width: 100%;
   height: 100%;
+  overflow: auto;
 
   ul {
-    height: 60%;
-    overflow: auto;
-    max-height: 25vh;
     white-space: nowrap;
 
     li { cursor: pointer; }

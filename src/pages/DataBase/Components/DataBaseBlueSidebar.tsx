@@ -11,7 +11,7 @@ const DataBaseBlueSidebar: React.FC = () => {
     const { databases } = useDataBase();
 
     const {
-        selectedId,
+        selectedDatabaseID,
         modals: {
             isOpenCreateDBModal,
             setIsOpenCreateDBModal,
@@ -35,7 +35,7 @@ const DataBaseBlueSidebar: React.FC = () => {
                     {databases && databases.map((item) => (
                         <div
                             key={item.id}
-                            className={`${styles.item} ${selectedId === item.id ? styles.selected : ''}`}
+                            className={`${styles.item} ${selectedDatabaseID === item.id ? styles.selected : ''}`}
                             onClick={() => onSelected(item)}
                         >
                             {item.name}
@@ -51,7 +51,7 @@ const DataBaseBlueSidebar: React.FC = () => {
                 <footer>
                     <section className={styles.commentBox}>
                         <p>데이터베이스 설명</p>
-                        <span>{databases?.find(dataBase => dataBase.id === selectedId)?.comment} </span>
+                        <span>{databases?.find(dataBase => dataBase.id === selectedDatabaseID)?.comment} </span>
                     </section>
                     <section className={styles.buttonBox}>
                         <button onClick={handleQuery}>쿼리 추출</button>

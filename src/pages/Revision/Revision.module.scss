@@ -41,10 +41,11 @@ $widthSize: 80%;
   }
 }
 
-// 히스토리 테이블
+/* 테이블 스타일 */
 .historyTable {
   @include container;
-  width: $widthSize; height: 52%;
+  width: $widthSize;
+  height: 52%;
   overflow-x: auto;
 
   &__container {
@@ -53,10 +54,6 @@ $widthSize: 80%;
     table {
       width: 100%;
       border-collapse: collapse;
-
-      .item {
-        cursor: pointer;
-      }
 
       thead {
         border-bottom: 1px solid #D8D8D8;
@@ -67,19 +64,13 @@ $widthSize: 80%;
         }
       }
 
-
       th {
         text-align: center;
       }
 
-      // 각 열의 너비 설정
-      .checkout {
-        width: 5%; // 제일 작은 너비
-      }
-
-      .message {
-        width: 50%; // 제일 넓은 너비
-      }
+      /* 각 열의 너비 설정 */
+      .checkout { width: 5%; }
+      .message { width: 50%; }
 
       .date, .hash {
         width: auto;
@@ -87,26 +78,55 @@ $widthSize: 80%;
 
       tbody {
         tr {
+          cursor: pointer;
           border-radius: 10px;
-          margin: .5rem;
+
+          &.selected {
+            background-color: #62C6FF;
+            border-radius: 10px;
+          }
         }
 
         td {
-          padding: 0.5rem;
-          border-bottom: none;
+          padding: .5rem;
           text-align: center;
         }
-      } // tbody
-    } // table
-  } // container
 
+        .StampingNow { border-radius: 10px 0 0 10px; }
 
-  // 선택된 행 스타일
-  .selected {
-    background-color: #62C6FF;
-    border-radius: 10px; // 둥근 모서리
-  }
+        .StampingNum { border-radius: 0 10px 10px 0; }
+      } //tbody
+    } //table
+  } //__container
 }
+
+/* 컨텍스트 메뉴 스타일 */
+.contextMenu {
+  position: absolute;
+  background-color: #EFEFEF;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 9;
+  width: 9rem;
+  overflow: hidden;
+
+  ul {
+    list-style: none;
+    margin: 0; padding: 0;
+
+
+    li {
+      padding: .3rem .8rem;
+      cursor: pointer;
+      font-family: $font-KoPub-bold;
+
+      & > span { color: $color-gray-middle; font-size: .7rem }
+
+      &:hover { background-color: #d3d3d3; }
+    } // li
+  } // ul
+} //contextMenu
 
 // 정보 레이어
 .information {
@@ -123,6 +143,7 @@ $widthSize: 80%;
   .tableListInfoWrap {
     width: 20%;
     min-width: 10rem;
+    max-height: 16rem;
   }
 
   .tableChangeView, .tablePreView {
@@ -166,7 +187,9 @@ $widthSize: 80%;
     .title {
       background: $color-blue-deep;
       margin: 0;
-      padding: .5rem;
+      padding-left: .5rem;
+      @include flex-left;
+      height: 15%;
       color: white;
     }
 
@@ -194,7 +217,7 @@ $widthSize: 80%;
 
     .messageInput {
       margin-top: 1rem;
-      height: 50%;
+      height: 55%;
       resize: none;
     }
 
@@ -203,7 +226,7 @@ $widthSize: 80%;
       text-align: right;
 
       .stampingBut {
-        @include button-style(true, 12rem, 1rem, .2rem);
+        @include button-style(true, 12rem, 1rem, .3rem);
       }
     } //stampingButWrap
   } //__container

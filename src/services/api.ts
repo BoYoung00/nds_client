@@ -341,3 +341,20 @@ export const tableMergeSave = async (tableMergeSaveRequest: TableMergeSaveReques
     }
 };
 
+// 스탬핑 프리뷰
+export const getDiffsPage = async (databaseId: number) => {
+    try {
+        const response = await client.get(`/diffs/${databaseId}`);
+        if (response.status === 200)
+            return response.data;
+        new Error(`${response.data.message}`)
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
+

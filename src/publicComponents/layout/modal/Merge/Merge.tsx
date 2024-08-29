@@ -38,7 +38,6 @@ const Merge: React.FC<MergeProps> = ({ isOpenModal, onCloseModal }) => {
     };
 
     const handleCheckboxChange = (table: TableData) => {
-        console.log('선택',table)
         setSelectedTables(prevSelectedTables => {
             if (prevSelectedTables.includes(table)) {
                 // 이미 선택된 테이블이면 제거
