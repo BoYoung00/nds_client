@@ -43,7 +43,7 @@ const DBQueryExtraction: React.FC<DBQueryExtractionProps> = ({ isOpenModal, onCl
         <>
             <BackgroundModal
                 width={70}
-                height={60}
+                height={65}
                 onClose={onCloseModal}
             >
                 <ModalContent />

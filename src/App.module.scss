@@ -163,6 +163,33 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
   user-select: none;
 }
 
+// API, 템플릿 기본 디자인
+@mixin container-default-style {
+  width: 100%; height: auto;
+  min-height: 100%;
+  background: #F5F5F5;
+  @include flex-center;
+  flex-direction: column;
+
+  &__container {
+    min-width: 30rem;
+    width: 80%; height: auto;
+    min-height: 85vh;
+    margin: 2rem 0;
+    background: white;
+    border: 1px solid #C1C1C1;
+
+    header {
+      padding: 1rem 3rem 2rem 3rem;
+      position: relative;
+    }
+
+    main {
+      width: 90%;
+      margin: 0 auto;
+    }
+  }
+}
 
 body {
   font-size: 1rem;

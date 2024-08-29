@@ -1,39 +1,16 @@
 @import "src/App.module";
 
 .apiArchive {
-  width: 100%; height: auto;
-  min-width: 60rem;
-  min-height: 100%;
-  background: #F5F5F5;
-  @include flex-right;
-  flex-direction: column;
+  @include container-default-style;
 
-  .apiArchiveContainer {
-    width: 80%; height: auto;
-    min-height: 85vh;
-    margin: 2rem 0;
-    background: white;
-    border: 1px solid #C1C1C1;
-
-    header {
-      padding: 1rem 3rem 2rem 3rem;
-      position: relative;
-
-      .testerBut {
-        color: $color-blue-deep;
-        text-decoration: underline;
-        position: absolute;
-        right: 3rem;
-        top: 2.7rem;
-        cursor: pointer;
-        padding: .5rem;
-      }
-    }
-
-    main {
-      width: 85%;
-      margin: 0 auto;
-    }
+  .testerBut {
+    color: $color-blue-deep;
+    text-decoration: underline;
+    position: absolute;
+    right: 3rem;
+    top: 4rem;
+    cursor: pointer;
+    padding: .5rem;
   }
 }
 

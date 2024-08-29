@@ -11,9 +11,9 @@ const ApiArchive: React.FC = () => {
 
     return (
         <div className={styles.apiArchive}>
-            <section className={styles.apiArchiveContainer}>
+            <section className={styles.apiArchive__container}>
                 <header>
-                    <LineTitle text={'API 보관함'} smallText={'REST API URL을 보관함에 저장하여 관리하세요.'} isCenter={true} />
+                    <LineTitle text={'API 보관함'}  fontSize={'2rem'} smallText={'REST API URL을 보관함에 저장하여 관리하세요.'} isCenter={true} />
                     <p className={styles.testerBut} onClick={handleToggle} >Tester</p>
                     { onTester && <Tester /> }
                 </header>

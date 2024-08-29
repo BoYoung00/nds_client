@@ -4,8 +4,6 @@ import styles from './CreateDB.module.scss';
 import LineTitle from "../../../UI/LineTitle";
 import {useDatabaseForm, useFileUpload} from "./useCreateDB";
 import {Notification} from "../Notification";
-import {tab} from "@testing-library/user-event/dist/tab";
-import {saveStructureToDatabase} from "../../../../services/api";
 
 interface CreateDBProps {
     isOpenModal: boolean;

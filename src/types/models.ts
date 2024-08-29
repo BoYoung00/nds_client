@@ -177,3 +177,26 @@ interface VcsFileEntity {
     databaseID: number;
 }
 
+// ERD 변환
+interface ERDiagram {
+    node: Node[];
+    linkData: Link[];
+}
+
+interface Node {
+    key: number;
+    name: string;
+    columns: NodeColumn[];
+}
+
+interface NodeColumn {
+    name: string;
+    type: string;
+    keyName?: string; // 선택적 속성 (nullable)
+    nullLabel: boolean;
+}
+
+interface Link {
+    from: number;
+    to: number;
+}

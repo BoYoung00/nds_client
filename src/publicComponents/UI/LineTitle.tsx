@@ -27,11 +27,11 @@ const LineTitle: React.FC<TitleProps> = ({ text, smallText , isCenter = false, f
     };
 
     const smallTextStyles: React.CSSProperties = {
-        fontSize: '14px',
-        color: 'gray',
-        marginTop: isCenter ? '5px' : '0',
-        marginLeft: isCenter ? '0' : '15px',
-        paddingBottom: '5px',
+        fontSize: '1rem',
+        color: '#515151',
+        marginTop: isCenter ? '.5rem' : '0',
+        marginLeft: isCenter ? '0' : '1rem',
+        paddingBottom: '.5rem',
         fontFamily: 'KoPubWorld Light',
     };
 
