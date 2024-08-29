@@ -186,14 +186,12 @@ interface ERDiagram {
 interface Node {
     key: number;
     name: string;
-    columns: NodeColumn[];
-}
-
-interface NodeColumn {
-    name: string;
-    type: string;
-    keyName?: string; // 선택적 속성 (nullable)
-    nullLabel: boolean;
+    columns: {
+        name: string;
+        type: string;
+        keyName?: string | null;
+        nullLabel: boolean;
+    }[];
 }
 
 interface Link {

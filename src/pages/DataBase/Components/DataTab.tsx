@@ -8,7 +8,6 @@ import updateSave from '../../../assets/images/updateSave.png';
 import search from '../../../assets/images/search.png';
 import {Notification} from '../../../publicComponents/layout/modal/Notification';
 import {useAutoColumnWidth, useDataTab} from "../hooks/useDataTab";
-import {useDataBase} from "../../../contexts/DataBaseContext";
 import Search from "../../../publicComponents/layout/modal/Search/Search";
 import {useTable} from "../../../contexts/TableContext";
 
