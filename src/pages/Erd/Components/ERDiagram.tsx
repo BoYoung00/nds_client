@@ -146,7 +146,6 @@ const ERDiagram: React.FC = () => {
 
             // 데이터 변환
             const transformedData = transformTableData(tables);
-            console.log('transformedData', transformedData);
             diagram.model = new go.GraphLinksModel(transformedData.node, transformedData.linkData);
 
             return diagram;
@@ -174,7 +173,6 @@ const transformTableData = (tableData: TableData[]): ERDiagram => {
 
     for (const table of tableData) {
         const nodeColumns = Object.entries(table.tableInnerStructure).flatMap(([columnMeta, columnData]) => {
-            console.log('columnMeta', columnMeta)
             const columnInfo = findColumnInfo(columnMeta);
 
             return {

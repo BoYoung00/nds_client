@@ -2,48 +2,21 @@ import styles from '../Revision.module.scss';
 import React, { useState, MouseEvent, useEffect } from "react";
 import { formatDate } from "../../../utils/utils";
 import { Notification } from "../../../publicComponents/layout/modal/Notification";
-
-const exampleStampings: VcsFileEntity[] = [
-    {
-        id: 1,
-        path: "/src/components/HistoryTable.tsx",
-        checkSum: "abcd1234",
-        createTime: "2024-08-23T10:00:00Z",
-        isCurrent: "Y",
-        databaseID: 101
-    },
-    {
-        id: 2,
-        path: "/src/utils/helpers.ts",
-        checkSum: "efgh5678",
-        createTime: "2024-08-22T14:32:00Z",
-        isCurrent: "N",
-        databaseID: 101
-    },
-    {
-        id: 3,
-        path: "/src/services/api.ts",
-        checkSum: "ijkl9101",
-        createTime: "2024-08-21T08:45:00Z",
-        isCurrent: "N",
-        databaseID: 101
-    },
-    {
-        id: 4,
-        path: "/src/index.tsx",
-        checkSum: "mnop1121",
-        createTime: "2024-08-20T16:20:00Z",
-        isCurrent: "Y",
-        databaseID: 101
-    }
-];
+import {useRevision} from "../../../contexts/RevisionContext";
 
 const HistoryTable: React.FC = () => {
-    const [Stampings, setStampings] = useState<VcsFileEntity[] | null>(exampleStampings);
+    const { stampings, currentStampingID } = useRevision();
     const [selectedStampingID, setSelectedStampingID] = useState<number | null>(null);
-    const [checkoutStampingID, setCheckoutStampingID] = useState<number | null>(null);
     const [questionMessage, setQuestionMessage] = useState<string | null>(null);
     const [contextMenu, setContextMenu] = useState<{ x: number, y: number } | null>(null); // 클릭 위치
+
+    // 문서 클릭 이벤트 리스너 등록 및 제거
+    useEffect(() => {
+        document.addEventListener('click', handleDocumentClick);
+        return () => {
+            document.removeEventListener('click', handleDocumentClick);
+        };
+    }, []);
 
     // 커밋 선택
     const handleRowClick = (StampingID: number) => {
@@ -52,7 +25,7 @@ const HistoryTable: React.FC = () => {
 
     // 체크아웃 (더블 클릭)
     const handleRowDoubleClick = (StampingID: number) => {
-        setQuestionMessage('해당 분기로 체크아웃 하시겠습니까?');
+        setQuestionMessage('해당 분기로 변경 하시겠습니까?');
     };
 
     // 오른쪽 클릭 시 컨텍스트 메뉴 표시
@@ -68,22 +41,14 @@ const HistoryTable: React.FC = () => {
         setContextMenu(null);
     };
 
-    // 문서 클릭 이벤트 리스너 등록 및 제거
-    useEffect(() => {
-        document.addEventListener('click', handleDocumentClick);
-        return () => {
-            document.removeEventListener('click', handleDocumentClick);
-        };
-    }, []);
-
     // 메뉴 옵션 클릭 핸들러
     const handleMenuOptionClick = (option: string) => {
         switch (option) {
             case 'reset':
                 console.log('reset', selectedStampingID)
                 break;
-            case 'checkout':
-                console.log('checkout', selectedStampingID)
+            case 'change':
+                console.log('change', selectedStampingID)
                 break;
             case 'export':
                 console.log('export', selectedStampingID)
@@ -109,22 +74,27 @@ const HistoryTable: React.FC = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {Stampings && Stampings.map((stamping) => (
+                        {stampings && stampings.map((stamping) => (
                             <tr
                                 key={stamping.id}
                                 className={selectedStampingID === stamping.id ? styles.selected : ''}
-                                onClick={() => handleRowClick(stamping.id)}
-                                onDoubleClick={() => handleRowDoubleClick(stamping.id)}
-                                onContextMenu={(e) => handleContextMenu(e, stamping.id)} // 오른쪽 클릭 핸들러 추가
+                                onClick={() => handleRowClick(stamping.id!)}
+                                onDoubleClick={() => handleRowDoubleClick(stamping.id!)}
+                                onContextMenu={(e) => handleContextMenu(e, stamping.id!)} // 오른쪽 클릭 핸들러 추가
                             >
-                                <td className={styles.StampingNow}>{checkoutStampingID === stamping.id ? '●' : ''}</td>
-                                <td className={styles.StampingMsg}>{stamping.path}</td>
+                                <td className={styles.StampingNow}>{currentStampingID === stamping.id ? '●' : ''}</td>
+                                <td className={styles.StampingMsg}>{stamping.stampingMessage}</td>
                                 <td className={styles.StampingDate}>{formatDate(stamping.createTime)}</td>
                                 <td className={styles.StampingNum}>{stamping.checkSum}</td>
                             </tr>
                         ))}
+
+
                         </tbody>
                     </table>
+                    { stampings.length === 0 &&
+                        <p className={styles.centeredText}>내역이 없습니다.</p>
+                    }
                 </div>
             </div>
 
@@ -145,7 +115,7 @@ const HistoryTable: React.FC = () => {
                 >
                     <ul>
                         <li onClick={() => handleMenuOptionClick('reset')}>reset <span>(HARD)</span></li>
-                        <li onClick={() => handleMenuOptionClick('checkout')}>checkout</li>
+                        <li onClick={() => handleMenuOptionClick('change')}>change</li>
                         <li onClick={() => handleMenuOptionClick('export')}>export <span>(file)</span></li>
                     </ul>
                 </div>

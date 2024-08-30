@@ -167,16 +167,6 @@ interface TableMergeSaveRequest {
     childTableID: number;
 }
 
-// 커밋
-interface VcsFileEntity {
-    id: number;
-    path: string;
-    checkSum: string;
-    createTime: string;
-    isCurrent: string;
-    databaseID: number;
-}
-
 // ERD 변환
 interface ERDiagram {
     node: Node[];
@@ -197,4 +187,23 @@ interface Node {
 interface Link {
     from: number;
     to: number;
+}
+
+// 스탬핑 변경 데이터
+interface StampingDiffDTO {
+    data: string;
+    state: number;
+}
+
+type StampingDataMap = Record<string, Record<string, StampingDiffDTO[]>>;
+
+// 스탬핑 히스토리
+interface StampingEntity {
+    id?: number;
+    path: string;
+    checkSum: string;
+    stampingMessage: string;
+    createTime: string;
+    current: boolean;
+    databaseID: number;
 }

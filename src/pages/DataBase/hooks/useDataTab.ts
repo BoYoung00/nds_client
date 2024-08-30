@@ -1,4 +1,4 @@
-import React, {RefObject, useEffect, useState} from 'react';
+import React, {MouseEventHandler, RefObject, useEffect, useRef, useState} from 'react';
 import {findColumnInfo} from "../../../utils/utils";
 import {createData, getImagesPathList, getVideoPathList} from "../../../services/api";
 import {useDataBase} from "../../../contexts/DataBaseContext";
@@ -16,7 +16,7 @@ const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
     };
 };
 
-export function useDataTab() {
+export const useDataTab = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const {selectedTable, setTables, tables} = useTable();
     const [imagePaths, setImagePaths] = useState<MediaFile[]>([]);
@@ -272,7 +272,9 @@ export function useDataTab() {
             let finalData: string;
 
             // `selectedData`가 `MediaFile` 타입인지 체크
-            if (selectedData && typeof selectedData === 'object' && 'path' in selectedData) {
+            if (selectedData === null) {
+                finalData = ''; // null일 경우 빈 문자열을 할당
+            } else if (selectedData && typeof selectedData === 'object' && 'path' in selectedData) {
                 finalData = selectedData.path;  // `MediaFile` 타입일 경우
             } else {
                 finalData = selectedData as string;  // `string` 타입일 경우
@@ -362,4 +364,69 @@ export function useAutoColumnWidth(
     }, dependencies);
 }
 
+// 모달창 마우스 이벤트
+export const useSearchPosition = (initialPosition: { x: number, y: number } | null) => {
+    const [showSearch, setShowSearch] = useState<boolean>(false);
+    const [searchPosition, setSearchPosition] = useState<{ x: number, y: number } | null>(initialPosition);
+    const searchBoxRef = useRef<HTMLSpanElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
+
+    // 버튼 클릭 시 검색창 토글 및 위치 설정
+    const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        const { clientX: x, clientY: y } = event;
+        setSearchPosition({ x, y });
+        setShowSearch(prevShowSearch => !prevShowSearch);
+    };
+
+    // 화면 크기와 스크롤을 고려하여 검색창 위치 조정
+    useEffect(() => {
+        if (showSearch && searchBoxRef.current) {
+            const { clientWidth: boxWidth, clientHeight: boxHeight } = searchBoxRef.current;
+            const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
+            const { x, y } = searchPosition || { x: 0, y: 0 };
+
+            let adjustedX = x;
+            let adjustedY = y;
+
+            // 화면 오른쪽 벽과 맞닿게 조정
+            if (x + boxWidth > windowWidth) {
+                adjustedX = windowWidth - boxWidth - 10; // 10px 여유 공간
+            }
+
+            // 화면 아래쪽 벽과 맞닿게 조정
+            if (y + boxHeight > windowHeight) {
+                adjustedY = windowHeight - boxHeight - 10; // 10px 여유 공간
+            }
+
+            setSearchPosition({ x: adjustedX, y: adjustedY });
+        }
+    }, [showSearch, searchPosition]);
+
+    // 문서 클릭 시 검색창 닫기
+    useEffect(() => {
+        const handleDocumentClick: EventListener = (event: Event) => {
+            const target = event.target as HTMLElement;
+            if (
+                searchBoxRef.current && !searchBoxRef.current.contains(target) &&
+                buttonRef.current && !buttonRef.current.contains(target)
+            ) {
+                setShowSearch(false);
+            }
+        };
+
+        document.addEventListener('click', handleDocumentClick as EventListener);
+        return () => {
+            document.removeEventListener('click', handleDocumentClick as EventListener);
+        };
+    }, []);
+
+    return {
+        showSearch,
+        searchPosition,
+        searchBoxRef,
+        buttonRef,
+        handleButtonClick,
+        setShowSearch
+    };
+};
 

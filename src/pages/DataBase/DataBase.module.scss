@@ -192,7 +192,6 @@
 
       .dataBox {
         @include flex-space-between;
-        position: relative;
 
         & > input[type='text'] {
           width: 75%;
@@ -203,9 +202,6 @@
         }
 
         .searchBox {
-          position: absolute;
-          right: 0;
-          top: 2.8rem;
           z-index: 1;
         }
       }
@@ -297,7 +293,7 @@
         gap: 10px;
         margin: .5rem 0 1rem 0;
 
-        span {
+        & > span {
           @include noDrag;
           padding: 5px;
           cursor: pointer;

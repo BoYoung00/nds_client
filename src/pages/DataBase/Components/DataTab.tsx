@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {MouseEvent, useEffect, useRef, useState} from 'react';
 import styles from '../DataBase.module.scss';
 import refresh from '../../../assets/images/refresh.png';
 import addData from '../../../assets/images/addData.png';
@@ -7,7 +7,7 @@ import save from '../../../assets/images/save.png';
 import updateSave from '../../../assets/images/updateSave.png';
 import search from '../../../assets/images/search.png';
 import {Notification} from '../../../publicComponents/layout/modal/Notification';
-import {useAutoColumnWidth, useDataTab} from "../hooks/useDataTab";
+import {useAutoColumnWidth, useDataTab, useSearchPosition} from "../hooks/useDataTab";
 import Search from "../../../publicComponents/layout/modal/Search/Search";
 import {useTable} from "../../../contexts/TableContext";
 
@@ -192,14 +192,21 @@ interface DataCellProps {
 }
 
 const DataCell: React.FC<DataCellProps> = ({
-   type,
-   value,
-   columnKey,
-   rowIndex,
-   dataList,
-   handleSelectData,
-}) => {
-    const [showSearch, setShowSearch] = useState<boolean>(false);
+                                               type,
+                                               value,
+                                               columnKey,
+                                               rowIndex,
+                                               dataList,
+                                               handleSelectData,
+                                           }) => {
+    const {
+        showSearch,
+        searchPosition,
+        searchBoxRef,
+        buttonRef,
+        handleButtonClick,
+        setShowSearch
+    } = useSearchPosition(null);
 
     return (
         <div className={styles.dataBox}>
@@ -210,22 +217,33 @@ const DataCell: React.FC<DataCellProps> = ({
                 readOnly
             />
             <button
+                ref={buttonRef}
                 className={styles.searchBut}
-                onClick={() => setShowSearch(!showSearch)}
+                onClick={handleButtonClick}
             >
                 {type === 'join' ? 'Join' : 'Media'}
             </button>
-            <span className={styles.searchBox}>
-                <Search
-                    title={type === 'join' ? '조인 데이터 검색' : '미디어 데이터 검색'}
-                    showSearch={showSearch}
-                    setShowSearch={setShowSearch}
-                    dataList={dataList}
-                    handleSelectData={(item) => handleSelectData(item, columnKey, rowIndex)}
-                    type={type === 'join' ? 'joinData' : 'media'}
-                    index={rowIndex}
-                />
-            </span>
+            {showSearch && searchPosition && (
+                <span
+                    ref={searchBoxRef}
+                    className={styles.searchBox}
+                    style={{
+                        position: 'absolute',
+                        top: searchPosition.y,
+                        left: searchPosition.x
+                    }}
+                >
+                    <Search
+                        title={type === 'join' ? '조인 데이터 검색' : '미디어 데이터 검색'}
+                        showSearch={showSearch}
+                        setShowSearch={setShowSearch}
+                        dataList={dataList}
+                        handleSelectData={(item) => handleSelectData(item, columnKey, rowIndex)}
+                        type={type === 'join' ? 'joinData' : 'media'}
+                        index={rowIndex}
+                    />
+                </span>
+            )}
         </div>
     );
 };

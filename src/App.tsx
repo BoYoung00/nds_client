@@ -6,11 +6,12 @@ import UserAuth from "./pages/UserAuth/UserAuth";
 import DataBase from './pages/DataBase/DataBase';
 import Header from "./publicComponents/layout/Header";
 import ApiArchive from "./pages/ApiArchive";
-import Version from "./pages/Revision";
+import Revision from "./pages/Revision";
 import Erd from "./pages/Erd";
 import Template from "./pages/Template";
 import {DataBaseProvider} from "./contexts/DataBaseContext";
 import {TableProvider} from "./contexts/TableContext";
+import {RevisionProvider} from "./contexts/RevisionContext";
 
 const App: React.FC = () => {
     const [token, setToken] = useState<string | null>(null);
@@ -57,7 +58,7 @@ const App: React.FC = () => {
                         <Routes>
                             <Route path='/' element={<Navigate to="/database" />} />
                             <Route path="/database" element={<TableProvider> <DataBase /> </TableProvider> } />
-                            <Route path="/revision" element={<Version />} />
+                            <Route path="/revision" element={<RevisionProvider> <Revision /> </RevisionProvider>} />
                             <Route path="/erd" element={<TableProvider> <Erd /> </TableProvider>} />
                             <Route path="/api" element={<ApiArchive />} />
                             <Route path="/template" element={<Template />} />

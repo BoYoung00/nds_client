@@ -341,10 +341,10 @@ export const tableMergeSave = async (tableMergeSaveRequest: TableMergeSaveReques
     }
 };
 
-// 스탬핑 프리뷰
-export const getDiffsPage = async (databaseId: number) => {
+// 스탬핑 : 변경 및 수정 사항 커밋
+export const revisionDataFirstCommit = async (databaseId: number, commitMessage: string) => {
     try {
-        const response = await client.get(`/diffs/${databaseId}`);
+        const response = await client.post('/api/revision/stamping', {databaseId, commitMessage});
         if (response.status === 200)
             return response.data;
         new Error(`${response.data.message}`)
@@ -358,3 +358,22 @@ export const getDiffsPage = async (databaseId: number) => {
     }
 };
 
+// 스탬핑 : 변경 사항 가지고 오기 (프리뷰)
+export const revisionDataDiffData = async (databaseId: number) => {
+    try {
+        const response = await client.get(`/api/revision/diff/${databaseId}`);
+        return response.data; // 프리뷰 json 데이터 반환
+    } catch (error) {
+        throw error;
+    }
+};
+
+// 스탬핑 : 히스토리 리스트
+export const revisionHistory = async (databaseId: number) => {
+    try {
+        const response = await client.get(`/api/revision/history/${databaseId}`);
+        return response.data; // 프리뷰 json 데이터 반환
+    } catch (error) {
+        throw error;
+    }
+};
