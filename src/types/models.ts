@@ -199,11 +199,9 @@ type StampingDataMap = Record<string, Record<string, StampingDiffDTO[]>>;
 
 // 스탬핑 히스토리
 interface StampingEntity {
-    id?: number;
-    path: string;
-    checkSum: string;
-    stampingMessage: string;
+    stampingId: number;
+    isCurrent: string;
+    message: string;
     createTime: string;
-    current: boolean;
-    databaseID: number;
+    stampingHash: string;
 }

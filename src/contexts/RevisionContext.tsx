@@ -33,12 +33,12 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
         try {
             setLoading(true);
             const response: StampingEntity[] = await revisionHistory(selectedDataBase.id!);
-            console.log('스탬핑 리스트', response)
+            // console.log('스탬핑 리스트', response)
 
-            const currentStamping = response.find(s => s.current); // 체크아웃 선별
-            setCurrentStampingID(currentStamping ? currentStamping.id ? currentStamping.id : -1 : -1)
+            const currentStamping = response.find(s => s.isCurrent); // 체크아웃 선별
+            setCurrentStampingID(currentStamping ? currentStamping.stampingId ? currentStamping.stampingId : -1 : -1)
 
-            setStampings(response);
+            setStampings([...response].reverse());
         } catch (error) {
             setErrorMessage('히스토리 목록을 가져오는 데 실패했습니다.');
         } finally {
@@ -58,7 +58,7 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
             >
                 {children}
             </RevisionContext.Provider>
-             오류 모달
+
             { errorMessage && <Notification
                 onClose={() => setErrorMessage(null)}
                 type="error"

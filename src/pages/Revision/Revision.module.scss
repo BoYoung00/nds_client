@@ -58,11 +58,6 @@ $widthSize: 80%;
 
       thead {
         border-bottom: 1px solid #D8D8D8;
-
-        .checkout {
-          font-size: .8rem;
-          text-align: center;
-        }
       }
 
       th {
@@ -218,7 +213,7 @@ $widthSize: 80%;
 
     .messageInput {
       margin-top: 1rem;
-      height: 55%;
+      height: 50%;
       resize: none;
       caret-color: black;
     }

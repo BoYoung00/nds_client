@@ -10,6 +10,7 @@ const StampingMassage: React.FC = () => {
 
     const [stampingMessage, setStampingMessage] = useState<string>('');
 
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -19,11 +20,10 @@ const StampingMassage: React.FC = () => {
     // 커밋 저장
     const handleSave = async () => {
         if (!selectedDataBase) return;
-        console.log('통신된 현재 데이터베이스 ID : ', selectedDataBase.id!);
-        console.log('통신된 커밋 메세지 : ', stampingMessage);
+
         try {
-            const response = await revisionDataFirstCommit(selectedDataBase.id!, stampingMessage);
-            console.log('스탬핑 저장 반환', response)
+            await revisionDataFirstCommit(selectedDataBase.id!, stampingMessage);
+            setSuccessMessage('내역 저장에 성공하셨습니다.');
         } catch (error) {
             const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
             setErrorMessage(errorMessage);
@@ -51,6 +51,13 @@ const StampingMassage: React.FC = () => {
                     </div>
                 </section>
             </div>
+
+            { successMessage && <Notification
+                onClose={() => setSuccessMessage(null)}
+                type="success"
+                message={successMessage}
+                onConfirm={() => window.location.reload()}
+            /> }
 
             { errorMessage && <Notification
                 onClose={() => setErrorMessage(null)}

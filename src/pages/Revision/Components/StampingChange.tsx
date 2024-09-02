@@ -25,6 +25,7 @@ const StampingChange = () => {
 
         try {
             const response: StampingDataMap = await revisionDataDiffData(selectedDataBase.id!);
+            console.log('변경 사항', response)
             setStampingData(response);
         } catch (error) {
             const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
@@ -40,7 +41,8 @@ const StampingChange = () => {
             <div className={styles.stampingChange}>
                 <section className={styles.leftContainer}>
                     <div>
-                        <p className={styles.title} style={{borderTopLeftRadius: '4px'}}>Unstaged Changes</p>
+                        {/*Unstaged Changes*/}
+                        <p className={styles.title} style={{borderTopLeftRadius: '4px'}}>Tables State</p>
                         <TableListInfo
                             tableList={tableNames}
                             selectedTableName={selectedTableName}

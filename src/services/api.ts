@@ -342,9 +342,9 @@ export const tableMergeSave = async (tableMergeSaveRequest: TableMergeSaveReques
 };
 
 // 스탬핑 : 변경 및 수정 사항 커밋
-export const revisionDataFirstCommit = async (databaseId: number, commitMessage: string) => {
+export const revisionDataFirstCommit = async (dataBaseId: number, commitMessage: string) => {
     try {
-        const response = await client.post('/api/revision/stamping', {databaseId, commitMessage});
+        const response = await client.post('/api/revision/stamping', {dataBaseId, commitMessage});
         if (response.status === 200)
             return response.data;
         new Error(`${response.data.message}`)
@@ -362,7 +362,7 @@ export const revisionDataFirstCommit = async (databaseId: number, commitMessage:
 export const revisionDataDiffData = async (databaseId: number) => {
     try {
         const response = await client.get(`/api/revision/diff/${databaseId}`);
-        return response.data; // 프리뷰 json 데이터 반환
+        return response.data;
     } catch (error) {
         throw error;
     }
@@ -372,8 +372,30 @@ export const revisionDataDiffData = async (databaseId: number) => {
 export const revisionHistory = async (databaseId: number) => {
     try {
         const response = await client.get(`/api/revision/history/${databaseId}`);
-        return response.data; // 프리뷰 json 데이터 반환
+        return response.data;
     } catch (error) {
         throw error;
     }
 };
+
+// 스탬핑 : 리셋
+export const resetStampingState = async (dataBaseId: number, stampingId: number) => {
+    try {
+        const response = await client.get(`/api/revision/reset/${dataBaseId}/${stampingId}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// 스탬핑 : 체크아웃
+export const moveToHistoryPoint = async (databaseId: number, stampingId: number) => {
+    try {
+        const response = await client.get(`/api/revision/move/${databaseId}/${stampingId}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+

@@ -24,7 +24,8 @@ const Information: React.FC = () => {
                             tableList={['테이블1', '테이블2']}
                             selectedTableName={selectedTableName}
                             setSelectedTableName={setSelectedTableName}
-                        />                    </div>
+                        />
+                    </div>
                     <div className={styles.tableChangeView}>
                         테이블 뷰 부분
                     </div>
@@ -38,7 +39,8 @@ const Information: React.FC = () => {
                             tableList={['테이블1', '테이블2']}
                             selectedTableName={selectedTableName}
                             setSelectedTableName={setSelectedTableName}
-                        />                    </div>
+                        />
+                    </div>
                     <div className={styles.tablePreView}>
                         테이블 프리뷰 부분
                     </div>
