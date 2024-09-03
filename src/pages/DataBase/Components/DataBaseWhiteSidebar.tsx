@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from '../DataBase.module.scss';
 import {DBQueryExtraction} from "../../../publicComponents/layout/modal/DBQueryExtraction";
 import {Notification} from "../../../publicComponents/layout/modal/Notification";
@@ -7,6 +7,7 @@ import {useDataBaseWhiteSidebar} from "../hooks/useDataBaseWhiteSidebar";
 import {useDataBase} from "../../../contexts/DataBaseContext";
 import Merge from "../../../publicComponents/layout/modal/Merge/Merge";
 import {useTable} from "../../../contexts/TableContext";
+import edit from "../../../assets/images/edit.png";
 
 const DataBaseWhiteSidebar: React.FC = () => {
     const { selectedDataBase } = useDataBase();
@@ -24,6 +25,18 @@ const DataBaseWhiteSidebar: React.FC = () => {
         handleQuery,
         handleDelete
     } = useDataBaseWhiteSidebar(tables);
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [comment, setComment] = useState(tables?.find(table => table.id === selectedId)?.comment || '');
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setComment(e.target.value);
+    };
+
+    const handleBlur = () => {
+        setIsEditing(false);
+        // comment 수정 통신
+    };
 
     return (
         <>
@@ -47,8 +60,23 @@ const DataBaseWhiteSidebar: React.FC = () => {
 
                 <footer>
                     <section className={styles.commentBox}>
-                        <p>테이블 설명</p>
-                        <span>{tables?.find(dataBase => dataBase.id === selectedId)?.comment} </span>
+                        <div className={styles.commentTitle}>
+                            <p>테이블 설명</p>
+                            <img src={edit} className={styles.editIcon} onClick={() => setIsEditing(true)} />
+                        </div>
+                        <div className={styles.commentContainer}>
+                            { isEditing ? (
+                                <input
+                                    type="text"
+                                    value={comment}
+                                    onChange={handleInputChange}
+                                    onBlur={handleBlur}
+                                    autoFocus
+                                />
+                            ) : (
+                                <span onDoubleClick={() => setIsEditing(true)}>{comment}</span>
+                            )}
+                        </div>
                     </section>
                     <section className={styles.buttonBox}>
                         <button onClick={handleQuery}>테이블 병합</button>

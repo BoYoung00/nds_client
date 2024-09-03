@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../DataBase.module.scss';
-import {DBQueryExtraction} from "../../../publicComponents/layout/modal/DBQueryExtraction";
-import {CreateDB} from "../../../publicComponents/layout/modal/CreateDB";
-import {Notification} from "../../../publicComponents/layout/modal/Notification";
-import {useDataBaseBlueSidebar} from "../hooks/useDataBaseBlueSidebar";
-import {useDataBase} from "../../../contexts/DataBaseContext";
-
+import { DBQueryExtraction } from "../../../publicComponents/layout/modal/DBQueryExtraction";
+import { CreateDB } from "../../../publicComponents/layout/modal/CreateDB";
+import { Notification } from "../../../publicComponents/layout/modal/Notification";
+import { useDataBaseBlueSidebar } from "../hooks/useDataBaseBlueSidebar";
+import { useDataBase } from "../../../contexts/DataBaseContext";
+import edit from "../../../assets/images/edit.png"
 
 const DataBaseBlueSidebar: React.FC = () => {
     const { databases } = useDataBase();
@@ -27,6 +27,18 @@ const DataBaseBlueSidebar: React.FC = () => {
             handleDelete,
         }
     } = useDataBaseBlueSidebar();
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [comment, setComment] = useState(databases?.find(dataBase => dataBase.id === selectedDatabaseID)?.comment || '');
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setComment(e.target.value);
+    };
+
+    const handleBlur = () => {
+        setIsEditing(false);
+        // comment 수정 통신
+    };
 
     return (
         <>
@@ -50,8 +62,23 @@ const DataBaseBlueSidebar: React.FC = () => {
 
                 <footer>
                     <section className={styles.commentBox}>
-                        <p>데이터베이스 설명</p>
-                        <span>{databases?.find(dataBase => dataBase.id === selectedDatabaseID)?.comment} </span>
+                        <div className={styles.commentTitle}>
+                            <p>데이터베이스 설명</p>
+                            <img src={edit} className={styles.editIcon} onClick={() => setIsEditing(true)} />
+                        </div>
+                        <div className={styles.commentContainer}>
+                            { isEditing ? (
+                                <input
+                                    type="text"
+                                    value={comment}
+                                    onChange={handleInputChange}
+                                    onBlur={handleBlur}
+                                    autoFocus
+                                />
+                            ) : (
+                                <span onDoubleClick={() => setIsEditing(true)}>{comment}</span>
+                            )}
+                        </div>
                     </section>
                     <section className={styles.buttonBox}>
                         <button onClick={handleQuery}>쿼리 추출</button>

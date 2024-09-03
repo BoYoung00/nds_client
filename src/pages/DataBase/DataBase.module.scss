@@ -2,7 +2,7 @@
 
 @mixin tab-container {
   width: 99%; height: 85%;
-  max-height: 41rem;
+  max-height: 34rem;
   background: white;
   border: 1px solid #777777;
   margin-top: 1.3rem;
@@ -66,12 +66,25 @@
     .commentBox {
       height: 9em;
 
-      p {
-        font-size: 1.1rem;
-      }
-      span {
-        font-family: $font-KoPub-medium
-      }
+      .commentTitle {
+        @include flex-left;
+
+        p {
+          font-size: 1.1rem;
+        }
+        span {
+          font-family: $font-KoPub-medium
+        }
+
+        .editIcon {
+          width: 1rem; height: 1rem;
+          padding: .5rem;
+          display: none;
+          cursor: pointer;
+        }
+      } // commentTitle
+
+      &:hover .editIcon { display: block; }
     }
 
     .buttonBox {
@@ -108,6 +121,11 @@
     .buttonBox { border-top: 1px solid white; }
 
     button { @include button-none-style(1rem, white, false); }
+  }
+
+  .commentContainer > input[type='text'] {
+    background: none;
+    color: white;
   }
 }
 
@@ -149,6 +167,11 @@
     .buttonBox { border-top: 1px solid #606060; }
 
     button { @include button-none-style(1rem, #606060, false); }
+  }
+
+  .commentContainer > input[type='text'] {
+    background: none;
+    color: $color-gray-deep;
   }
 }
 
@@ -373,13 +396,13 @@
   position: relative;
 
   main {
-    width: 100%; height: 90%;
+    width: 100%; height: 100%;
     @include flex-center;
   }
 
   &__fileContainer {
-    @include insideBox(40%, 96%);
-    max-height: 35rem;
+    @include insideBox(40%, 90%);
+    //max-height: 35rem;
 
     .description {
       font-family: $font-KoPub-bold;
@@ -407,7 +430,7 @@
   }
 
   &__previewContainer {
-    @include insideBox(60%, 96%);
+    @include insideBox(60%, 90%);
 
     table {
       @include table-styles();
