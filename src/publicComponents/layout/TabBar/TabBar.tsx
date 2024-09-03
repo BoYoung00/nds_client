@@ -7,9 +7,10 @@ interface TabBarProps {
     tabs: string[];
     onTabSelect: (index: number) => void;
     width?: number;
+    background?: string;
 }
 
-const TabBar: React.FC<TabBarProps> = ({ tabs, onTabSelect, width = 5 }) => {
+const TabBar: React.FC<TabBarProps> = ({ tabs, onTabSelect, width = 5, background='#D8D8D8' }) => {
     const { selectedIndex, handleTabClick } = useTabBar({
         initialIndex: 0,
         onTabSelect,
@@ -17,7 +18,7 @@ const TabBar: React.FC<TabBarProps> = ({ tabs, onTabSelect, width = 5 }) => {
     const [isOpenCreateDBModal, setIsOpenCreateDBModal] = useState<boolean>(false);
 
     return (
-        <div className={styles.tabBar}>
+        <div className={styles.tabBar} style={{background: `${background}`}}>
             {tabs.map((tab, index) => (
                 // 비어있는 탭이라면 CREATE DATABASE +
                 tab === "" ?

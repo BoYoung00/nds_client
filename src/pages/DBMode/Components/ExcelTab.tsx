@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../DataBase.module.scss';
+import styles from '../DBMode.module.scss';
 import doubleArrow from '../../../assets/images/doubleArrow.png';
 import csv from '../../../assets/images/CSV.png';
 import { Notification } from '../../../publicComponents/layout/modal/Notification';

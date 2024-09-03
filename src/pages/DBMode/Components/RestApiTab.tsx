@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../DataBase.module.scss';
+import styles from '../DBMode.module.scss';
 import ApiSection from "../../../publicComponents/UI/ApiSection";
 import {useTable} from "../../../contexts/TableContext";
 

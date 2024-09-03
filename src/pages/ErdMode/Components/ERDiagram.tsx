@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import styles from '../Erd.module.scss';
+import styles from '../ErdMode.module.scss';
 import * as go from 'gojs';
 import { findColumnInfo } from '../../../utils/utils';
 import { useTable } from '../../../contexts/TableContext';
 
 const ERDiagram: React.FC = () => {
-    const { tables } = useTable();
+    const { tables, setSelectedTable } = useTable();
     const diagramRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -26,7 +26,7 @@ const ERDiagram: React.FC = () => {
                     {
                         strokeWidth: 1,
                         fill: 'white',
-                        stroke: '#bdbdbd'
+                        stroke: '#bdbdbd',
                     }
                 ),
                 $(
@@ -121,7 +121,7 @@ const ERDiagram: React.FC = () => {
                     routing: go.Link.Orthogonal,
                     corner: 5,
                 },
-                $(go.Shape), // 선을 그립니다.
+                $(go.Shape), // 선 그리기
                 $(go.TextBlock,
                     {
                         textAlign: "center",
@@ -147,6 +147,15 @@ const ERDiagram: React.FC = () => {
             // 데이터 변환
             const transformedData = transformTableData(tables);
             diagram.model = new go.GraphLinksModel(transformedData.node, transformedData.linkData);
+
+            // 노드 선택 시 id 값 반환
+            diagram.addDiagramListener('ChangedSelection', (e) => {
+                const selectedNode = diagram.selection.first();
+                if (selectedNode) {
+                    const selectTable = tables.find(table => table.id === selectedNode.data.key)
+                    setSelectedTable(selectTable ? selectTable : null );
+                }
+            });
 
             return diagram;
         };

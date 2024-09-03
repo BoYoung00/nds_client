@@ -1,595 +1,64 @@
 @import "src/App.module";
 
-@mixin tab-container {
-  width: 99%; height: 85%;
-  max-height: 34rem;
-  background: white;
-  border: 1px solid #777777;
-  margin-top: 1.3rem;
-  padding: .5rem;
-}
-
-@mixin insideBox($width: 50%, $height: 99%) {
-  width: $width; height: $height;
-  border: 1px solid #C1C1C1;
-  overflow: auto;
-  padding: .5rem;
-}
-
 .dataBase {
   height: 100%;
   width: 100%;
-  min-width: 60rem;
-  display: flex;
-  flex-direction: column;
-  background: #f4f4f4;
-
-  &__content {
-    height: 100%; width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-
-    .tabContent {
-      height: 95%; width: 100%;
-      flex: 1; // 부모로 부터 남은 너비를 모두 가득 채움
-      margin: 2rem 2.5rem;
-      min-width: 25rem;
-    }
-  }
-}
-
-
-// 사이드바 공통 디자인
-.dataBaseSidebar {
-  font-family: $font-KoPub-bold;
-  padding: 2rem 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  .item {
-    cursor: pointer;
-    margin-bottom: .8rem;
-    transition: background-color 0.3s ease;
-  }
-
-  .createButton {
-    display: block;
-    width: 85%;
-    margin: 0 auto;
-  }
-
-  footer {
-    padding: .5rem 1.3rem;
-
-    .commentBox {
-      height: 9em;
-
-      .commentTitle {
-        @include flex-left;
-
-        p {
-          font-size: 1.1rem;
-        }
-        span {
-          font-family: $font-KoPub-medium
-        }
-
-        .editIcon {
-          width: 1rem; height: 1rem;
-          padding: .5rem;
-          display: none;
-          cursor: pointer;
-        }
-      } // commentTitle
-
-      &:hover .editIcon { display: block; }
-    }
-
-    .buttonBox {
-      padding: .7rem 0;
-
-      button {
-        display: block;
-        padding: .6rem 0;
-      }
-    }
-  }
-}
-
-
-// 파란색 사이드바
-.blueSidebar {
-  width: 14rem;
-  min-width: 14rem;
-  background-color: $color-blue-deep;
-  color: white;
-  font-size: 1.1rem;
-
-  .item { padding: 1rem 2rem; }
-
-  .selected { background-color: #008ddd; }
-
-  .createButton {
-    @include button-none-style(0.95rem, white, true);
-    @include border-radius(false, 1px, white);
-    padding: 1rem;
-  }
-
-  footer {
-    .buttonBox { border-top: 1px solid white; }
-
-    button { @include button-none-style(1rem, white, false); }
-  }
-
-  .commentContainer > input[type='text'] {
-    background: none;
-    color: white;
-  }
-}
-
-
-// 하얀색 사이드바
-.whiteSidebar {
-  width: 13rem;
-  min-width: 13rem;
-  font-size: 1rem;
-  background-color: white;
-  color: #606060;
-
-  .tablesBox {
-    height: 14.5rem;
-    overflow: auto;
-    padding: .5rem;
-  }
-
-  .item {
-    padding: .5rem 0 .5rem .5rem;
-    width: 82%;
-    margin: 1rem auto;
-  }
-
-  .selected {
-    background-color: #e2f1fd;
-    border-radius: 4px;
-    border-right: 3px solid $color-blue-deep;
-    color: $color-blue-deep;
-  }
-
-  .createButton {
-    @include button-none-style(0.85rem, #606060, true);
-    @include border-radius(false, 1px, #D0D0D0);
-    padding: .7rem;
-  }
-
-  footer {
-    .buttonBox { border-top: 1px solid #606060; }
-
-    button { @include button-none-style(1rem, #606060, false); }
-  }
-
-  .commentContainer > input[type='text'] {
-    background: none;
-    color: $color-gray-deep;
-  }
-}
-
-
-//DataTab 디자인
-.dataTab {
-  width: 99%; height: 80%;
-
-  &__header {
-    @include flex-space-between;
-    padding: 1rem;
-
-    span {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-right: .5rem;
-      font-size: .6rem;
-      color: #7A7A7A;
-      cursor: pointer;
-
-      img {
-        width: 3rem;
-      }
-
-      &:first-child {
-        margin-right: auto;
-      }
-    }
-  }
-
-  &__main {
-    width: 100%; height: 100%;
-    max-height: 30rem;
-    background: white;
-    border: 1px solid #777777;
-    overflow: auto;
-
-    table {
-      @include table-styles;
-
-      .dataBox {
-        @include flex-space-between;
-
-        & > input[type='text'] {
-          width: 75%;
-        }
-
-        .searchBut {
-          @include button-style(true, 22%, .9rem);
-        }
-
-        .searchBox {
-          z-index: 1;
-        }
-      }
-
-      .selectedCell {
-        background: #eaeff8;
-      }
-
-      .deletedCell {
-        background: #fdc6c6;
-      }
-
-      .readOnlyInput {
-        @include input-style-none;
-        cursor: default;
-      }
-    }
-  }
-}
-
-
-// REST API 탭 디자인
-.RestApiTab {
-  @include tab-container;
-  overflow: auto;
-
-  .urlContainer {
-    width: 95%; height: 95%;
-    margin: 0 auto;
-    padding-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: end;
-    gap: 1rem;
-
-    div { width: 100%; margin: 0 auto; }
-
-    .ApiButton {
-      @include button-style(true, 12rem);
-      float: left;
-    }
-  }
-}
-
-
-// 쿼리 탭 디자인
-.QueryTab {
-  @include tab-container;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
-
-  .tabContainer {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 .5rem;
-    flex-shrink: 0;
-  }
-
-  .codeEditorWrapper {
-    width: 100%;
-    height: 60vh;
-    max-height: 83%;
-  }
-}
-
-
-// Like 탭 디자인
-.likeTab {
-  @include tab-container;
-  @include flex-center;
-
-  &__filterContainer {
-    @include insideBox(40%, 97%);
-    overflow: hidden;
-    padding: .5rem;
-    @include flex-space-between;
-    flex-direction: column;
-
-    .filterBox {
-      width: 100%;
-      height: 80%;
-      overflow-y: auto;
-
-      .addRemoveButBox {
-        @include flex-right;
-        gap: 10px;
-        margin: .5rem 0 1rem 0;
-
-        & > span {
-          @include noDrag;
-          padding: 5px;
-          cursor: pointer;
-          font-family: $font-KoPub-bold;
-          font-size: 1.3rem;
-
-          &:hover { color: $color-blue-deep; }
-        }
-      }
-
-      .filterInputBox {
-        width: 100%;
-        @include flex-center;
-        margin-bottom: 1rem;
-        padding-bottom: 1rem;
-        gap: .5rem;
-        border-bottom: 1px solid #BDBDBD;
-
-        label {
-          width: 50%;
-          display: flex;
-          flex-direction: column;
-
-          span {
-            @include nowrap;
-            color: $color-blue-deep;
-            font-family: $font-KoPub-bold;
-          }
-        }
-
-        .filterSelectBox {
-          @include flex-center;
-          gap: .5rem;
-
-          select, input[type='text']{
-            height: 2.3rem;
-          }
-        }
-      }
-    }
-
-    .saveButBox {
-      width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-top: auto;
-
-      span {
-        white-space: nowrap;
-        font-size: .7rem;
-        color: #838383;
-      }
-
-      button {
-        @include button-style();
-        white-space: nowrap;
-      }
-    }
-  }
-
-  .doubleArrowImg {
-    width: 2.5rem;
-    transform: rotate(-90deg);
-  }
-
-  &__previewContainer {
-    @include insideBox(60%, 100%);
-    overflow: auto;
-  }
-}
-
-// Excel 탭 디자인
-.excelTab {
-  @include tab-container;
-  @include flex-space-between;
-  flex-direction: column;
   position: relative;
+  min-width: 60rem;
+}
 
-  main {
-    width: 100%; height: 100%;
-    @include flex-center;
-  }
+// 토글 버튼 디자인
+.dataBase > .toggleContainer {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  font-size: 1rem;
+  position: absolute;
+  right: 1rem;
+  top: .8rem;
+}
 
-  &__fileContainer {
-    @include insideBox(40%, 90%);
-    //max-height: 35rem;
+.toggleLabel {
+  font-size: .9rem;
+  color: #5F5F5F;
+}
 
-    .description {
-      font-family: $font-KoPub-bold;
-      text-align: center;
-      white-space: nowrap;
-      h2 { color: $color-blue-deep; }
-      span { color: $color-blue-deep; }
-      .csvImg { width: calc(30% + 15rem); }
-    }
+.toggleSwitch {
+  position: relative;
+  width: 4rem;
+  height: 1.9rem;
+  background-color: #ddd;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-    .fileInputWrapper {
+.toggleSwitch::before {
+  content: '';
+  position: absolute;
+  top: .15rem;
+  left: .2rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  background-color: #8C8C8C;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
 
-      input[type='file'] { display: none; }
+.toggleOn {
+  background-color: #EFEFEF;
 
-      .chooseFileButton {
-        @include button-style(true, 5rem);
-        padding: .3rem .5rem;
-      }
-    }
-  }
-
-  &__doubleArrowImg {
-    width: 2.5rem;
-    transform: rotate(-90deg);
-  }
-
-  &__previewContainer {
-    @include insideBox(60%, 90%);
-
-    table {
-      @include table-styles();
-      margin: 0;
-    }
-  }
-
-  .tableAddDataBut {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-
-    & > button {
-      @include button-style(true, 14rem);
-    }
-  }
-
-  .excelDownload {
-    font-family: $font-KoPub-bold;
-    color: $color-blue-deep;
-    text-decoration: underline;
-    cursor: pointer;
-    position: absolute;
-    right: 1rem;
-    top: -3.2rem;
+  &::before {
+    background: #8C8C8C;
+    transform: translateX(1.9rem);
   }
 }
 
+.toggleOff {
+  background-color: #C6C6C6;
 
-
-
-// Resource 탭 디자인
-.ResourceTab {
-  @include tab-container;
-
-  .header {
-    display: grid;
-    grid-template-columns: 15fr 1fr;
-
-    .urlBox {
-      overflow: hidden;
-
-      div {
-        @include nowrap;
-        margin-bottom: 1rem;
-
-        span {
-          color: $color-blue-deep;
-          font-family: $font-KoPub-bold;
-          font-size: 1.5rem;
-          text-align: right;
-        }
-      }
-    }
-
-    .butBox {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-
-      .deleteBut {
-        border: none;
-        border-radius: 4px;
-        background: #FF0000;
-        color: white;
-        padding: 0.5rem 0;
-        cursor: pointer;
-      }
-    }
-  }
-
-  .toggleBut {
-    width: 80px;
-    height: 30px;
-    background-color: #ccc;
-    border: 1px solid $color-blue-deep;
-    border-radius: 15px;
-    position: relative;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    @include flex-space-between;
-    padding: 0 5px;
-
-    &.on {
-      background-color: $color-blue-deep;
-
-      .label {
-        margin-left: 15px;
-      }
-    }
-
-    &.off {
-      background-color: white;
-
-      .label {
-        margin-right: 15px;
-        color: $color-blue-deep;
-      }
-    }
-
-    .circle {
-      width: 24px;
-      height: 24px;
-      background-color: white;
-      border-radius: 50%;
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      transition: left 0.3s ease;
-    }
-
-    .circleOff {
-      background-color: $color-blue-deep;
-      left: 62px;
-    }
-
-    .label {
-      font-size: 12px;
-      color: white;
-      z-index: 1;
-      flex: 1;
-      text-align: center;
-    }
-  }
-
-  .main {
-    @include insideBox(98.5%, 79%);
-
-    section {
-      display: flex;
-      flex-wrap: wrap;
-      margin-bottom: 2rem;
-
-      img,
-      video,
-      .addBut {
-        width: 10rem;
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-        height: 10rem;
-        margin: 2rem 0 0 2rem;
-        cursor: pointer;
-      }
-
-      video { width: 17.8rem; }
-
-      .addBut {
-        @include flex-center;
-        color: $color-blue-deep;
-        font-family: $font-KoPub-bold;
-        font-size: 1.5rem;
-
-        input[type="file"] {
-          display: none;
-        }
-      }
-
-      .selected {
-        border: 4px solid $color-blue-deep;
-      }
-    }
+  &::before {
+    transform: translateX(0);
+    background: white;
   }
 }

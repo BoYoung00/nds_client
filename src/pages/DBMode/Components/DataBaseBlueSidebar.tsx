@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../DataBase.module.scss';
+import styles from '../DBMode.module.scss';
 import { DBQueryExtraction } from "../../../publicComponents/layout/modal/DBQueryExtraction";
 import { CreateDB } from "../../../publicComponents/layout/modal/CreateDB";
 import { Notification } from "../../../publicComponents/layout/modal/Notification";

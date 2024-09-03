@@ -95,12 +95,12 @@ const Merge: React.FC<MergeProps> = ({ isOpenModal, onCloseModal }) => {
 
     // 병합 저장
     const handleFetchTableMergeSave = async () => {
-        if (tableInfo.name === '') {
-            setErrorMessage('테이블 이름을 작성해주세요.');
+        if (tableInfo.name.trim() === '') {
+            setErrorMessage('테이블 이름을 작성해주세요. (공백 사용 불가)');
             return;
         }
-        if (tableInfo.comment === '') {
-            setErrorMessage('테이블 설명을 작성해주세요.');
+        if (tableInfo.comment.trim() === '') {
+            setErrorMessage('테이블 설명을 작성해주세요. (공백 사용 불가)');
             return;
         }
         if (isMergePossibility === null) // 프리뷰 안 보고 실행 시

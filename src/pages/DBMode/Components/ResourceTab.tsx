@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../DataBase.module.scss';
+import styles from '../DBMode.module.scss';
 import { Notification } from "../../../publicComponents/layout/modal/Notification";
 import {useResourceTab} from "../hooks/useResourceTab";
 

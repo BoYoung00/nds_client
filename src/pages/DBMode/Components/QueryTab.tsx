@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../DataBase.module.scss';
+import styles from '../DBMode.module.scss';
 import CodeEditor from '../../../publicComponents/UI/CodeEditor';
 import CopyButton from '../../../publicComponents/UI/CopyButton';
 import TabButtons from '../../../publicComponents/UI/TabButtons';

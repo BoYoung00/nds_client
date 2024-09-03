@@ -5,8 +5,6 @@ import {useDataBase} from "./DataBaseContext";
 
 
 interface TableContextType {
-    selectedDataBase: DataBaseEntity | null;
-    setSelectedDataBase: (db: DataBaseEntity | null) => void;
     tables: TableData[];
     setTables: React.Dispatch<React.SetStateAction<TableData[]>>;
     selectedTable: TableData | null;
@@ -50,8 +48,6 @@ export const TableProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         <>
             <TableContext.Provider
                 value={{
-                    selectedDataBase,
-                    setSelectedDataBase,
                     tables,
                     setTables,
                     selectedTable,

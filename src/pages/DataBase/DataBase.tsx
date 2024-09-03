@@ -1,54 +1,38 @@
 import React, {useState} from 'react';
 import styles from './DataBase.module.scss';
-import TabBar from "../../publicComponents/layout/TabBar/TabBar";
-import DataBaseBlueSidebar from "./Components/DataBaseBlueSidebar";
-import DataBaseWhiteSidebar from "./Components/DataBaseWhiteSidebar";
-import LineTitle from "../../publicComponents/UI/LineTitle";
-import DataTab from "./Components/DataTab";
-import {formatDate} from "../../utils/utils";
-import RestApiTab from "./Components/RestApiTab";
-import QueryTab from "./Components/QueryTab";
-import LikeTab from "./Components/LikeTab";
-import ExcelTab from "./Components/ExcelTab";
-import ResourceTab from "./Components/ResourceTab";
-import {useTable} from "../../contexts/TableContext";
+import {DBMode} from "../DBMode";
+import ErdMode from "../ErdMode";
 
 const DataBase:React.FC = () => {
-    const { selectedTable } = useTable();
-    const [selectedTab, setSelectedTab] = useState(0);
+    const getInitialMode = () => {
+        const savedMode = localStorage.getItem('appMode');
+        return savedMode ? (savedMode as 'ERD' | 'DB') : 'ERD';
+    };
+    const [mode, setMode] = useState<'ERD' | 'DB'>(getInitialMode);
 
-    const renderTabContent = () => {
-        switch (selectedTab) {
-            case 0:
-                return <DataTab />;
-            case 1:
-                return <LikeTab  />;
-            case 2:
-                return <RestApiTab  />;
-            case 3:
-                return <QueryTab />;
-            case 4:
-                return <ExcelTab />;
-            case 5:
-                return <ResourceTab />;
-            default:
-                return null;
-        }
+    const handleToggle = () => {
+        const newMode = mode === 'ERD' ? 'DB' : 'ERD';
+        setMode(newMode);
+        localStorage.setItem('appMode', newMode);
     };
 
     return (
         <div className={styles.dataBase}>
-            <TabBar tabs={['Data', 'Like', 'Rest API', 'Query', 'Excel', 'Resource']} onTabSelect={(index) => setSelectedTab(index)}/>
-            <main className={styles.dataBase__content}>
-                <DataBaseBlueSidebar /> {/* 데이터베이스 사이드바 */}
-                <DataBaseWhiteSidebar /> {/* 테이블 사이드바 */}
-                { selectedTable &&
-                    <section className={styles.tabContent}>
-                        <LineTitle text={selectedTable.name} smallText={formatDate(selectedTable.createTime)}/>
-                        { renderTabContent() }
-                    </section>
-                }
-            </main>
+            <div className={styles.toggleContainer}>
+                <span className={styles.toggleLabel}>
+                    {mode === 'ERD' ? 'ERD Mode' : 'DB Mode'}
+                </span>
+                    <div
+                        className={`${styles.toggleSwitch} ${mode === 'ERD' ? styles.toggleOn : styles.toggleOff}`}
+                        onClick={handleToggle}
+                    />
+            </div>
+
+            {mode === 'ERD' ?
+                <DBMode />
+                :
+                <ErdMode />
+            }
         </div>
     );
 };
