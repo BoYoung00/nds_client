@@ -17,8 +17,9 @@ import RemoteControl from "./Components/RemoteControl";
 
 const ErdMode: React.FC = () => {
     const { databases, setSelectedDataBase } = useDataBase();
-    const { selectedTable } = useTable();
+    const { selectedTable, setSelectedTable } = useTable();
 
+    const [isVisible, setIsVisible] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedTab, setSelectedTab] = useState(0);
 
@@ -38,6 +39,23 @@ const ErdMode: React.FC = () => {
             setSelectedDataBase(databases[selectedTabIndex]);
         }
     }, [databases, selectedTabIndex, setSelectedDataBase]);
+
+    useEffect(() => {
+        if (selectedTable) {
+            setTimeout(() => {
+                setIsVisible(true);
+            }, 10);
+        } else {
+            setIsVisible(false);
+        }
+    }, [selectedTable]);
+
+    useEffect(() => {
+        document.documentElement.style.overflow = 'hidden';
+        return () => {
+            document.documentElement.style.overflow = '';
+        };
+    }, []);
 
     const renderTabContent = () => {
         switch (selectedTab) {
@@ -68,12 +86,12 @@ const ErdMode: React.FC = () => {
                 <TabBar tabs={databaseNames} onTabSelect={(index) => setSelectedTabIndex(index)} width={10} background={'#F5F5F5'}/>
                 <main className={styles.erdMode__main}>
                     <ERDiagram />
-                    { selectedTable &&
-                        <section className={styles.tabContent}>
-                            <LineTitle text={selectedTable.name} smallText={formatDate(selectedTable.createTime)}/>
-                            { renderTabContent() }
+                    {selectedTable && (
+                        <section className={`${styles.tabContent} ${isVisible ? styles.tabContentVisible : ''}`}>
+                            <LineTitle text={selectedTable.name} smallText={formatDate(selectedTable.createTime)} />
+                            {renderTabContent()}
                         </section>
-                    }
+                    )}
                 </main>
             </div>
 

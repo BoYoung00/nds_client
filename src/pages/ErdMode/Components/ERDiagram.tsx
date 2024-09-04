@@ -5,8 +5,9 @@ import { findColumnInfo } from '../../../utils/utils';
 import { useTable } from '../../../contexts/TableContext';
 
 const ERDiagram: React.FC = () => {
-    const { tables, setSelectedTable } = useTable();
+    const { tables, selectedTable, setSelectedTable } = useTable();
     const diagramRef = useRef<HTMLDivElement | null>(null);
+    const diagramInstanceRef = useRef<go.Diagram | null>(null);
 
     useEffect(() => {
         const $ = go.GraphObject.make;
@@ -152,28 +153,38 @@ const ERDiagram: React.FC = () => {
             diagram.addDiagramListener('ChangedSelection', (e) => {
                 const selectedNode = diagram.selection.first();
                 if (selectedNode) {
-                    const selectTable = tables.find(table => table.id === selectedNode.data.key)
-                    setSelectedTable(selectTable ? selectTable : null );
+                    const selectTable = tables.find(table => table.id === selectedNode.data.key);
+                    setSelectedTable(selectTable ? selectTable : null);
+                } else {
+                    setSelectedTable(null);
                 }
             });
 
             return diagram;
         };
 
-        let diagramInstance = initDiagram();
+        const diagramInstance = initDiagram();
+        diagramInstanceRef.current = diagramInstance;
 
         return () => {
-            if (diagramInstance) {
-                diagramInstance.div = null;
+            if (diagramInstanceRef.current) {
+                diagramInstanceRef.current.div = null;
             }
         };
     }, [tables]);
+
+    useEffect(() => {
+        if (diagramInstanceRef.current && selectedTable) {
+            const nodeKey = selectedTable.id;
+            const diagram = diagramInstanceRef.current;
+            diagram.select(diagram.findNodeForKey(nodeKey));
+        }
+    }, [selectedTable]);
 
     return <div ref={diagramRef} className={styles.ERDiagram} />;
 };
 
 export default ERDiagram;
-
 
 // 데이터 변환 함수
 const transformTableData = (tableData: TableData[]): ERDiagram => {
@@ -214,5 +225,3 @@ const transformTableData = (tableData: TableData[]): ERDiagram => {
 
     return { node: nodes, linkData: links };
 };
-
-
