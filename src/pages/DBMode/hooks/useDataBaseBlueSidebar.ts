@@ -19,7 +19,7 @@ export const useDataBaseBlueSidebar = () => {
 
     const handleQuery = () => {
         if (selectedDatabaseID === -1) {
-            setErrorMessage("선택된 데이터베이스가 없습니다.");
+            setErrorMessage("데이터베이스를 선택해주세요.");
         } else {
             setIsOpenQueryModal(true);
         }
@@ -27,7 +27,7 @@ export const useDataBaseBlueSidebar = () => {
 
     const handleScript = async () => {
         if (selectedDatabaseID === -1) {
-            setErrorMessage("선택된 데이터베이스가 없습니다.");
+            setErrorMessage("데이터베이스를 선택해주세요.");
         } else {
             try {
                 const { blob: fileBlob, fileName } = await downloadNdsFile(selectedDatabaseID);
@@ -41,7 +41,7 @@ export const useDataBaseBlueSidebar = () => {
 
     const handleDelete = () => {
         if (selectedDatabaseID === -1) {
-            setErrorMessage("선택된 데이터베이스가 없습니다.");
+            setErrorMessage("데이터베이스를 선택해주세요.");
         } else {
             console.log('삭제 로직');
         }

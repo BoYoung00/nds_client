@@ -19,15 +19,15 @@ const ErdMode: React.FC = () => {
         databaseNames,
         selectedTable,
         isVisible,
-        selectedTab,
-        setSelectedTab,
+        selectedRemoteIndex,
+        handelSelectedRemoteItem,
         setSelectedDatabaseIndex,
         errorMessage,
         setErrorMessage,
     } = useErdMode();
 
     const renderTabContent = () => {
-        switch (selectedTab) {
+        switch (selectedRemoteIndex) {
             case 0:
                 return <DataTab />;
             case 1:
@@ -49,8 +49,8 @@ const ErdMode: React.FC = () => {
         <>
             <div className={styles.erdMode}>
                 <RemoteControl
-                    selectedIndex={selectedTab}
-                    onSelect={setSelectedTab}
+                    selectedIndex={selectedRemoteIndex}
+                    onSelect={handelSelectedRemoteItem}
                 />
                 <TabBar
                     tabs={databaseNames}
@@ -59,6 +59,7 @@ const ErdMode: React.FC = () => {
                     background={'#F5F5F5'}
                 />
                 <main className={styles.erdMode__main}>
+                    <div className={styles.cover}/>
                     <ERDiagram />
                     {selectedTable && (
                         <section className={`${styles.tabContent} ${isVisible ? styles.tabContentVisible : ''}`}>

@@ -293,6 +293,44 @@ export const saveFilteredTableData = async (tableHash: string, tableFilterReques
     }
 };
 
+// Like 필터링 REST API url 가져오기
+export const getTableHashUrl = async (tableHash: string) => {
+    try {
+        const response = await client.get(`/api/json/like/filter-url/${tableHash}`);
+        return response.data; // 필터링 리스트 반환
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+// REST API Archive 리스트 가져오기
+export const getUserArchiveApis = async () => {
+    try {
+        const response = await client.get(`/api/user-apis`);
+        return response.data; // 리스트 반환
+    } catch (error) {
+        throw error;
+    }
+};
+
+// REST API Archive 저장
+export const registerApi = async (tableHash: string) => {
+    try {
+        const response = await client.post('/api/user-apis', {tableHash});
+
+        if (response.status === 200)
+            return response.data;
+        new Error(`${response.data?.message || '데이터 저장에 실패했습니다.'}`);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data?.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
+
 
 // CSV 엑셀 다운로드
 export const exportTable = async (tableID: number) => {

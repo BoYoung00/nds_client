@@ -4,6 +4,7 @@ import doubleArrow from '../../../assets/images/doubleArrow.png';
 import TableView from "../../../publicComponents/layout/TableView";
 import {Notification} from "../../../publicComponents/layout/modal/Notification";
 import {useLikeTab} from "../hooks/useLikeTab";
+import CopyButton from "../../../publicComponents/UI/CopyButton";
 
 const LikeTab: React.FC = () => {
     const {
@@ -16,6 +17,7 @@ const LikeTab: React.FC = () => {
             selectedColumnData,
             inputValues,
             selectOptions,
+            filterApiUrl,
         },
         handlers: {
             handleSelectChange,
@@ -38,6 +40,19 @@ const LikeTab: React.FC = () => {
     return (
         <>
             <div className={styles.likeTab}>
+                <section className={styles.filterUrlBox}>
+                    <p>Filter get url :</p>
+                    { filterApiUrl ?
+                        <div className={styles.filterUrlWrap}>
+                            <span> {filterApiUrl}</span>
+                            <span>
+                                <CopyButton url={filterApiUrl} />
+                            </span>
+                        </div>
+                        :
+                        <div style={{fontSize: '.8rem', color: 'gray'}}>필터를 저장해주세요.</div>
+                    }
+                </section>
                 <section className={styles.likeTab__filterContainer}>
                     <div className={styles.filterBox}>
                         <div className={styles.addRemoveButBox}>
@@ -100,7 +115,9 @@ const LikeTab: React.FC = () => {
                         <button onClick={fetchFilterSave}>필터 상태 저장하기</button>
                     </div>
                 </section>
-                <img className={styles.doubleArrowImg} src={doubleArrow} alt="화살표" />
+                <section className={styles.doubleArrowImgWrap}>
+                    <img src={doubleArrow} alt="화살표" />
+                </section>
                 <section className={styles.likeTab__previewContainer} style={{padding: '0'}}>
                     <TableView tableStructure={filteredTableStructure} />
                 </section>

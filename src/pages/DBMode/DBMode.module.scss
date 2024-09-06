@@ -298,10 +298,48 @@
 // Like 탭 디자인
 .likeTab {
   @include tab-container;
-  @include flex-center;
+  display: grid;
+  grid-template-rows: 3rem 1fr;
+  grid-template-columns: 1fr 2.5rem 1.6fr ;
+
+  .filterUrlBox {
+    grid-column: 1 / 4;
+    grid-row: 1 / 2;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-right: 1rem;
+
+    & > p {
+      white-space: nowrap;
+      margin-right: .5rem;
+      flex-shrink: 0; // 크기를 고정
+      font-family: $font-KoPub-bold;
+    }
+
+    .filterUrlWrap {
+      flex-grow: 1;
+      @include flex-space-between;
+      width: 50%;
+
+      & > span:first-child {
+        @include nowrap;
+        max-width: calc(100% - 2rem);
+      }
+
+      & > span:last-child {
+        flex-shrink: 0;
+        width: auto;
+        text-align: right;
+      }
+    }
+  }
+
 
   &__filterContainer {
-    @include insideBox(40%, 97%);
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    @include insideBox(95%, 97%);
     overflow: hidden;
     padding: .5rem;
     @include flex-space-between;
@@ -379,13 +417,22 @@
     }
   }
 
-  .doubleArrowImg {
-    width: 2.5rem;
-    transform: rotate(-90deg);
+  .doubleArrowImgWrap {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    width: 100%; height: 100%;
+    @include flex-center;
+
+    & > img {
+      transform: rotate(-90deg);
+      width: 2.5rem;
+    }
   }
 
   &__previewContainer {
-    @include insideBox(60%, 100%);
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+    @include insideBox(100%, 100%);
     overflow: auto;
   }
 }

@@ -10,14 +10,14 @@ const maxMenuItems: MenuItem[] = [
     { path: '/database', text: 'DATABASE' },
     { path: '/revision', text: 'REVISION' },
     { path: '/api', text: 'API ARCHIVE' },
-    { path: '/template', text: 'TEMPLATE' },
+    { path: '/workspace', text: 'WORKSPACE' },
 ];
 
 const minMenuItems: MenuItem[] = [
     { path: '/database', text: 'DB' },
     { path: '/revision', text: 'REV' },
     { path: '/api', text: 'API' },
-    { path: '/template', text: 'TEMP' },
+    { path: '/workspace', text: 'WORK' },
 ];
 
 export const useHeader = () => {

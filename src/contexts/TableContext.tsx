@@ -26,6 +26,11 @@ export const TableProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+    useEffect(() => {
+        setSelectedTable(null);
+        fetchTables();
+    }, [selectedDataBase]);
+
     const fetchTables = async () => {
         if (!selectedDataBase) return;
         try {
@@ -39,11 +44,6 @@ export const TableProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        setSelectedTable(null);
-        fetchTables();
-    }, [selectedDataBase]);
 
     return (
         <>
@@ -75,7 +75,7 @@ export const TableProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 export const useTable = (): TableContextType => {
     const context = useContext(TableContext);
     if (context === undefined) {
-        throw new Error('useDataBase must be used within a DataBaseProvider');
+        throw new Error('useTable must be used within a TableProvider');
     }
     return context;
 };

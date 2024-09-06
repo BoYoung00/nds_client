@@ -17,13 +17,12 @@ export function useDataBaseWhiteSidebar() {
 
     const onSelected = (table: TableData) => {
         setSelectedTable(table);
-        setSelectedTable(table);
         setComment(table.comment || '');
     };
 
     const handleMerge = () => {
         if (!selectedDataBase) {
-            setErrorMessage('선택된 데이터베이스가 없습니다.');
+            setErrorMessage('데이터베이스를 선택해주세요.');
         } else {
             setIsOpenMergeModal(true);
         }
@@ -31,7 +30,7 @@ export function useDataBaseWhiteSidebar() {
 
     const handleDelete = async () => {
         if (selectedTable === null) {
-            setErrorMessage("선택한 테이블이 없습니다.");
+            setErrorMessage("테이블을 선택해주세요.");
         } else {
             setQuestionMessage(`${selectedTable.name} 테이블을 삭제 하시겠습니까?`);
         }

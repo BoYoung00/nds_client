@@ -1,13 +1,27 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './ApiArchive.module.scss';
 import LineTitle from "../../publicComponents/UI/LineTitle";
 import Dropdown from "./Components/Dropdown";
 import Tester from "./Components/Tester";
+import {getUserArchiveApis} from "../../services/api";
 
 const ApiArchive: React.FC = () => {
     const [onTester, setOnTester] = useState<boolean>(false);
 
     const handleToggle = () => setOnTester(!onTester);
+
+    useEffect(() => {
+        handelFetchArchiveApis();
+    }, []);
+
+    const handelFetchArchiveApis = async () => {
+        try {
+            const response = await getUserArchiveApis();
+            console.log('API 보관함 리스트', response)
+        }catch (e) {
+
+        }
+    }
 
     return (
         <div className={styles.apiArchive}>

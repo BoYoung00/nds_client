@@ -7,7 +7,7 @@ export const useErdMode = () => {
     const { selectedTable } = useTable();
 
     const [isVisible, setIsVisible] = useState(false);
-    const [selectedTab, setSelectedTab] = useState<number>(-1);
+    const [selectedRemoteIndex, setSelectedRemoteIndex] = useState<number>(-1);
     const [selectedDatabaseIndex, setSelectedDatabaseIndex] = useState<number>(0);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -20,8 +20,8 @@ export const useErdMode = () => {
     }, [databases, selectedDatabaseIndex, setSelectedDataBase]);
 
     useEffect(() => {
-        setIsVisible(Boolean(selectedTable && selectedTab > -1));
-    }, [selectedTable, selectedTab]);
+        setIsVisible(Boolean(selectedTable && selectedRemoteIndex > -1));
+    }, [selectedTable, selectedRemoteIndex]);
 
     useEffect(() => {
         const originalOverflow = document.documentElement.style.overflow;
@@ -31,12 +31,19 @@ export const useErdMode = () => {
         };
     }, []);
 
+    const handelSelectedRemoteItem = (index: number) => {
+        if (selectedRemoteIndex === index)
+            setSelectedRemoteIndex(-1);
+        else
+            setSelectedRemoteIndex(index)
+    }
+
     return {
         databaseNames,
         selectedTable,
         isVisible,
-        selectedTab,
-        setSelectedTab,
+        selectedRemoteIndex,
+        handelSelectedRemoteItem,
         setSelectedDatabaseIndex,
         errorMessage,
         setErrorMessage,

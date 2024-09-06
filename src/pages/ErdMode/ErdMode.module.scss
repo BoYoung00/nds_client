@@ -28,6 +28,13 @@
     .tabContentVisible {
       transform: translateX(0); // 나타날 때 왼쪽으로 슬라이드
     }
+
+    .cover {
+      width: 12rem; height: 4.5rem;
+      position: absolute;
+      background: white;
+      z-index: 3;
+    }
   } // main
 }
 

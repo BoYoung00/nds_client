@@ -16,9 +16,10 @@ const styles: { [key: string]: CSSProperties } = {
         padding: '.5rem 1rem',
         borderRadius: '4px',
         cursor: 'pointer',
+        // fontSize: `${fontSize}`
     },
     copyMessage: {
-        width: '6.3rem',
+        width: '6.7rem',
         position: 'absolute',
         top: '0',
         left: '0',
@@ -83,10 +84,10 @@ const CopyButton: React.FC<{ url: string }> = ({ url }) => {
     return (
         <div style={styles.copyButtonContainer}>
             <style>{fadeOutKeyframes}</style> {/* Keyframes 정의 */}
-            <a style={styles.copyButton} onClick={() => handleCopyClick(url)}>
+            <a style={styles.copyButton} onClick={() => handleCopyClick(url)} >
                 Copy
             </a>
-            {showCopyMessage && <span style={styles.copyMessage}>복사되었습니다</span>}
+            {showCopyMessage && <span style={styles.copyMessage}>복사 되었습니다.</span>}
         </div>
     );
 };

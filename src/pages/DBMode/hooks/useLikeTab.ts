@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {findColumnInfo} from "../../../utils/utils";
-import {getUserLikeFilters, saveFilteredTableData} from "../../../services/api";
+import {getTableHashUrl, getUserLikeFilters, saveFilteredTableData} from "../../../services/api";
 import {useTable} from "../../../contexts/TableContext";
 
 
@@ -12,6 +12,7 @@ export function useLikeTab() {
     const [tableStructure, setTableStructure] = useState<TableInnerStructure | null>(null);
     const [filteredTableStructure, setFilteredTableStructure] = useState<TableInnerStructure | null>(null);
     const [columnNames, setColumnNames] = useState<string[]>([]);
+    const [filterApiUrl, setFilterApiUrl] = useState<string | null>(null);
 
     const [columns, setColumns] = useState<string[]>(['']);
     const [selectedColumnData, setSelectedColumnData] = useState<{ id: number, columnHash: string, type: string }[]>([]); // column 선택 값
@@ -30,7 +31,9 @@ export function useLikeTab() {
             setSelectOptions(['']);
 
             setTableStructure(selectedTable.tableInnerStructure);
-            fetchFilters(selectedTable.tableHash);
+
+            fetchFilters(selectedTable.tableHash); // 필터 가져오기
+            handelFetchFilterUrl(); // url 가져오기
         }
     }, [selectedTable]);
 
@@ -231,6 +234,7 @@ export function useLikeTab() {
             setLoading(true);
             await saveFilteredTableData(selectedTable.tableHash, filterRequests);
             setSuccessMessage("필터 저장에 성공하셨습니다.");
+            if (filterApiUrl === null) handelFetchFilterUrl();
         } catch (error) {
             const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
             setErrorMessage(errorMessage);
@@ -238,6 +242,20 @@ export function useLikeTab() {
             setLoading(false);
         }
     };
+
+    // REST API url 통신
+    const handelFetchFilterUrl = async () => {
+        if (!selectedTable) return;
+
+        try {
+            const response = await getTableHashUrl(selectedTable.tableHash);
+            setFilterApiUrl(response);
+        } catch (error) {
+            // 해당 테이블에 필터가 없을 경우
+            setFilterApiUrl(null);
+        }
+
+    }
 
     return {
         hooks: {
@@ -249,6 +267,7 @@ export function useLikeTab() {
             selectedColumnData,
             inputValues,
             selectOptions,
+            filterApiUrl,
         },
         handlers: {
             handleSelectChange,
