@@ -35,10 +35,6 @@ $widthSize: 80%;
     width: 20%;
     min-width: 10rem;
   }
-
-  .tabContainer {
-
-  }
 }
 
 /* 테이블 스타일 */
@@ -62,6 +58,7 @@ $widthSize: 80%;
 
       th {
         text-align: center;
+        padding: .5rem;
       }
 
       /* 각 열의 너비 설정 */

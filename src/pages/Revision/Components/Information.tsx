@@ -7,7 +7,7 @@ import ChangePreviewTable from "./ChangePreviewTable";
 import {useRevision} from "../../../contexts/RevisionContext";
 
 const Information: React.FC = () => {
-    const { stampingChanges } = useRevision();
+    const { stampingChanges, selectedStamping } = useRevision();
 
     const [activeTab, setActiveTab] = useState<string>('Stamping');
     const [selectedTableName, setSelectedTableName] = useState<string | null>(null); // 선택된 key1 값을 관리
@@ -19,7 +19,7 @@ const Information: React.FC = () => {
             <TabLines tabs={['Stamping', 'Changes']} activeTab={activeTab} onTabClick={setActiveTab} />
 
             { activeTab === 'Stamping' &&
-                <StampingInfo />
+                <StampingInfo stampingInfo={selectedStamping} />
             }
 
             { activeTab === 'Changes' &&

@@ -1,28 +1,29 @@
-import {useEffect, useState} from 'react';
-import {useDataBase} from "../../../contexts/DataBaseContext";
-import {useTable} from "../../../contexts/TableContext";
-import {deleteTable, updateTableComment} from '../../../services/api';
+import React, { useEffect, useState } from 'react';
+import { useDataBase } from "../../../contexts/DataBaseContext";
+import { useTable } from "../../../contexts/TableContext";
+import { deleteTable, updateTableComment } from '../../../services/api';
 
 export function useDataBaseWhiteSidebar() {
     const { selectedDataBase } = useDataBase();
-    const { tables, setTables, selectedTable, setSelectedTable } = useTable();
+    const { setSelectedTable, tables, setTables, selectedTable } = useTable();
 
+    const [selectedId, setSelectedId] = useState<number>(-1);
     const [isOpenCreateTableModal, setIsOpenCreateTableModal] = useState<boolean>(false);
     const [isOpenMergeModal, setIsOpenMergeModal] = useState<boolean>(false);
     const [comment, setComment] = useState<string>('');
-
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [questionMessage, setQuestionMessage] = useState<string | null>(null);
 
     const onSelected = (table: TableData) => {
+        setSelectedId(table.id!!);
         setSelectedTable(table);
         setComment(table.comment || '');
     };
 
     const handleMerge = () => {
         if (!selectedDataBase) {
-            setErrorMessage('데이터베이스를 선택해주세요.');
+            setErrorMessage("데이터베이스를 선택해 주세요.");
         } else {
             setIsOpenMergeModal(true);
         }
@@ -30,18 +31,18 @@ export function useDataBaseWhiteSidebar() {
 
     const handleDelete = async () => {
         if (selectedTable === null) {
-            setErrorMessage("테이블을 선택해주세요.");
+            setErrorMessage("선택한 테이블이 없습니다.");
         } else {
             setQuestionMessage(`${selectedTable.name} 테이블을 삭제 하시겠습니까?`);
         }
     };
 
     const FetchDelete = async () => {
-        if(!selectedTable) return;
+        if (!selectedTable) return;
 
         try {
             const response = await deleteTable(selectedTable.id!);
-            await setTables(tables.filter(table => table !== selectedTable));
+            setTables(tables.filter(table => table !== selectedTable));
             setSelectedTable(null);
             setSuccessMessage(response.message);
         } catch (error) {
@@ -55,7 +56,6 @@ export function useDataBaseWhiteSidebar() {
             setComment(newComment);
     };
 
-    // 설명 수정 통신
     const handleCommentBlur = async () => {
         if (selectedTable) {
             try {
@@ -68,21 +68,20 @@ export function useDataBaseWhiteSidebar() {
     };
 
     useEffect(() => {
-        setComment('');
-        if (selectedTable) {
-            setComment(selectedTable.comment);
+        if (selectedId !== -1) {
+            const selectedTable = tables.find(table => table.id === selectedId) || null;
+            setSelectedTable(selectedTable);
+            setComment(selectedTable?.comment || '');
         }
-    }, [selectedTable, tables, setSelectedTable]);
+    }, [selectedId, tables, setSelectedTable]);
 
     return {
+        selectedId,
         selectedTable,
         isOpenCreateTableModal,
         setIsOpenCreateTableModal,
         isOpenMergeModal,
         setIsOpenMergeModal,
-        errorMessage,
-        setErrorMessage,
-        onSelected,
         handleMerge,
         handleDelete,
         FetchDelete,
@@ -92,6 +91,9 @@ export function useDataBaseWhiteSidebar() {
         questionMessage,
         setQuestionMessage,
         successMessage,
-        setSuccessMessage
+        setSuccessMessage,
+        errorMessage,
+        setErrorMessage,
+        onSelected,
     };
 }

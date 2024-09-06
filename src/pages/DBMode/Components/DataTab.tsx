@@ -1,4 +1,4 @@
-import React, {MouseEvent, useEffect, useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import styles from '../DBMode.module.scss';
 import refresh from '../../../assets/images/refresh.png';
 import addData from '../../../assets/images/addData.png';

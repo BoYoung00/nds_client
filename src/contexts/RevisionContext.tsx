@@ -8,7 +8,7 @@ interface RevisionContextType {
     loading: boolean;
     stampings: StampingEntity[];
     setStampings: (stampings: StampingEntity[]) => void;
-    currentStampingID: number;
+    currentStamping: StampingEntity | null;
     selectedStamping: StampingEntity | null;
     setSelectedStamping: (selectedStamping: StampingEntity) => void;
     stampingChanges: StampingDataMap | null;
@@ -22,7 +22,8 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
     const { selectedDataBase } = useDataBase();
 
     const [stampings, setStampings] = useState<StampingEntity[]>([]);
-    const [currentStampingID, setCurrentStampingID] = useState<number>(-1); // 체크아웃
+    const [currentStamping, setCurrentStamping] = useState<StampingEntity | null>(null); // 체크아웃
+
     const [selectedStamping, setSelectedStamping] = useState<StampingEntity | null>(null) // 선택한 스탬핑
     const [stampingChanges, setStampingChanges] = useState<StampingDataMap | null>(null); // 선택한 스탬핑의 변경 사항들
 
@@ -46,7 +47,7 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
             // console.log('스탬핑 리스트', response)
 
             const currentStamping = response.find(s => s.isCurrent); // 체크아웃 선별
-            setCurrentStampingID(currentStamping ? currentStamping.stampingId ? currentStamping.stampingId : -1 : -1)
+            setCurrentStamping(currentStamping ? currentStamping : null)
 
             setStampings([...response].reverse());
         } catch (error) {
@@ -77,7 +78,7 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
                     loading,
                     stampings,
                     setStampings,
-                    currentStampingID,
+                    currentStamping,
                     selectedStamping,
                     setSelectedStamping,
                     stampingChanges

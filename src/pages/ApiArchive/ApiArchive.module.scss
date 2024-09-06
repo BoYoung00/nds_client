@@ -3,12 +3,18 @@
 .apiArchive {
   @include container-default-style;
 
+  .tabContainer {
+    position: absolute;
+    width: 10rem;
+    top: 10rem;
+  }
+
   .testerBut {
     color: $color-blue-deep;
     text-decoration: underline;
     position: absolute;
     right: 2.5rem;
-    top: 4rem;
+    top: 10rem;
     cursor: pointer;
     padding: .5rem;
   }

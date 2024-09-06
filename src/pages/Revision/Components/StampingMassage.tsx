@@ -38,10 +38,9 @@ const StampingMassage: React.FC = () => {
             </div>
 
             { successMessage && <Notification
-                onClose={() => setSuccessMessage(null)}
+                onClose={() => {setSuccessMessage(null); window.location.reload(); }}
                 type="success"
                 message={successMessage}
-                onConfirm={() => window.location.reload()}
             /> }
 
             { errorMessage && <Notification

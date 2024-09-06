@@ -5,8 +5,11 @@ import StampingInfo from "../../../publicComponents/UI/StampingInfo";
 import ChangePreviewTable from './ChangePreviewTable';
 import { Notification } from "../../../publicComponents/layout/modal/Notification";
 import {useStampingChange} from "../hooks/useStampingChange";
+import {useRevision} from "../../../contexts/RevisionContext";
 
 const StampingChange = () => {
+    const { currentStamping } = useRevision();
+
     const {
         selectedTableName,
         setSelectedTableName,
@@ -30,7 +33,7 @@ const StampingChange = () => {
                     </div>
                     <div>
                         <p className={styles.title}>Staged Information</p>
-                        <StampingInfo />
+                        <StampingInfo stampingInfo={currentStamping}/>
                     </div>
                 </section>
                 <section className={styles.rightContainer}>

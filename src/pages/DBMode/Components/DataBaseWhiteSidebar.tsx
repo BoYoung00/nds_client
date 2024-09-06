@@ -13,6 +13,7 @@ const DataBaseWhiteSidebar: React.FC = () => {
     const { tables } = useTable();
 
     const {
+        selectedId,
         selectedTable,
         isOpenCreateTableModal,
         setIsOpenCreateTableModal,
@@ -51,7 +52,7 @@ const DataBaseWhiteSidebar: React.FC = () => {
                     {tables && tables.map((item) => (
                         <div
                             key={item.id}
-                            className={`${styles.item} ${selectedTable === item ? styles.selected : ''}`}
+                            className={`${styles.item} ${selectedId === item.id ? styles.selected : ''}`}
                             onClick={() => onSelected(item)}
                         >
                             {item.name}

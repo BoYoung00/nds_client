@@ -1,28 +1,26 @@
 import styles from "./Ui.module.scss";
 import React from "react";
-import {useRevision} from "../../contexts/RevisionContext";
 import {formatDate} from "../../utils/utils";
 
 interface StampingInfoProps {
-    tableList: any[];
+    stampingInfo: StampingEntity | null;
 }
 
-const StampingInfo: React.FC = () => {
-    const { selectedStamping } = useRevision();
+const StampingInfo: React.FC<StampingInfoProps> = ({stampingInfo}) => {
 
     return (
         <div className={styles.stamping}>
             <p>
                 <span>SHA</span>
-                <span>{selectedStamping?.stampingHash}</span>
+                <span>{stampingInfo?.stampingHash}</span>
             </p>
             <p>
                 <span>CREATE</span>
-                <span>{selectedStamping ? formatDate(selectedStamping.createTime) : ''}</span>
+                <span>{stampingInfo ? formatDate(stampingInfo.createTime) : ''}</span>
             </p>
             <p>
                 <span>MESSAGE</span>
-                <span>{selectedStamping?.message}</span>
+                <span>{stampingInfo?.message}</span>
             </p>
         </div>
     );

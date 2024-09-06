@@ -6,7 +6,7 @@ import {useHistoryTable} from "../hooks/useHistoryTable";
 import {useRevision} from "../../../contexts/RevisionContext";
 
 const HistoryTable: React.FC = () => {
-    const { stampings, currentStampingID, selectedStamping } = useRevision();
+    const { stampings, currentStamping, selectedStamping } = useRevision();
 
     const {
         questionMessage,
@@ -29,12 +29,12 @@ const HistoryTable: React.FC = () => {
                 <div className={styles.historyTable__container}>
                     <table>
                         <thead>
-                        <tr>
-                            <th scope="col" className={styles.state}>state</th>
-                            <th scope="col" className={styles.message}>stamping message</th>
-                            <th scope="col" className={styles.date}>create date</th>
-                            <th scope="col" className={styles.hash}>hash</th>
-                        </tr>
+                            <tr>
+                                <th scope="col" className={styles.state}>state</th>
+                                <th scope="col" className={styles.message}>stamping message</th>
+                                <th scope="col" className={styles.date}>create date</th>
+                                <th scope="col" className={styles.hash}>hash</th>
+                            </tr>
                         </thead>
                         <tbody>
                         {stampings && stampings.map((stamping) => (
@@ -45,7 +45,7 @@ const HistoryTable: React.FC = () => {
                                 onDoubleClick={() => handleRowDoubleClick()}
                                 onContextMenu={(e) => handleContextMenu(e, stamping)} // 오른쪽 클릭 핸들러 추가
                             >
-                                <td className={styles.StampingNow}>{currentStampingID === stamping.stampingId ? '●' : ''}</td>
+                                <td className={styles.StampingNow}>{currentStamping === stamping ? '●' : ''}</td>
                                 <td className={styles.StampingMsg}>{stamping.message}</td>
                                 <td className={styles.StampingDate}>{formatDate(stamping.createTime)}</td>
                                 <td className={styles.StampingNum}>{stamping.stampingHash.slice(0, 6)}</td>
@@ -72,10 +72,9 @@ const HistoryTable: React.FC = () => {
 
             {successMessage && (
                 <Notification
-                    onClose={() => setSuccessMessage(null)}
+                    onClose={() => { setSuccessMessage(null); window.location.reload() }}
                     type="success"
                     message={successMessage}
-                    onConfirm={() => window.location.reload()} // 새로고침
                 />
             )}
 

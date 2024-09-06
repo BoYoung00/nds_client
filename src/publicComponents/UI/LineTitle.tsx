@@ -17,7 +17,8 @@ const LineTitle: React.FC<TitleProps> = ({ text, smallText , isCenter = false, f
         fontFamily: 'KoPubWorld Bold',
         color: '#00A3FF',
         fontSize: `${fontSize}`,
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
+        paddingBottom: isCenter ? '3.5rem' : '0',
     };
 
     const textContainerStyles: React.CSSProperties = {
@@ -31,8 +32,8 @@ const LineTitle: React.FC<TitleProps> = ({ text, smallText , isCenter = false, f
         color: '#515151',
         marginTop: isCenter ? '.5rem' : '0',
         marginLeft: isCenter ? '0' : '1rem',
-        paddingBottom: '.5rem',
-        fontFamily: 'KoPubWorld Light',
+        paddingBottom: '.3rem',
+        fontFamily: 'KoPubWorld Bold',
     };
 
     return (
