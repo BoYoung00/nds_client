@@ -75,6 +75,42 @@ export const tableStructure = async (tableRequest: TableRequest) => {
     }
 };
 
+// 테이블 코멘트 업데이트
+export const updateTableComment = async (updateTableId: number, updateTableComment: string) => {
+    try {
+        const response = await client.put('/api/tables', {updateTableId, updateTableComment});
+        if (response.status === 200) {
+            return response.data; // 성공적으로 업데이트된 데이터 반환
+        }
+        throw new Error(`Error: ${response.data.message}`);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
+
+// 테이블 삭제
+export const deleteTable = async (id: number) => {
+    try {
+        const response = await client.delete(`/api/tables/${id}`);
+        if (response.status === 200) {
+            return response.data; // 성공적으로 삭제된 데이터 반환
+        }
+        throw new Error(`Error: ${response.data.message}`);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
+
 // 테이블 데이터 추가, 수정, 삭제
 export const createData = async (dataRequest: DataRequest) => {
     try {
@@ -372,6 +408,16 @@ export const revisionDataDiffData = async (databaseId: number) => {
 export const revisionHistory = async (databaseId: number) => {
     try {
         const response = await client.get(`/api/revision/history/${databaseId}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// 스탬핑 : 히스토리 리스트
+export const changeStampingPreviewData = async (dataBaseId: number, stampingId: number) => {
+    try {
+        const response = await client.get(`/api/revision/change/${dataBaseId}/${stampingId}`);
         return response.data;
     } catch (error) {
         throw error;

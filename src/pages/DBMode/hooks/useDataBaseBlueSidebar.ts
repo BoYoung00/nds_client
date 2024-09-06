@@ -4,14 +4,13 @@ import {downloadFile} from "../../../utils/utils";
 import {useDataBase} from "../../../contexts/DataBaseContext";
 
 export const useDataBaseBlueSidebar = () => {
+    const [loading, setLoading] = useState<boolean>(true);
     const { selectedDataBase, setSelectedDataBase } = useDataBase();
 
     const [selectedDatabaseID, setSelectedDatabaseID] = useState(selectedDataBase ? selectedDataBase?.id! : -1);
     const [isOpenCreateDBModal, setIsOpenCreateDBModal] = useState<boolean>(false);
     const [isOpenQueryModal, setIsOpenQueryModal] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-    const [loading, setLoading] = useState<boolean>(true);
 
     const onSelected = (dataBase: DataBaseEntity) => {
         setSelectedDatabaseID(dataBase.id!!);

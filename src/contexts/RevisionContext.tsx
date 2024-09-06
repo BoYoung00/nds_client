@@ -1,5 +1,5 @@
 import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react';
-import {getDataBasesForCurrentUser, getUserLikeFilters, revisionHistory} from "../services/api";
+import {changeStampingPreviewData, revisionHistory} from "../services/api";
 import {Notification} from "../publicComponents/layout/modal/Notification";
 import {useDataBase} from "./DataBaseContext";
 
@@ -9,6 +9,9 @@ interface RevisionContextType {
     stampings: StampingEntity[];
     setStampings: (stampings: StampingEntity[]) => void;
     currentStampingID: number;
+    selectedStamping: StampingEntity | null;
+    setSelectedStamping: (selectedStamping: StampingEntity) => void;
+    stampingChanges: StampingDataMap | null;
 }
 
 // Context 생성
@@ -19,7 +22,9 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
     const { selectedDataBase } = useDataBase();
 
     const [stampings, setStampings] = useState<StampingEntity[]>([]);
-    const [currentStampingID, setCurrentStampingID] = useState<number>(-1);
+    const [currentStampingID, setCurrentStampingID] = useState<number>(-1); // 체크아웃
+    const [selectedStamping, setSelectedStamping] = useState<StampingEntity | null>(null) // 선택한 스탬핑
+    const [stampingChanges, setStampingChanges] = useState<StampingDataMap | null>(null); // 선택한 스탬핑의 변경 사항들
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -27,6 +32,11 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
         fetchStampings();
     }, [selectedDataBase])
 
+    useEffect(() => {
+        handleFetchDiffData();
+    }, [selectedStamping])
+
+    // 히스토리 통신
     const fetchStampings = async () => {
         if (!selectedDataBase) return;
 
@@ -46,6 +56,20 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
         }
     };
 
+    // 스탬핑 변경 사항 정보 통신
+    const handleFetchDiffData = async () => {
+        if (!selectedDataBase || !selectedStamping) return;
+
+        try {
+            const response: StampingDataMap = await changeStampingPreviewData(selectedDataBase.id!, selectedStamping.stampingId);
+            console.log('선택한 스탬핑 변경 사항 정보', response);
+            setStampingChanges(response);
+        } catch (error) {
+            const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
+            setErrorMessage(errorMessage);
+        }
+    };
+
     return (
         <>
             <RevisionContext.Provider
@@ -54,6 +78,9 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
                     stampings,
                     setStampings,
                     currentStampingID,
+                    selectedStamping,
+                    setSelectedStamping,
+                    stampingChanges
                 }}
             >
                 {children}

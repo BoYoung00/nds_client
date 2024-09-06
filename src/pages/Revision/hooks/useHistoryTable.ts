@@ -5,7 +5,7 @@ import { moveToHistoryPoint, resetStampingState } from "../../../services/api";
 
 export const useHistoryTable = () => {
     const { selectedDataBase } = useDataBase();
-    const [selectedStampingID, setSelectedStampingID] = useState<number | null>(null);
+    const { setSelectedStamping, selectedStamping } = useRevision();
 
     const [questionMessage, setQuestionMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -22,22 +22,21 @@ export const useHistoryTable = () => {
     }, []);
 
     // 커밋 선택
-    const handleRowClick = (StampingID: number) => {
-        setSelectedStampingID(StampingID);
+    const handleRowClick = (Stamping: StampingEntity) => {
+        setSelectedStamping(Stamping);
     };
 
     // 체크아웃 (더블 클릭)
-    const handleRowDoubleClick = (StampingID: number) => {
+    const handleRowDoubleClick = () => {
         setQuestionMessage('해당 분기로 변경 하시겠습니까?');
         setConfirmAction(() => handelFetchMove);
     };
 
     // 오른쪽 클릭 시 컨텍스트 메뉴 표시
-    const handleContextMenu = (event: MouseEvent, StampingID: number) => {
+    const handleContextMenu = (event: MouseEvent, stamping: StampingEntity) => {
         event.preventDefault();
-        setSelectedStampingID(StampingID);
         setContextMenu({ x: event.clientX, y: event.clientY });
-        handleRowClick(StampingID); // 오른쪽 클릭 시 왼쪽 클릭 핸들러도 호출
+        handleRowClick(stamping); // 오른쪽 클릭 시 왼쪽 클릭 핸들러도 호출
     };
 
     // 문서 클릭 시 컨텍스트 메뉴 닫기
@@ -56,9 +55,9 @@ export const useHistoryTable = () => {
                 setQuestionMessage('데이터베이스 저장소를 선택한 분기로 변경하시겠습니까?');
                 setConfirmAction(() => handelFetchMove);
                 break;
-            case 'export':
-                console.log('export', selectedStampingID);
-                break;
+            // case 'export':
+            //     console.log('export');
+            //     break;
             default:
                 break;
         }
@@ -67,10 +66,10 @@ export const useHistoryTable = () => {
 
     // 리셋 통신
     const handelFetchReset = async () => {
-        if (!selectedDataBase || !selectedStampingID) return;
+        if (!selectedDataBase || !selectedStamping) return;
 
         try {
-            await resetStampingState(selectedDataBase.id!, selectedStampingID);
+            await resetStampingState(selectedDataBase.id!, selectedStamping.stampingId);
             setSuccessMessage('리셋에 성공하셨습니다.');
         } catch (error) {
             const errorMessage = (error as Error).message || '리셋에 실패했습니다.';
@@ -80,10 +79,10 @@ export const useHistoryTable = () => {
 
     // 체크아웃 통신
     const handelFetchMove = async () => {
-        if (!selectedDataBase || !selectedStampingID) return;
+        if (!selectedDataBase || !selectedStamping) return;
 
         try {
-            await moveToHistoryPoint(selectedDataBase.id!, selectedStampingID);
+            await moveToHistoryPoint(selectedDataBase.id!, selectedStamping.stampingId);
             setSuccessMessage('분기 변경에 성공하셨습니다.');
         } catch (error) {
             const errorMessage = (error as Error).message || '분기 변경에 실패했습니다.';
@@ -92,7 +91,6 @@ export const useHistoryTable = () => {
     };
 
     return {
-        selectedStampingID,
         questionMessage,
         successMessage,
         errorMessage,

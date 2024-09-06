@@ -139,8 +139,7 @@ const CreateDBForm: React.FC<CreateDBFormProps> = ({ onCloseModal }) => {
             {/* 성공 모달 */}
             { successMessage &&
                 <Notification
-                    onClose={() => setSuccessMessage(null)}
-                    onConfirm={() => onCloseModal(false)}
+                    onClose={() => { setSuccessMessage(null); onCloseModal(false); }}
                     type={'success'}
                     message={successMessage}
                 />

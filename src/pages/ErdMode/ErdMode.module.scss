@@ -28,13 +28,12 @@
     .tabContentVisible {
       transform: translateX(0); // 나타날 때 왼쪽으로 슬라이드
     }
-
-  }
+  } // main
 }
 
 // goJS
 .ERDiagram {
-  width: 50%;
+  width: 100%;
   flex: 1;
   overflow: hidden;
 }

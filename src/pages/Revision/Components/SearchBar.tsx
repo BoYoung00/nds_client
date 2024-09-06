@@ -1,6 +1,10 @@
 import styles from '../Revision.module.scss';
+import React from "react";
+import {useRevision} from "../../../contexts/RevisionContext";
 
-const SearchBar = () => {
+const SearchBar: React.FC = () => {
+    const {} = useRevision();
+
     return (
         <div className={styles.searchBar}>
             <div className={styles.searchBar__container}>
@@ -13,10 +17,6 @@ const SearchBar = () => {
             </div>
         </div>
     );
-};
-
-SearchBar.propTypes = {
-
 };
 
 export default SearchBar;

@@ -57,7 +57,6 @@ const App: React.FC = () => {
                             <Route path='/' element={<Navigate to="/database" />} />
                             <Route path="/database" element={<TableProvider> <DataBase /> </TableProvider> } />
                             <Route path="/revision" element={<RevisionProvider> <Revision /> </RevisionProvider>} />
-                            {/*<Route path="/erd" element={<TableProvider> <ErdMode /> </TableProvider>} />*/}
                             <Route path="/api" element={<ApiArchive />} />
                             <Route path="/template" element={<Template />} />
                         </Routes>

@@ -89,7 +89,7 @@ const ResourceTab: React.FC = () => {
                                 </video>
                             ))}
                             <label className={styles.addBut} style={{width: '17.8rem'}}>
-                                + <input key='video' type="file" accept="video/*" onChange={handleVideoChange} />
+                                + <input key='video' type="file" accept="video/mp4" onChange={handleVideoChange} />
                             </label>
                         </section>
                     )}

@@ -9,19 +9,15 @@ interface MenuItem {
 const maxMenuItems: MenuItem[] = [
     { path: '/database', text: 'DATABASE' },
     { path: '/revision', text: 'REVISION' },
-    // { path: '/erd', text: 'ERD' },
     { path: '/api', text: 'API ARCHIVE' },
     { path: '/template', text: 'TEMPLATE' },
-    { path: '/editor', text: 'CODE EDITOR' }
 ];
 
 const minMenuItems: MenuItem[] = [
     { path: '/database', text: 'DB' },
     { path: '/revision', text: 'REV' },
-    // { path: '/erd', text: 'ERD' },
     { path: '/api', text: 'API' },
     { path: '/template', text: 'TEMP' },
-    { path: '/editor', text: 'CODE' }
 ];
 
 export const useHeader = () => {
@@ -31,9 +27,9 @@ export const useHeader = () => {
     const location = useLocation();
 
     const handleResize = () => {
-        if (window.innerWidth <= 700)
-            setMenuItems(minMenuItems);
-        else
+        // if (window.innerWidth <= 700)
+        //     setMenuItems(minMenuItems);
+        // else
             setMenuItems(maxMenuItems);
     };
 

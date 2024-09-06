@@ -20,7 +20,7 @@ const TableContext = createContext<TableContextType | undefined>(undefined);
 export const TableProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [loading, setLoading] = useState<boolean>(false);
 
-    const {selectedDataBase, setSelectedDataBase} = useDataBase();
+    const {selectedDataBase} = useDataBase();
     const [tables, setTables] = useState<TableData[]>([]);
     const [selectedTable, setSelectedTable] = useState<TableData | null>(null);
 
@@ -41,6 +41,7 @@ export const TableProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     };
 
     useEffect(() => {
+        setSelectedTable(null);
         fetchTables();
     }, [selectedDataBase]);
 

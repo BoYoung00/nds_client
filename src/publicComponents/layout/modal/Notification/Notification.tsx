@@ -11,9 +11,6 @@ interface NotificationProps {
 const Notification: React.FC<NotificationProps> = ({ onClose, type, message, onConfirm }) => {
 
     const handleClose = () => {
-        if (onConfirm) {
-            onConfirm();
-        }
         onClose();
     };
 

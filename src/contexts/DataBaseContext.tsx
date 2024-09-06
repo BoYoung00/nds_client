@@ -28,6 +28,7 @@ export const DataBaseProvider: React.FC<{ children: ReactNode }> = ({ children }
         try {
             setLoading(true);
             const data = await getDataBasesForCurrentUser();
+            // console.log('데이터베이스 리스트', data);
             setDatabases(data);
         } catch (error) {
             setErrorMessage('데이터베이스를 가져오는 중 오류가 발생했습니다.');

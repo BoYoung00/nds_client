@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import styles from './ErdMode.module.scss';
-import TabBar from "../../publicComponents/layout/TabBar";
-import {Notification} from "../../publicComponents/layout/modal/Notification";
-import {useDataBase} from "../../contexts/DataBaseContext";
-import ERDiagram from "./Components/ERDiagram";
-import LineTitle from "../../publicComponents/UI/LineTitle";
+import TabBar from '../../publicComponents/layout/TabBar';
+import { Notification } from '../../publicComponents/layout/modal/Notification';
+import ERDiagram from './Components/ERDiagram';
+import LineTitle from '../../publicComponents/UI/LineTitle';
+import RemoteControl from './Components/RemoteControl';
+import { useErdMode } from './useErdMode';
 import {formatDate} from "../../utils/utils";
 import DataTab from "../DBMode/Components/DataTab";
 import LikeTab from "../DBMode/Components/LikeTab";
@@ -12,50 +13,18 @@ import RestApiTab from "../DBMode/Components/RestApiTab";
 import QueryTab from "../DBMode/Components/QueryTab";
 import ExcelTab from "../DBMode/Components/ExcelTab";
 import ResourceTab from "../DBMode/Components/ResourceTab";
-import {useTable} from "../../contexts/TableContext";
-import RemoteControl from "./Components/RemoteControl";
 
 const ErdMode: React.FC = () => {
-    const { databases, setSelectedDataBase } = useDataBase();
-    const { selectedTable, setSelectedTable } = useTable();
-
-    const [isVisible, setIsVisible] = useState(false);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [selectedTab, setSelectedTab] = useState(0);
-
-    const [databaseNames, setDatabaseNames] = useState<string[]>([]);
-    const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
-
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-    useEffect(() => {
-        const names = databases.map(db => db.name);
-        if (names.length < 4) names.push('');
-        setDatabaseNames(names);
-    }, [databases]);
-
-    useEffect(() => {
-        if (databases.length > 0) {
-            setSelectedDataBase(databases[selectedTabIndex]);
-        }
-    }, [databases, selectedTabIndex, setSelectedDataBase]);
-
-    useEffect(() => {
-        if (selectedTable) {
-            setTimeout(() => {
-                setIsVisible(true);
-            }, 10);
-        } else {
-            setIsVisible(false);
-        }
-    }, [selectedTable]);
-
-    useEffect(() => {
-        document.documentElement.style.overflow = 'hidden';
-        return () => {
-            document.documentElement.style.overflow = '';
-        };
-    }, []);
+    const {
+        databaseNames,
+        selectedTable,
+        isVisible,
+        selectedTab,
+        setSelectedTab,
+        setSelectedDatabaseIndex,
+        errorMessage,
+        setErrorMessage,
+    } = useErdMode();
 
     const renderTabContent = () => {
         switch (selectedTab) {
@@ -81,26 +50,36 @@ const ErdMode: React.FC = () => {
             <div className={styles.erdMode}>
                 <RemoteControl
                     selectedIndex={selectedTab}
-                    onSelect={(index) => setSelectedTab(index)}
+                    onSelect={setSelectedTab}
                 />
-                <TabBar tabs={databaseNames} onTabSelect={(index) => setSelectedTabIndex(index)} width={10} background={'#F5F5F5'}/>
+                <TabBar
+                    tabs={databaseNames}
+                    onTabSelect={setSelectedDatabaseIndex}
+                    width={10}
+                    background={'#F5F5F5'}
+                />
                 <main className={styles.erdMode__main}>
                     <ERDiagram />
                     {selectedTable && (
                         <section className={`${styles.tabContent} ${isVisible ? styles.tabContentVisible : ''}`}>
-                            <LineTitle text={selectedTable.name} smallText={formatDate(selectedTable.createTime)} />
-                            {renderTabContent()}
+                            <LineTitle
+                                text={selectedTable.name}
+                                smallText={formatDate(selectedTable.createTime)}
+                            />
+                            { renderTabContent() }
                         </section>
                     )}
                 </main>
             </div>
 
-            {/* 오류 모달 */}
-            { errorMessage && <Notification
-                onClose={() => setErrorMessage(null)}
-                type="error"
-                message={errorMessage}
-            /> }
+            {/* Error Modal */}
+            {errorMessage && (
+                <Notification
+                    onClose={() => setErrorMessage(null)}
+                    type="error"
+                    message={errorMessage}
+                />
+            )}
         </>
     );
 };

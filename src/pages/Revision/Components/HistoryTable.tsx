@@ -6,10 +6,9 @@ import {useHistoryTable} from "../hooks/useHistoryTable";
 import {useRevision} from "../../../contexts/RevisionContext";
 
 const HistoryTable: React.FC = () => {
-    const { stampings, currentStampingID } = useRevision();
+    const { stampings, currentStampingID, selectedStamping } = useRevision();
 
     const {
-        selectedStampingID,
         questionMessage,
         successMessage,
         errorMessage,
@@ -41,10 +40,10 @@ const HistoryTable: React.FC = () => {
                         {stampings && stampings.map((stamping) => (
                             <tr
                                 key={stamping.stampingId}
-                                className={selectedStampingID === stamping.stampingId ? styles.selected : ''}
-                                onClick={() => handleRowClick(stamping.stampingId)}
-                                onDoubleClick={() => handleRowDoubleClick(stamping.stampingId)}
-                                onContextMenu={(e) => handleContextMenu(e, stamping.stampingId)} // 오른쪽 클릭 핸들러 추가
+                                className={selectedStamping === stamping ? styles.selected : ''}
+                                onClick={() => handleRowClick(stamping)}
+                                onDoubleClick={() => handleRowDoubleClick()}
+                                onContextMenu={(e) => handleContextMenu(e, stamping)} // 오른쪽 클릭 핸들러 추가
                             >
                                 <td className={styles.StampingNow}>{currentStampingID === stamping.stampingId ? '●' : ''}</td>
                                 <td className={styles.StampingMsg}>{stamping.message}</td>
@@ -101,9 +100,9 @@ const HistoryTable: React.FC = () => {
                         <li onClick={() => handleMenuOptionClick('change')}>
                             change
                         </li>
-                        <li onClick={() => handleMenuOptionClick('export')}>
-                            export <span>(file)</span>
-                        </li>
+                        {/*<li onClick={() => handleMenuOptionClick('export')}>*/}
+                        {/*    export <span>(file)</span>*/}
+                        {/*</li>*/}
                     </ul>
                 </div>
             )}

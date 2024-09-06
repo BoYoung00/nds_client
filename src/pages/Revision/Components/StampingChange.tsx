@@ -1,47 +1,26 @@
+import React from "react";
 import styles from '../Revision.module.scss';
 import TableListInfo from "../../../publicComponents/UI/TableListInfo";
 import StampingInfo from "../../../publicComponents/UI/StampingInfo";
-import { revisionDataDiffData } from "../../../services/api";
-import { Notification } from "../../../publicComponents/layout/modal/Notification";
-import { useEffect, useState } from "react";
-import { useDataBase } from "../../../contexts/DataBaseContext";
 import ChangePreviewTable from './ChangePreviewTable';
+import { Notification } from "../../../publicComponents/layout/modal/Notification";
+import {useStampingChange} from "../hooks/useStampingChange";
 
 const StampingChange = () => {
-    const { selectedDataBase } = useDataBase();
-
-    const [selectedTableName, setSelectedTableName] = useState<string | null>(null); // 선택된 테이블 이름(key1) 값을 관리
-    const [stampingData, setStampingData] = useState<StampingDataMap | null>(null); // StampingDataMap 타입의 데이터를 관리
-
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-    useEffect(() => {
-        handleFetchDiffData();
-    }, [selectedDataBase]);
-
-    // 변경 사항 프리뷰 통신
-    const handleFetchDiffData = async () => {
-        if (!selectedDataBase) return;
-
-        try {
-            const response: StampingDataMap = await revisionDataDiffData(selectedDataBase.id!);
-            console.log('변경 사항', response)
-            setStampingData(response);
-        } catch (error) {
-            const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
-            setErrorMessage(errorMessage);
-        }
-    };
-
-    // 테이블 이름 (key1) 리스트를 추출
-    const tableNames = stampingData ? Object.keys(stampingData) : [];
+    const {
+        selectedTableName,
+        setSelectedTableName,
+        stampingData,
+        tableNames,
+        errorMessage,
+        setErrorMessage,
+    } = useStampingChange();
 
     return (
         <>
             <div className={styles.stampingChange}>
                 <section className={styles.leftContainer}>
                     <div>
-                        {/*Unstaged Changes*/}
                         <p className={styles.title} style={{borderTopLeftRadius: '4px'}}>Tables State</p>
                         <TableListInfo
                             tableList={tableNames}
@@ -54,7 +33,7 @@ const StampingChange = () => {
                         <StampingInfo />
                     </div>
                 </section>
-                <section className={styles.rightContainer}> {/*변경 사항 프리뷰*/}
+                <section className={styles.rightContainer}>
                     <ChangePreviewTable
                         selectedTableName={selectedTableName}
                         stampingData={stampingData}

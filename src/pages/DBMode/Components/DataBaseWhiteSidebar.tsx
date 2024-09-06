@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import styles from '../DBMode.module.scss';
-import {DBQueryExtraction} from "../../../publicComponents/layout/modal/DBQueryExtraction";
 import {Notification} from "../../../publicComponents/layout/modal/Notification";
 import {CreateTable} from "../../../publicComponents/layout/modal/CreateTable";
 import {useDataBaseWhiteSidebar} from "../hooks/useDataBaseWhiteSidebar";
@@ -14,7 +13,7 @@ const DataBaseWhiteSidebar: React.FC = () => {
     const { tables } = useTable();
 
     const {
-        selectedId,
+        selectedTable,
         isOpenCreateTableModal,
         setIsOpenCreateTableModal,
         isOpenMergeModal,
@@ -22,20 +21,27 @@ const DataBaseWhiteSidebar: React.FC = () => {
         errorMessage,
         setErrorMessage,
         onSelected,
-        handleQuery,
-        handleDelete
-    } = useDataBaseWhiteSidebar(tables);
+        handleMerge,
+        handleDelete,
+        FetchDelete,
+        comment,
+        handleCommentChange,
+        handleCommentBlur,
+        questionMessage,
+        setQuestionMessage,
+        successMessage,
+        setSuccessMessage
+    } = useDataBaseWhiteSidebar();
 
-    const [isEditing, setIsEditing] = useState(false);
-    const [comment, setComment] = useState(tables?.find(table => table.id === selectedId)?.comment || '');
+    const [isEditing, setIsEditing] = useState<boolean>(false);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setComment(e.target.value);
+        handleCommentChange(e.target.value);
     };
 
     const handleBlur = () => {
         setIsEditing(false);
-        // comment 수정 통신
+        handleCommentBlur();
     };
 
     return (
@@ -45,13 +51,13 @@ const DataBaseWhiteSidebar: React.FC = () => {
                     {tables && tables.map((item) => (
                         <div
                             key={item.id}
-                            className={`${styles.item} ${selectedId === item.id ? styles.selected : ''}`}
+                            className={`${styles.item} ${selectedTable === item ? styles.selected : ''}`}
                             onClick={() => onSelected(item)}
                         >
                             {item.name}
                         </div>
                     ))}
-                    { selectedDataBase &&
+                    {selectedDataBase &&
                         <button className={styles.createButton} onClick={() => setIsOpenCreateTableModal(true)}>
                             CREATE TABLE +
                         </button>
@@ -65,7 +71,7 @@ const DataBaseWhiteSidebar: React.FC = () => {
                             <img src={edit} className={styles.editIcon} onClick={() => setIsEditing(true)} />
                         </div>
                         <div className={styles.commentContainer}>
-                            { isEditing ? (
+                            {isEditing ? (
                                 <input
                                     type="text"
                                     value={comment}
@@ -79,7 +85,7 @@ const DataBaseWhiteSidebar: React.FC = () => {
                         </div>
                     </section>
                     <section className={styles.buttonBox}>
-                        <button onClick={handleQuery}>테이블 병합</button>
+                        <button onClick={handleMerge}>테이블 병합</button>
                         <button onClick={handleDelete}>테이블 삭제</button>
                     </section>
                 </footer>
@@ -97,11 +103,26 @@ const DataBaseWhiteSidebar: React.FC = () => {
                 onCloseModal={() => setIsOpenMergeModal(false)}
             />
 
+            {/*성공 모달*/}
+            { successMessage && <Notification
+                onClose={() => setSuccessMessage(null)}
+                type="success"
+                message={successMessage}
+            /> }
+
             {/* 오류 모달 */}
-            { errorMessage && <Notification
+            {errorMessage && <Notification
                 onClose={() => setErrorMessage(null)}
                 type="error"
                 message={errorMessage}
+            />}
+
+            {/*테이블 삭제*/}
+            { questionMessage && <Notification
+                onClose={() => setQuestionMessage(null)}
+                type="question"
+                message={questionMessage}
+                onConfirm={FetchDelete}
             /> }
         </>
     );

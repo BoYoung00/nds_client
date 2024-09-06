@@ -142,7 +142,8 @@ $widthSize: 80%;
     max-height: 16rem;
   }
 
-  .tableChangeView, .tablePreView {
+  .tableChangeView {
+    width: 80%;
     border-left: 1px solid #D8D8D8;
   }
 }
