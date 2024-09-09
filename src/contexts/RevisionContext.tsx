@@ -7,11 +7,13 @@ import {useDataBase} from "./DataBaseContext";
 interface RevisionContextType {
     loading: boolean;
     stampings: StampingEntity[];
-    setStampings: (stampings: StampingEntity[]) => void;
+    searchStampings: StampingEntity[];
+    setSearchStampings: (stampings: StampingEntity[]) => void;
     currentStamping: StampingEntity | null;
     selectedStamping: StampingEntity | null;
     setSelectedStamping: (selectedStamping: StampingEntity) => void;
     stampingChanges: StampingDataMap | null;
+    handelResetSearchStamping: () => void;
 }
 
 // Context 생성
@@ -22,6 +24,7 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
     const { selectedDataBase } = useDataBase();
 
     const [stampings, setStampings] = useState<StampingEntity[]>([]);
+    const [searchStampings, setSearchStampings] = useState<StampingEntity[]>([]);
     const [currentStamping, setCurrentStamping] = useState<StampingEntity | null>(null); // 체크아웃
 
     const [selectedStamping, setSelectedStamping] = useState<StampingEntity | null>(null) // 선택한 스탬핑
@@ -44,12 +47,13 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
         try {
             setLoading(true);
             const response: StampingEntity[] = await revisionHistory(selectedDataBase.id!);
-            // console.log('스탬핑 리스트', response)
+            console.log('스탬핑 리스트', response)
 
             const currentStamping = response.find(s => s.isCurrent); // 체크아웃 선별
             setCurrentStamping(currentStamping ? currentStamping : null)
 
             setStampings([...response].reverse());
+            setSearchStampings([...response].reverse());
         } catch (error) {
             setErrorMessage('히스토리 목록을 가져오는 데 실패했습니다.');
         } finally {
@@ -63,7 +67,7 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
 
         try {
             const response: StampingDataMap = await changeStampingPreviewData(selectedDataBase.id!, selectedStamping.stampingId);
-            console.log('선택한 스탬핑 변경 사항 정보', response);
+            // console.log('선택한 스탬핑 변경 사항 정보', response);
             setStampingChanges(response);
         } catch (error) {
             const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
@@ -71,17 +75,23 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
         }
     };
 
+    const handelResetSearchStamping = () => {
+        setSearchStampings(stampings);
+    }
+
     return (
         <>
             <RevisionContext.Provider
                 value={{
                     loading,
                     stampings,
-                    setStampings,
+                    searchStampings,
+                    setSearchStampings,
                     currentStamping,
                     selectedStamping,
                     setSelectedStamping,
-                    stampingChanges
+                    stampingChanges,
+                    handelResetSearchStamping
                 }}
             >
                 {children}

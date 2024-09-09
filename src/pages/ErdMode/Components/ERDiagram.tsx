@@ -108,7 +108,7 @@ const ERDiagram: React.FC = () => {
                                         width: 70,
                                         alignment: go.Spot.Left
                                     },
-                                    new go.Binding('text', 'nullLabel', (nullable) => (nullable ? 'NULL' : 'NOT NULL'))
+                                    new go.Binding('text', 'nullLabel', (nullable) => (nullable ? 'NOT NULL' : 'NULL'))
                                 )
                             )
                         }
@@ -179,7 +179,7 @@ const ERDiagram: React.FC = () => {
             const diagram = diagramInstanceRef.current;
             diagram.select(diagram.findNodeForKey(nodeKey));
         }
-    }, [selectedTable]);
+    }, [selectedTable, tables]);
 
     return <div ref={diagramRef} className={styles.ERDiagram} />;
 };

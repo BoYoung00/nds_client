@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { formatDate } from "../../../utils/utils";
 import { Notification } from "../../../publicComponents/layout/modal/Notification";
 import styles from '../Revision.module.scss';
@@ -6,7 +6,12 @@ import {useHistoryTable} from "../hooks/useHistoryTable";
 import {useRevision} from "../../../contexts/RevisionContext";
 
 const HistoryTable: React.FC = () => {
-    const { stampings, currentStamping, selectedStamping } = useRevision();
+    const {
+        searchStampings,
+        currentStamping,
+        selectedStamping,
+        handelResetSearchStamping
+    } = useRevision();
 
     const {
         questionMessage,
@@ -23,6 +28,10 @@ const HistoryTable: React.FC = () => {
         confirmAction,
     } = useHistoryTable();
 
+    useEffect(() => {
+        handelResetSearchStamping();
+    }, [])
+
     return (
         <>
             <div className={styles.historyTable}>
@@ -37,7 +46,7 @@ const HistoryTable: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                        {stampings && stampings.map((stamping) => (
+                        {searchStampings && searchStampings.map((stamping) => (
                             <tr
                                 key={stamping.stampingId}
                                 className={selectedStamping === stamping ? styles.selected : ''}
@@ -53,7 +62,7 @@ const HistoryTable: React.FC = () => {
                         ))}
                         </tbody>
                     </table>
-                    {stampings.length === 0 && (
+                    {searchStampings.length === 0 && (
                         <p className={styles.centeredText}>내역이 없습니다.</p>
                     )}
                 </div>

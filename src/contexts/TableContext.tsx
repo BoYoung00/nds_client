@@ -27,8 +27,10 @@ export const TableProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     useEffect(() => {
-        setSelectedTable(null);
-        fetchTables();
+        if (selectedDataBase) {
+            setSelectedTable(null); // selectedDataBase가 변경될 때만 초기화
+            fetchTables();
+        }
     }, [selectedDataBase]);
 
     const fetchTables = async () => {

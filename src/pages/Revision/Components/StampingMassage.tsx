@@ -4,7 +4,11 @@ import LineTitle from "../../../publicComponents/UI/LineTitle";
 import { Notification } from "../../../publicComponents/layout/modal/Notification";
 import {useStampingMassage} from "../hooks/useStampingMassage";
 
-const StampingMassage: React.FC = () => {
+interface StampingMassageProp {
+    isStampingPossible?: boolean;
+}
+
+const StampingMassage: React.FC<StampingMassageProp> = ({ isStampingPossible=false }) => {
     const {
         stampingMessage,
         successMessage,
@@ -13,7 +17,7 @@ const StampingMassage: React.FC = () => {
         handleSave,
         setSuccessMessage,
         setErrorMessage,
-    } = useStampingMassage();
+    } = useStampingMassage(isStampingPossible);
 
     return (
         <>

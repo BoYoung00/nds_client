@@ -80,3 +80,9 @@ export const downloadFile = (fileBlob: Blob, fileName: string) => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 };
+
+// url 자르기
+export const extractLastSegment = (url: string): string => {
+    const segments = url.split('/');
+    return segments[segments.length - 1];
+};

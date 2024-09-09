@@ -205,3 +205,16 @@ interface StampingEntity {
     createTime: string;
     stampingHash: string;
 }
+
+// API 보관함
+interface UserAPIResponse {
+    filterAPIList: UserAPIDTO[];
+    basicAPIList: UserAPIDTO[];
+}
+
+interface UserAPIDTO {
+    userToken: string;
+    api: string;
+    dataBaseName: string;
+    tableName: string;
+}

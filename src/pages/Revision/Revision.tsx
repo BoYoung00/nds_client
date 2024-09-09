@@ -22,10 +22,7 @@ const Revision: React.FC = () => {
                     </>
                 }
                 { activeTab === 'Stamping' &&
-                    <>
-                        <StampingChange />
-                        <StampingMassage />
-                    </>
+                    <StampingChange />
                 }
                 { activeTab === 'Search' &&
                     <>

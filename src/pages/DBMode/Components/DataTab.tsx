@@ -11,7 +11,6 @@ import {useAutoColumnWidth, useDataTab, useSearchPosition} from "../hooks/useDat
 import Search from "../../../publicComponents/layout/modal/Search/Search";
 import {useTable} from "../../../contexts/TableContext";
 
-
 const DataTab: React.FC = () => {
     const { fetchTables } = useTable();
 

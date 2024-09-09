@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { revisionDataFirstCommit } from '../../../services/api';
 import { useDataBase } from '../../../contexts/DataBaseContext';
 
-export const useStampingMassage = () => {
+export const useStampingMassage = (isStampingPossible: boolean) => {
     const { selectedDataBase } = useDataBase();
 
     const [stampingMessage, setStampingMessage] = useState<string>('');
@@ -15,6 +15,15 @@ export const useStampingMassage = () => {
 
     const handleSave = async () => {
         if (!selectedDataBase) return;
+        if (stampingMessage.trim() === '') {
+            setErrorMessage('스태핑 메세지를 작성해주세요.');
+            return;
+        }
+        if (!isStampingPossible) {
+            console.log('isStampingPossible',isStampingPossible)
+            setErrorMessage('변경 데이터가 없습니다.');
+            return;
+        }
 
         try {
             await revisionDataFirstCommit(selectedDataBase.id!, stampingMessage);

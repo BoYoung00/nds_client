@@ -6,6 +6,7 @@ import ChangePreviewTable from './ChangePreviewTable';
 import { Notification } from "../../../publicComponents/layout/modal/Notification";
 import {useStampingChange} from "../hooks/useStampingChange";
 import {useRevision} from "../../../contexts/RevisionContext";
+import StampingMassage from "./StampingMassage";
 
 const StampingChange = () => {
     const { currentStamping } = useRevision();
@@ -15,6 +16,7 @@ const StampingChange = () => {
         setSelectedTableName,
         stampingData,
         tableNames,
+        isStampingPossible,
         errorMessage,
         setErrorMessage,
     } = useStampingChange();
@@ -43,6 +45,7 @@ const StampingChange = () => {
                     />
                 </section>
             </div>
+            <StampingMassage isStampingPossible={isStampingPossible} />
 
             { errorMessage && <Notification
                 onClose={() => setErrorMessage(null)}
