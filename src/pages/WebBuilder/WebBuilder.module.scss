@@ -61,7 +61,7 @@
 // 테이블 데이터 적용 (오른쪽 사이드)
 .applyTableData {
   position: absolute;
-  top: 50%;
+  top: 45%;
   right: 0;
   transform: translate(0, -50%);
   transition: transform 0.3s ease;
@@ -69,23 +69,103 @@
   height: 40rem;
   display: flex;
 
-  .slideButtonWrap {
+  .slideButtonContainer {
     @include flex-center;
-  }
+
+    .slideButtonWrap {
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+      @include flex-center;
+      padding: .7rem 0;
+      border-radius: 4px 4px 0 0;
+      cursor: pointer;
+
+      .slideButton {
+        width: 2.5rem;
+        transform: rotate(90deg);
+      }
+
+      .show {
+        transform: rotate(-90deg);
+      }
+    } // slideButtonWrap
+  } // slideButtonContainer
+
+
 
   .slideContainer {
     width: 100%;
     height: 100%;
+    padding: 2rem;
     background: white;
     overflow: hidden;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
-  }
+    @include flex-space-between;
+    flex-direction: column;
 
+    &__header {
+      width: 100%;
+      display: flex;
+      gap: .5rem;
 
+      & > input[type='text'] { font-size: .9rem }
+      & > button { @include button-style(true, 15%, .8rem) }
+    } //__header
+
+    &__main {
+      width: 100%;
+      @include flex-space-between;
+      flex-direction: column;
+      border: 1px solid #ADB6B9;
+      border-radius: 4px;
+      height: 75%;
+
+      .headerTitle {
+        width: 100%;
+        background: #F0F0F0;
+        border-bottom: 1px solid $color-gray-middle;
+        border-radius: 4px 4px 0 0;
+
+        & > p {
+          color: #8A8A8A;
+          font-family: $font-KoPub-bold;
+          font-size: 1.2rem;
+          padding: .5rem 1rem;
+          margin: 0;
+        }
+      } //headerTitle
+
+      .columnContent {
+        width: 100%; height: 100%;
+
+      } //columnContent
+    } //__main
+
+    &__footer {
+      width: 100%;
+      @include flex-right;
+
+      & > button {
+        @include button-style(true, 35%);
+      }
+    } //__footer
+  } // slideContainer
 }
-
 .show {
   transform: translate(90%, -50%);
+}
+
+// 행 선택 박스 디자인
+.columnSelect {
+  padding: 1rem;
+
+  & > p {
+    margin: 0 0 .5rem .1rem;
+    font-family: $font-KoPub-bold;
+  }
+
+  & > select {
+    font-size: .8rem;
+  }
 }
 
 
