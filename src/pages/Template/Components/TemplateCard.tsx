@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React from "react";
 import styles from '../Template.module.scss';
-import {TemplatePreview} from "../../../publicComponents/layout/modal/TemplatePreview";
+import {Link} from "react-router-dom";
 
 interface TemplateCardProp {
     imgUrl: string;
@@ -9,11 +9,11 @@ interface TemplateCardProp {
 }
 
 const TemplateCard: React.FC<TemplateCardProp> = ({ imgUrl, title, category}) => {
-    const [isOpenPreviewModal, setIsOpenPreviewModal] = useState<boolean>(false);
+    const token = localStorage.getItem('token');
 
     return (
         <>
-            <div className={styles.templateCard} onClick={() => setIsOpenPreviewModal(true)}>
+            <Link className={styles.templateCard} to={`/workspace/${title}`}>
                 <section className={styles.templateCard__container}>
                     <img src={imgUrl} alt={title}/>
                     <hr/>
@@ -24,11 +24,8 @@ const TemplateCard: React.FC<TemplateCardProp> = ({ imgUrl, title, category}) =>
                         )}
                     </div>
                 </section>
-            </div>
-
-            <TemplatePreview title={title} isOpenModal={isOpenPreviewModal} onCloseModal={setIsOpenPreviewModal} />
+            </Link>
         </>
-
     );
 };
 

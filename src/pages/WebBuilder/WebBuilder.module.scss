@@ -1,0 +1,91 @@
+@import "src/App.module";
+
+.webBuilder {
+  width: 100%; height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 60rem;
+
+  &__header {
+    width: 100%;
+    height: 3.2rem;
+    @include flex-center;
+    gap: 1%;
+    background: #D9D9D9;
+
+    & > a {
+      color: black;
+      text-decoration: none;
+      white-space: nowrap;
+      font-size: .8rem;
+      padding-left: .5rem;
+    }
+
+    .urlWrap {
+      width: 90%; height: 70%;
+      display: flex;
+      background: white;
+      padding: 0 .5rem;
+      border-radius: 4px;
+
+      & > span {
+        white-space: nowrap;
+        line-height: 2.5;
+        vertical-align: middle;
+      }
+
+      & > input[type='text'] {
+        @include input-style-none;
+      }
+    } // urlWrap
+  } // header
+
+  &__main {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+
+    .pagePreview {
+      width: 100%;
+      height: 100%;
+      flex: 1;
+    }
+  } // main
+}
+
+// 테이블 데이터 적용 (오른쪽 사이드)
+.applyTableData {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+  transition: transform 0.3s ease;
+  width: 30rem;
+  height: 40rem;
+  display: flex;
+
+  .slideButtonWrap {
+    @include flex-center;
+  }
+
+  .slideContainer {
+    width: 100%;
+    height: 100%;
+    background: white;
+    overflow: hidden;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  }
+
+
+}
+
+.show {
+  transform: translate(90%, -50%);
+}
+
+

@@ -13,7 +13,7 @@ const styles: { [key: string]: CSSProperties } = {
         backgroundColor: '#00A3FF',
         color: 'white',
         border: 'none',
-        padding: '.5rem 1rem',
+        padding: '.3rem .8rem',
         borderRadius: '4px',
         cursor: 'pointer',
         // fontSize: `${fontSize}`

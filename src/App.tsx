@@ -10,6 +10,7 @@ import Revision from "./pages/Revision";
 import Template from "./pages/Template";
 import {TableProvider} from "./contexts/TableContext";
 import {RevisionProvider} from "./contexts/RevisionContext";
+import {WebBuilder} from "./pages/WebBuilder";
 
 const App: React.FC = () => {
     const [token, setToken] = useState<string | null>(null);
@@ -59,6 +60,7 @@ const App: React.FC = () => {
                             <Route path="/revision" element={<RevisionProvider> <Revision /> </RevisionProvider>} />
                             <Route path="/api" element={<ApiArchive />} />
                             <Route path="/workspace" element={<Template />} />
+                            <Route path="/workspace/:page" element={<WebBuilder />} />
                         </Routes>
                     </div>
                 </>

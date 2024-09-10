@@ -35,7 +35,8 @@ export const useHeader = () => {
 
     useEffect(() => {
         const path = location.pathname;
-        const index = minMenuItems.findIndex(item => item.path === path);
+        const firstPath = path.split('/')[1];
+        const index = minMenuItems.findIndex(item => item.path.includes(firstPath));
         setSelectedIndex(index === -1 ? 0 : index);
     }, [location]);
 
