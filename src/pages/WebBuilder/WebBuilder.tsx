@@ -23,7 +23,7 @@ const WebBuilder: React.FC = () => {
             <main className={styles.webBuilder__main}>
                 <TabBar tabs={['Main', 'List']} onTabSelect={(index) => setSelectedTab(index)} background={'#F5F5F5'}/>
                 <section className={styles.pagePreview}>
-                    html 프리뷰
+                    {page} html 프리뷰
                 </section>
                 <ApplyTableData />
             </main>

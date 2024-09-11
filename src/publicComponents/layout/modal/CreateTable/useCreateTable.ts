@@ -5,7 +5,7 @@ import {useTable} from "../../../../contexts/TableContext";
 
 // 테이블 생성 메인
 export const useCreateTable = (dataBase: DataBaseEntity | null) => {
-    const { setTables } = useTable();
+    const { setTables, setSelectedTable } = useTable();
 
     const [columns , setColumns] = useState<RowState[]>([]);
     const [tableData, setTableData] = useState({
@@ -83,6 +83,7 @@ export const useCreateTable = (dataBase: DataBaseEntity | null) => {
             const createdTable = await tableStructure(createTableObj);
             setTables(prevTables => [...prevTables, createdTable]);
             setSuccessMessage('테이블 생성에 성공 하셨습니다.');
+            setSelectedTable(createdTable);
             resetForm(); // 성공 후 초기화
         } catch (error) {
             const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';

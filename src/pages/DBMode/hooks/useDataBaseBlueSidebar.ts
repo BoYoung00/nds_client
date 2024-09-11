@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {downloadNdsFile} from "../../../services/api";
 import {downloadFile} from "../../../utils/utils";
 import {useDataBase} from "../../../contexts/DataBaseContext";
@@ -11,6 +11,10 @@ export const useDataBaseBlueSidebar = () => {
     const [isOpenCreateDBModal, setIsOpenCreateDBModal] = useState<boolean>(false);
     const [isOpenQueryModal, setIsOpenQueryModal] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    useEffect(() => {
+        setSelectedDatabaseID(selectedDataBase ? selectedDataBase?.id! : -1)
+    }, [selectedDataBase])
 
     const onSelected = (dataBase: DataBaseEntity) => {
         setSelectedDatabaseID(dataBase.id!!);

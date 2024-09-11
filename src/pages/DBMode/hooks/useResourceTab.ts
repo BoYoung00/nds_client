@@ -8,6 +8,7 @@ import {
     uploadVideoFile
 } from "../../../services/api";
 import {useTable} from "../../../contexts/TableContext";
+import {copyToClipboard} from "../../../utils/utils";
 
 export const useResourceTab = () => {
     const { selectedTable } = useTable();
@@ -23,6 +24,7 @@ export const useResourceTab = () => {
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [showCopyMessage, setShowCopyMessage] = useState(false);
 
     useEffect(() => {
         if (selectedTable?.tableHash) {
@@ -112,6 +114,11 @@ export const useResourceTab = () => {
         }
     };
 
+    const handleCopyTableHash = () => {
+        if (!selectedTable) return;
+        copyToClipboard(selectedTable.tableHash, () => setShowCopyMessage(true));
+    }
+
     return {
         hooks: {
             loading,
@@ -121,14 +128,16 @@ export const useResourceTab = () => {
             selectedImage,
             selectedVideo,
             setSelectedImage,
-            setSelectedVideo
+            setSelectedVideo,
+            showCopyMessage
         },
         handlers: {
             toggle,
             handleImageChange,
             handleVideoChange,
             handleUpload,
-            handleFetchFileDelete
+            handleFetchFileDelete,
+            handleCopyTableHash
         },
         modals: {
             errorMessage,

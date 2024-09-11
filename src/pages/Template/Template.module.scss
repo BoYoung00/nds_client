@@ -19,22 +19,41 @@
 .templateCard {
   width: 85%;
   height: 85%;
+  min-height: 20rem;
   margin: 0 auto;
   box-shadow: 0 4px 5px 1px rgba(0, 0, 0, 0.2);
   padding: .8rem;
-  cursor: pointer;
-  text-decoration: none;
+}
+.ready {
+  @include flex-center;
+  font-size: 1.3rem;
+  font-family: $font-KoPub-bold;
+  color: $color-gray-middle;
+}
+
+.templateCard {
+  position: relative;
+  overflow: hidden;
 
   &__container {
-    width: 100%; height: 100%;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease-in-out;
 
     img {
-      width: 100%; height: 70%;
+      width: 100%;
+      height: 70%;
       box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
     }
 
-    hr { color: $color-gray-light; }
-    h2 { color:  $color-blue-deep; margin: 0; }
+    hr {
+      color: $color-gray-light;
+    }
+
+    h2 {
+      color: $color-blue-deep;
+      margin: 0;
+    }
 
     .category {
       width: 100%;
@@ -45,8 +64,41 @@
         font-family: $font-KoPub-bold;
         color: $color-gray-deep;
       }
-    } //category
-  } //__container
+    } // category
+  } // __container
+
+  &__overlay {
+    position: absolute; // 추가: 절대 위치 설정
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    @include flex-center;
+    flex-direction: column;
+    gap: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 2;
+    //padding: 1rem;
+
+    .customPageBut { @include button-style(true, 14em); text-decoration: none; }
+    .codeDownloadBut { @include button-style(false, 15em); }
+  } // __overlay
+
+  &:hover {
+    .templateCard__overlay {
+      opacity: 1;
+    }
+
+    .templateCard__overlay .customPageBut,
+    .templateCard__overlay .codeDownloadBut {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
+
 
 

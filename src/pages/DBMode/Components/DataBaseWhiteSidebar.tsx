@@ -14,7 +14,6 @@ const DataBaseWhiteSidebar: React.FC = () => {
 
     const {
         selectedId,
-        selectedTable,
         isOpenCreateTableModal,
         setIsOpenCreateTableModal,
         isOpenMergeModal,

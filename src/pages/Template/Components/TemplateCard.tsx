@@ -13,7 +13,7 @@ const TemplateCard: React.FC<TemplateCardProp> = ({ imgUrl, title, category}) =>
 
     return (
         <>
-            <Link className={styles.templateCard} to={`/workspace/${title}`}>
+            <div className={styles.templateCard} >
                 <section className={styles.templateCard__container}>
                     <img src={imgUrl} alt={title}/>
                     <hr/>
@@ -24,7 +24,11 @@ const TemplateCard: React.FC<TemplateCardProp> = ({ imgUrl, title, category}) =>
                         )}
                     </div>
                 </section>
-            </Link>
+                <section className={styles.templateCard__overlay}>
+                    <Link className={styles.customPageBut} to={`/workspace/${title}`}>커스텀 페이지 생성</Link>
+                    <button className={styles.codeDownloadBut}>코드 다운로드</button>
+                </section>
+            </div>
         </>
     );
 };

@@ -6,7 +6,7 @@ import ErdMode from "../ErdMode";
 const DataBase:React.FC = () => {
     const getInitialMode = () => {
         const savedMode = localStorage.getItem('appMode');
-        return savedMode ? (savedMode as 'ERD' | 'DB') : 'ERD';
+        return savedMode ? (savedMode as 'DB' | 'ERD') : 'DB';
     };
     const [mode, setMode] = useState<'ERD' | 'DB'>(getInitialMode);
 
@@ -29,9 +29,9 @@ const DataBase:React.FC = () => {
             </div>
 
             {mode === 'ERD' ?
-                <DBMode />
-                :
                 <ErdMode />
+                :
+                <DBMode />
             }
         </div>
     );

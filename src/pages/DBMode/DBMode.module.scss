@@ -446,12 +446,12 @@
 
   main {
     width: 100%; height: 90%;
-    max-height: 63vh;
+    max-height: 62vh;
     @include flex-center;
   }
 
   &__fileContainer {
-    @include insideBox(40%, 97%);
+    @include insideBox(40%, 96%);
 
     .description {
       font-family: $font-KoPub-bold;
@@ -481,7 +481,7 @@
   }
 
   &__previewContainer {
-    @include insideBox(60%, 97%);
+    @include insideBox(60%, 96%);
 
     table {
       @include table-styles();
@@ -500,10 +500,7 @@
   }
 
   .excelDownload {
-    font-family: $font-KoPub-bold;
-    color: $color-blue-deep;
-    text-decoration: underline;
-    cursor: pointer;
+    @include line-text-style;
     position: absolute;
     right: 1rem;
     top: -3.2rem;
@@ -516,6 +513,7 @@
 // Resource 탭 디자인
 .ResourceTab {
   @include tab-container;
+  position: relative;
 
   .header {
     display: grid;
@@ -642,5 +640,16 @@
         border: 4px solid $color-blue-deep;
       }
     }
+  } // main
+
+  .copyTableHash {
+    @include line-text-style;
+    position: absolute;
+    right: 1rem;
+    top: -3.2rem;
+  }
+
+  .copyMessage {
+    @include copyMessage-style;
   }
 }

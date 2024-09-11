@@ -86,3 +86,26 @@ export const extractLastSegment = (url: string): string => {
     const segments = url.split('/');
     return segments[segments.length - 1];
 };
+
+// 복사 기능
+export const copyToClipboard = (text: string, callback?: () => void) => {
+    if (navigator.clipboard !== undefined) {
+        navigator.clipboard.writeText(text).then(() => {
+            if (callback) callback();
+        });
+    } else {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        textArea.setSelectionRange(0, 99999);
+        try {
+            document.execCommand('copy');
+            if (callback) callback();
+        } catch (err) {
+            console.error('복사 실패', err);
+        }
+        textArea.setSelectionRange(0, 0);
+        document.body.removeChild(textArea);
+    }
+};

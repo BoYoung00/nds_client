@@ -3,7 +3,7 @@ import {createDataBase, saveStructureToDatabase} from "../../../../services/api"
 import {useDataBase} from "../../../../contexts/DataBaseContext";
 
 export const useDatabaseForm = () => {
-    const { setDatabases, fetchDatabases } = useDataBase();
+    const { setDatabases, fetchDatabases, setSelectedDataBase } = useDataBase();
 
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -24,8 +24,9 @@ export const useDatabaseForm = () => {
 
     const handleFetchCreateDB = async (file: File | null) => {
         try {
-            if (file) {
-                await saveStructureToDatabase(file);
+            if (file) { // 파일 생성
+                const response = await saveStructureToDatabase(file);
+                // 파일 생성도 생성된 DB 객체 반환 시켜줘야 함
                 setSuccessMessage("데이터베이스 생성에 성공하셨습니다.");
                 fetchDatabases();
             } else {
@@ -46,6 +47,7 @@ export const useDatabaseForm = () => {
         if (dataBaseData.id !== null) {
             setDatabases(prevDatabases => [...prevDatabases, dataBaseData]);
             setSuccessMessage("데이터베이스 생성에 성공하셨습니다.");
+            setSelectedDataBase(dataBaseData)
         }
     }, [dataBaseData.id]);
 

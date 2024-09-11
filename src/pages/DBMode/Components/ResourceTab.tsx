@@ -2,6 +2,7 @@ import React from 'react';
 import styles from '../DBMode.module.scss';
 import { Notification } from "../../../publicComponents/layout/modal/Notification";
 import {useResourceTab} from "../hooks/useResourceTab";
+import CopyButton from "../../../publicComponents/UI/CopyButton";
 
 const ResourceTab: React.FC = () => {
     const {
@@ -13,13 +14,15 @@ const ResourceTab: React.FC = () => {
             selectedImage,
             selectedVideo,
             setSelectedImage,
-            setSelectedVideo
+            setSelectedVideo,
+            showCopyMessage
         },
         handlers: {
             toggle,
             handleImageChange,
             handleVideoChange,
-            handleFetchFileDelete
+            handleFetchFileDelete,
+            handleCopyTableHash
         },
         modals: {
             errorMessage,
@@ -34,6 +37,10 @@ const ResourceTab: React.FC = () => {
     return (
         <>
             <div className={styles.ResourceTab}>
+                <span className={styles.copyTableHash} onClick={handleCopyTableHash}>
+                  테이블 해시 복사
+                {showCopyMessage && <span className={styles.copyMessage}>복사 되었습니다.</span>}
+                </span>
                 <header className={styles.header}>
                     <section className={styles.urlBox}>
                         <div>

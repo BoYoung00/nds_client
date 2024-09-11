@@ -137,6 +137,26 @@
   }
 }
 
+// 복사 버튼 디자인
+.copyButtonContainer {
+  position: relative;
+  display: inline-block;
+
+  .copyButton {
+    background-color: #00A3FF;
+    color: white;
+    border: none;
+    padding: .3rem .8rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .copyMessage {
+    @include copyMessage-style;
+  }
+}
+
+
 
 
 

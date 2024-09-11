@@ -15,6 +15,10 @@ export function useDataBaseWhiteSidebar() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [questionMessage, setQuestionMessage] = useState<string | null>(null);
 
+    useEffect(() => {
+        if (selectedTable) setSelectedId(selectedTable.id)
+    }, [selectedTable]);
+
     const onSelected = (table: TableData) => {
         setSelectedId(table.id!!);
         setSelectedTable(table);
@@ -77,7 +81,6 @@ export function useDataBaseWhiteSidebar() {
 
     return {
         selectedId,
-        selectedTable,
         isOpenCreateTableModal,
         setIsOpenCreateTableModal,
         isOpenMergeModal,
