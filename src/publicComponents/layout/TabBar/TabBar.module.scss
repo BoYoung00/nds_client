@@ -1,8 +1,8 @@
 @import 'src/App.module';
 
 @mixin tab-style {
+  @include nowrap;
   text-align: center;
-  white-space: nowrap;
   font-family: $font-KoPub-bold;
   cursor: pointer;
   padding: .5em .8em 1em .8em;
@@ -36,6 +36,6 @@
       &:hover {
         background: #D0D0D0;
       }
-    }
-  }
-}
+    } //create-db-tab
+  } // __tab
+} // tabBar

@@ -25,7 +25,7 @@ const TabBar: React.FC<TabBarProps> = ({ tabs, onTabSelect, width = 5, backgroun
                 <div
                     className={`${styles.tabBar__tab} ${styles['create-db-tab']}`}
                     onClick={()=>setIsOpenCreateDBModal(true)}
-                    style={{width: `${width}em`}}
+                    style={{minWidth: `${width}em`}}
                 >
                     CREATE DATABASE +
                 </div>
@@ -34,7 +34,7 @@ const TabBar: React.FC<TabBarProps> = ({ tabs, onTabSelect, width = 5, backgroun
                     key={index}
                     className={`${styles.tabBar__tab} ${index === selectedIndex ? styles.active : ''}`}
                     onClick={() => handleTabClick(index)}
-                    style={{width: `${width}em`}}
+                    style={{minWidth: `${width}em`}}
                 >
                     {tab}
                 </div>
