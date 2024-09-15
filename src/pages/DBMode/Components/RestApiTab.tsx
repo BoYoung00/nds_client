@@ -30,13 +30,16 @@ const RestApiTab: React.FC = () => {
         <>
             <div className={styles.RestApiTab}>
                 <section className={styles.urlContainer}>
-                    <div>
+                    <div className={styles.urlContainer__apiWrap}>
                         <ApiSection method="GET" url={url} />
                         <ApiSection method="POST" url={url} />
-                        <ApiSection method="PUT" url={`${url}/[PK]`} />
-                        <ApiSection method="DELETE" url={`${url}/[PK]`} />
+                        <ApiSection method="PUT" url={`${url}/{PK}`} />
+                        <ApiSection method="DELETE" url={`${url}/{PK}`} />
+                        <ApiSection method="WHERE" url={`${url}/{columnName}/{value}`} />
                     </div>
-                    <button className={styles.ApiButton} onClick={handelSaveApiArchive}>API 보관함에 추가</button>
+                    <div className={styles.urlContainer__butWrap}>
+                        <button className={styles.ApiButton} onClick={handelSaveApiArchive}>API 보관함에 추가</button>
+                    </div>
                 </section>
             </div>
 

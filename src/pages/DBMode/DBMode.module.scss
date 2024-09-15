@@ -253,22 +253,30 @@
   overflow: auto;
 
   .urlContainer {
-    width: 98%; height: 95%;
+    width: 98%; height: 97%;
     margin: 0 auto;
     padding-top: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: end;
-    gap: 1rem;
+    //gap: 1rem;
 
-    div { width: 100%; margin: 0 auto; }
-
-    .ApiButton {
-      @include button-style(true, 12rem);
-      float: left;
+    &__apiWrap {
+      width: 100%; height: 90%;
+      margin: 0 auto;
+      overflow-y: scroll;
     }
-  }
+
+    &__butWrap {
+      width: 100%; height: 10%;
+      @include flex-right;
+
+      .ApiButton {
+        @include button-style(true, 12rem);
+      }
+    } // __butWrap
+  } //urlContainer
 }
 
 

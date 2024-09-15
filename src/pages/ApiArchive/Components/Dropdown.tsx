@@ -32,8 +32,9 @@ const Dropdown: React.FC<DropdownProps> = ({ title = "REST API", tableHash = 'ta
                         <>
                             <ApiSection method="GET" url={url} />
                             <ApiSection method="POST" url={url} />
-                            <ApiSection method="PUT" url={`${url}/[PK]`} />
-                            <ApiSection method="DELETE" url={`${url}/[PK]`} />
+                            <ApiSection method="PUT" url={`${url}/{PK}`} />
+                            <ApiSection method="DELETE" url={`${url}/{PK}`} />
+                            <ApiSection method="WHERE" url={`${url}/{columnName}/{value}`} />
                         </>
                     }
                     <p className={styles.deleteBut} onClick={handleDelete}>보관함에서 지우기</p>
