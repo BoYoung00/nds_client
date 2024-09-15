@@ -229,6 +229,16 @@ interface WorkspaceRequest {
     bodyHTMLCode?: string; // HTML Body 코드 (nullable)
 }
 
+// 작업 공간 페이지 응답
+interface WorkspaceResponse {
+    connectURL: string; // 연결할 URL
+    templateName: string; // 템플릿 이름
+    page: string; // 페이지 이름
+    buildURL: string; // 페이지 접근 url
+    columns: Record<string, string>; // 현재 이름 / 실제 쓰일 컬럼 이름
+    htmlCode: string;
+}
+
 interface pageType {
     template: 'Board' | 'Shop'; // 더 추가될 수 있음
     page: BoardPageType | ShopPageType;
@@ -236,11 +246,6 @@ interface pageType {
 
 type ShopPageType = 'main' | 'cart' | 'order' | 'order-list';
 type BoardPageType = 'login' | 'sign-up' | 'main-notice' | 'main-list' | 'view-notice' | 'view-list' | 'after_login-notice' | 'after_login-list' | 'write-user' | 'write-admin';
-
-// 만약 InputData 타입의 template: 'Shop' 이라면
-interface ShopPage {
-    page: ShopPageType;
-}
 
 // 만약 BoardPage 타입의 page : 'main' 이라면
 interface ShopPageMain {
@@ -287,11 +292,6 @@ interface ShopPageOrderList {
     }
 }
 
-// 만약 InputData 타입의 template: 'Board' 이라면
-interface BoardPage {
-    page: BoardPageType;
-}
-
 // 만약 BoardPage 타입의 page : 'login' 이라면
 interface BoardPageLogin {
     connectURL: string;
@@ -308,4 +308,14 @@ interface BoardPageSignUp{
         'userID': string;
         'userPW': string;
     }
+}
+
+// 템플릿 데이터 적용 요청 타입
+interface WorkspaceRequest {
+    connectURL: string; // 연결할 URL
+    template: string; // 템플릿 이름
+    page: string; // 페이지 이름
+    username: string; // 유저 이메일
+    columns?: { [key: string]: string }; // 현재 이름 / 실제 쓰일 컬럼 이름 (optional)
+    bodyHTMLCode?: string; // HTML Body 코드 (optional)
 }

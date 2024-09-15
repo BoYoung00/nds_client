@@ -17,7 +17,7 @@ const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
 
 export const useDataTab = () => {
     const [loading, setLoading] = useState<boolean>(false);
-    const {selectedTable, setSelectedTable, setTables, tables} = useTable();
+    const {selectedTable, setTables, tables} = useTable();
     const [imagePaths, setImagePaths] = useState<MediaFile[]>([]);
     const [videoPaths, setVideoPaths] = useState<MediaFile[]>([]);
 

@@ -381,7 +381,7 @@ export const tableMergeConfirm = async (tableMergeConfirmRequest: TableMergeConf
     }
 };
 
-// 테이블 병합 프리뷰
+// 테이블 병합 프리뷰 (SSR)
 export const tableMergePreview = async (tableMergeRequest: TableMergeConfirmRequest) => {
     try {
         const response = await client.post('/ssr/merge/confirm', tableMergeRequest);
@@ -432,7 +432,7 @@ export const revisionDataFirstCommit = async (dataBaseId: number, commitMessage:
     }
 };
 
-// 스탬핑 : 변경 사항 가지고 오기 (프리뷰)
+// 스탬핑 : 변경 사항 가지고 오기 (프리뷰 json)
 export const revisionDataDiffData = async (databaseId: number) => {
     try {
         const response = await client.get(`/api/revision/diff/${databaseId}`);
@@ -482,4 +482,29 @@ export const moveToHistoryPoint = async (databaseId: number, stampingId: number)
     }
 };
 
+// 템플릿 프리뷰 (SSR)
+export const userWorkspaceBuild = async (template: string, page: string, username: string) => {
+    try {
+        const response = await client.get(`/workspace/${template}/${page}/${username}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
+// 스탬핑 : 변경 및 수정 사항 커밋
+export const workSpaceBuildDataSave = async (workspaceRequest: WorkspaceRequest) => {
+    try {
+        const response = await client.post('/api/workspace/save', workspaceRequest);
+        if (response.status === 200)
+            return response.data;
+        new Error(`${response.data.message}`)
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};

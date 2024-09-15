@@ -9,8 +9,6 @@ interface TemplateCardProp {
 }
 
 const TemplateCard: React.FC<TemplateCardProp> = ({ imgUrl, title, category}) => {
-    const token = localStorage.getItem('token');
-
     return (
         <>
             <div className={styles.templateCard} >
