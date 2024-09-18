@@ -492,7 +492,17 @@ export const userWorkspaceBuild = async (template: string, page: string, usernam
     }
 };
 
-// 스탬핑 : 변경 및 수정 사항 커밋
+// 템플릿 테이블 데이터 요청
+export const getWorkspaceData = async (templateName: string, pageName: string, username: string) => {
+    try {
+        const response = await client.get(`/api/workspace/${templateName}/${pageName}/${username}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// 템플릿 테이블 데이터 저장
 export const workSpaceBuildDataSave = async (workspaceRequest: WorkspaceRequest) => {
     try {
         const response = await client.post('/api/workspace/save', workspaceRequest);
