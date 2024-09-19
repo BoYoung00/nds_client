@@ -5,9 +5,10 @@ import doubleArrow from '../../../assets/images/doubleArrow.png';
 import {useParams} from "react-router-dom";
 import {Notification} from "../../../publicComponents/layout/modal/Notification";
 import axios from "axios";
+import {workSpaceBuildDataSave} from "../../../services/api";
 
 // PageData 타입을 정의하는 인터페이스들
-type PageData = ShopPageMain | ShopPageCart | ShopPageOrder | ShopPageOrderList | BoardPageLogin | BoardPageSignUp;
+type PageData = ShopPageMain | ShopPageCart | ShopPageOrderList | BoardPageLogin | BoardPageSignUp;
 
 interface ApplyTableDataProps {
     selectedTab: string;
@@ -78,31 +79,32 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                     return {
                         connectURL: responseData.connectURL,
                         inputs: {
+                            "cartTableUrl": responseData.columns?.['cartTableUrl'] || '',
                             "shopName": responseData.columns?.['shopName'] || '',
                             "shopComment": responseData.columns?.['shopComment'] || '',
                             "mainImgUrl": responseData.columns?.['mainImgUrl'] || ''
                         },
                         columns: {
-                            "itemImg": responseData.columns?.['itemImg'] || '',
-                            "itemName": responseData.columns?.['itemName'] || '',
-                            "itemPrice": responseData.columns?.['itemPrice'] || ''
+                            "ItemID": responseData.columns?.['ItemID'] || '',
+                            "ItemImage": responseData.columns?.['ItemImage'] || '',
+                            "ItemName": responseData.columns?.['ItemName'] || '',
+                            "ItemPrice": responseData.columns?.['ItemPrice'] || ''
                         }
                     };
                 case 'cart':
                     return {
                         connectURL: responseData.connectURL,
+                        inputs: {
+                            "OrderTableUrl": responseData.columns?.['OrderTableUrl'] || '',
+                        },
                         columns: {
-                            "itemImg": responseData.columns?.['itemImg'] || '',
-                            "itemName": responseData.columns?.['itemName'] || '',
-                            "itemPrice": responseData.columns?.['itemPrice'] || '',
-                            "itemCount": responseData.columns?.['itemCount'] || ''
-                        }
-                    };
-                case 'order':
-                    return {
-                        connectURL: responseData.connectURL,
-                        columns: {
-                            "orderData": responseData.columns?.['orderData'] || ''
+                            "CartID": responseData.columns?.['CartID'] || '',
+                            "ItemID": responseData.columns?.['ItemID'] || '',
+                            "UserID": responseData.columns?.['UserID'] || '',
+                            "ItemImage": responseData.columns?.['ItemImage'] || '',
+                            "ItemName": responseData.columns?.['ItemName'] || '',
+                            "ItemPrice": responseData.columns?.['ItemPrice'] || '',
+                            "ItemCount": responseData.columns?.['ItemCount'] || ''
                         }
                     };
                 case 'order-list':
@@ -132,8 +134,10 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                     return {
                         connectURL: responseData.connectURL,
                         columns: {
-                            'userID': responseData.columns?.['userID'] || '',
-                            'userPW': responseData.columns?.['userPW'] || ''
+                            'id': responseData.columns?.['id'] || '',
+                            'name': responseData.columns?.['name'] || '',
+                            'password': responseData.columns?.['password'] || '',
+                            'role': responseData.columns?.['role'] || ''
                         }
                     };
                 // 이후 페이지 데이터들은 변경 사항 있을 것 같아서 나중에 채울 예정
@@ -150,11 +154,12 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
         "shopName": "쇼핑몰 이름",
         "shopComment": "쇼핑몰 설명",
         "mainImgUrl": "메인 이미지 URL",
-        "itemImg": "아이템 이미지",
-        "itemName": "아이템 이름",
-        "itemPrice": "아이템 가격",
-        "itemCount": "아이템 수량",
-        "orderData": "주문 데이터",
+        "cartTableUrl": '카트 테이블 Rest Api Url',
+        'ItemID': '아이템 번호',
+        "ItemImage": "아이템 이미지",
+        "ItemName": "아이템 이름",
+        "ItemPrice": "아이템 가격",
+        "ItemCount": "아이템 수량",
         "userID": "사용자 아이디",
         "userPW": "비밀번호"
     };
@@ -172,6 +177,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
 
     // 입력값 변경 핸들러
     const handleInputChange = (key: string, newValue: string) => {
+        // @ts-ignore
         setInputData(prevData => {
             if (!prevData) return null;
 
@@ -184,6 +190,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                     }
                 };
             }
+
             return prevData;
         });
     };
@@ -224,19 +231,20 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
             },
             bodyHTMLCode: ''
         };
-        console.log('데이터 적용 (템플릿 미완성인 관계로 통신 로직 주석처리)', workspaceRequest)
-        // try {
-        //     const response = await workSpaceBuildDataSave(workspaceRequest);
-        //     console.log('템플릿 데이터 저장', response)
-        // } catch (e) {
-        //     const error = (e as Error).message || '알 수 없는 오류가 발생 하였습니다.'
-        //     setErrorMessage(error)
-        // }
+        console.log('데이터 적용', workspaceRequest)
+        try {
+            const response = await workSpaceBuildDataSave(workspaceRequest);
+            console.log('템플릿 데이터 저장', response)
+        } catch (e) {
+            const error = (e as Error).message || '알 수 없는 오류가 발생 하였습니다.'
+            setErrorMessage(error)
+        }
     }
 
+    // REST API 통신
     const handelFetchRestApiData = async () => {
         if (!inputData) return;
-        if (!inputData.connectURL && inputData.connectURL === '') return;
+        if (!inputData.connectURL || inputData.connectURL === '') return;
         try {
             const response = await axios.get(`${inputData.connectURL}`);
             const columnNames = Object.keys(response.data[0]);

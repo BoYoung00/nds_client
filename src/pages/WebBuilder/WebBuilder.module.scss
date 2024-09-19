@@ -61,7 +61,7 @@
 
 // 테이블 데이터 적용 (오른쪽 사이드)
 .applyTableData {
-  position: absolute;
+  position: fixed;
   top: 45%;
   right: 0;
   transform: translate(0, -50%);
@@ -69,6 +69,7 @@
   width: 30rem;
   height: 40rem;
   display: flex;
+  z-index: 9;
 
   .slideButtonContainer {
     @include flex-center;
@@ -77,8 +78,9 @@
       box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
       @include flex-center;
       padding: .7rem 0;
-      border-radius: 4px 4px 0 0;
+      border-radius: 4px 0 0 4px;
       cursor: pointer;
+      background: white;
 
       .slideButton {
         width: 2.5rem;

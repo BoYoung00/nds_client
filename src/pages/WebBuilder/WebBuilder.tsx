@@ -27,7 +27,7 @@ const exampleWorkspaceRequest: WorkspaceResponse = {
 };
 
 const tabConfig: { [key: string]: string[] } = {
-    Shop: ['main', 'cart', 'order', 'order-list'],
+    Shop: ['main', 'cart', 'order-list'],
     Board: [
         'login',
         'sign-up',
@@ -58,6 +58,7 @@ const WebBuilder: React.FC = () => {
         setErrorMessage(errorMsg);
     }, []);
 
+    // 템플릿 테이블 매핑 데이터 통신
     const fetchTemplateData = useCallback(async () => {
         const userEmail = localStorage.getItem('email');
         if (!template || !userEmail || tabs.length === 0 || selectedTabIndex >= tabs.length) return;
@@ -70,6 +71,7 @@ const WebBuilder: React.FC = () => {
         }
     }, [template, tabs, selectedTabIndex, handleError]);
 
+    // 템플릿 SSR 통신
     const fetchTemplateSSR = useCallback(async () => {
         const userEmail = localStorage.getItem('email');
         if (!template || !userEmail || tabs.length === 0 || selectedTabIndex >= tabs.length) return;
@@ -85,9 +87,8 @@ const WebBuilder: React.FC = () => {
     useEffect(() => {
         if (template) {
             fetchTemplateSSR();
-            // fetchTemplateData();
-            // 임시 데이터 사용
-            setWorkspaceData(exampleWorkspaceRequest);
+            fetchTemplateData();
+            // setWorkspaceData(exampleWorkspaceRequest); // 임시 데이터 사용
         }
     }, [template, selectedTabIndex, fetchTemplateSSR]);
 

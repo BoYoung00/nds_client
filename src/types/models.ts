@@ -254,30 +254,30 @@ interface ShopPageMain {
         'shopName': string;
         'shopComment': string;
         'mainImgUrl': string;
+        'cartTableUrl': string;
     }
     columns: {
-        'itemImg': string;
-        'itemName': string;
-        'itemPrice': string;
+        'ItemID': string;
+        'ItemImage': string;
+        'ItemName': string;
+        'ItemPrice': string;
     }
 }
 
 // 만약 BoardPage 타입의 page : 'cart' 이라면
 interface ShopPageCart {
     connectURL: string;
-    columns: {
-        'itemImg': string;
-        'itemName': string;
-        'itemPrice': string;
-        'itemCount': string;
+    inputs: {
+        'OrderTableUrl': string;
     }
-}
-
-// 만약 BoardPage 타입의 page : 'order' 이라면
-interface ShopPageOrder {
-    connectURL: string;
     columns: {
-        'orderData': string;
+        'CartID': string;
+        'ItemID': string;
+        'UserID': string;
+        'ItemImage': string;
+        'ItemName': string;
+        'ItemPrice': string;
+        'ItemCount': string;
     }
 }
 
@@ -305,8 +305,10 @@ interface BoardPageLogin {
 interface BoardPageSignUp{
     connectURL: string;
     columns: {
-        'userID': string;
-        'userPW': string;
+        'id': string;
+        'name': string;
+        'password': string;
+        'role': string;
     }
 }
 

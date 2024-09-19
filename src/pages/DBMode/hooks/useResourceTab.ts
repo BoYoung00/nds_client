@@ -49,20 +49,19 @@ export const useResourceTab = () => {
         }
     };
 
-    // 이미지 업로드
+    // 이미지, 비디오 업로드
     const handleUpload = async (file: File) => {
         if (!selectedTable?.tableHash) return;
 
         try {
-            let response: string;
             if (isImage) { // 이미지
-                response = await uploadImageFile(selectedTable.tableHash, file);
+                await uploadImageFile(selectedTable.tableHash, file);
                 await fetchImages(selectedTable.tableHash);
             } else { // 비디오
-                response = await uploadVideoFile(selectedTable.tableHash, file);
+                await uploadVideoFile(selectedTable.tableHash, file);
                 await fetchVideos(selectedTable.tableHash);
             }
-            setSuccessMessage(response);
+            setSuccessMessage('업로드에 성공하셨습니다.');
         } catch (error) {
             const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
             console.error('업로드 오류:', errorMessage);

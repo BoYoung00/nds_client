@@ -1,16 +1,15 @@
 import React from 'react';
 import styles from '../DBMode.module.scss';
 import { Notification } from "../../../publicComponents/layout/modal/Notification";
-import {useResourceTab} from "../hooks/useResourceTab";
-import CopyButton from "../../../publicComponents/UI/CopyButton";
+import { useResourceTab } from "../hooks/useResourceTab";
 
 const ResourceTab: React.FC = () => {
     const {
         hooks: {
             loading,
             isImage,
-            imagePaths,
-            videoPaths,
+            imagePaths = [],
+            videoPaths = [],
             selectedImage,
             selectedVideo,
             setSelectedImage,
@@ -32,14 +31,14 @@ const ResourceTab: React.FC = () => {
         }
     } = useResourceTab();
 
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = process.env.REACT_APP_API_URL || '';
 
     return (
         <>
             <div className={styles.ResourceTab}>
                 <span className={styles.copyTableHash} onClick={handleCopyTableHash}>
-                  테이블 해시 복사
-                {showCopyMessage && <span className={styles.copyMessage}>복사 되었습니다.</span>}
+                    테이블 해시 복사
+                    {showCopyMessage && <span className={styles.copyMessage}>복사 되었습니다.</span>}
                 </span>
                 <header className={styles.header}>
                     <section className={styles.urlBox}>
@@ -80,7 +79,7 @@ const ResourceTab: React.FC = () => {
                                 />
                             ))}
                             <label className={styles.addBut}>
-                                + <input key='image' type="file" accept="image/*" onChange={handleImageChange} />
+                                + <input type="file" accept="image/*" onChange={handleImageChange} />
                             </label>
                         </section>
                     ) : (
@@ -95,8 +94,8 @@ const ResourceTab: React.FC = () => {
                                     <source src={video.path} type="video/mp4" />
                                 </video>
                             ))}
-                            <label className={styles.addBut} style={{width: '17.8rem'}}>
-                                + <input key='video' type="file" accept="video/mp4" onChange={handleVideoChange} />
+                            <label className={styles.addBut} style={{ width: '17.8rem' }}>
+                                + <input type="file" accept="video/mp4" onChange={handleVideoChange} />
                             </label>
                         </section>
                     )}
@@ -104,10 +103,18 @@ const ResourceTab: React.FC = () => {
             </div>
 
             {successMessage && (
-                <Notification onClose={() => setSuccessMessage(null)} type="success" message={successMessage} />
+                <Notification
+                    onClose={() => setSuccessMessage(null)}
+                    type="success"
+                    message={successMessage}
+                />
             )}
             {errorMessage && (
-                <Notification onClose={() => setErrorMessage(null)} type="error" message={errorMessage} />
+                <Notification
+                    onClose={() => setErrorMessage(null)}
+                    type="error"
+                    message={errorMessage}
+                />
             )}
         </>
     );
