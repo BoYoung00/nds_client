@@ -4,7 +4,6 @@
   width: 100%;
   height: 100%;
   min-width: 60rem;
-
 }
 
 .sectionsContainer {
@@ -22,6 +21,9 @@
       border-radius: 0 0 50% 50%;
       color: white;
       padding-top: 3rem;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 
       & > p:first-child {
         font-size: 2rem;
@@ -38,6 +40,9 @@
         width: 70%;
         height: 35rem;
         margin: 4rem;
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
       } // __img
 
       &__comment {
@@ -67,8 +72,9 @@
         width: 30%;
         height: 100%;
         margin: 15rem 0 0 3rem;
+        opacity: 0;
 
-        & > h2 { color: white; white-space: nowrap; width: 100%}
+        & > h2 { color: white; white-space: nowrap; width: 100%; }
         & > p {
           font-size: 1.3rem;
           text-decoration: underline;
@@ -80,12 +86,14 @@
 
       .cardBox {
         z-index: 1;
-        width: 100%; height: 80%;
+        width: 100%;
+        height: 80%;
         margin: 5rem;
         display: grid;
         grid-template-rows: 1fr 1fr;
         grid-template-columns: 1fr 1fr 1fr;
         gap: 2rem;
+        opacity: 0;
       } // cardBox
 
       .ellipse {
@@ -94,17 +102,17 @@
 
         &__red {
           width: 35rem;
-          left: -12rem;
-          bottom: -8rem;
+          left: -15rem;
+          bottom: -5rem;
         }
 
         &__blue {
           width: 17rem;
-          left: 22rem;
-          bottom: 23rem;
+          left: 21rem;
+          bottom: 28rem;
         }
       } // ellipse
-    } //__mainBottom
+    } // __mainBottom
   } // group1
 
   .group2 {
@@ -116,11 +124,14 @@
     &__section {
       z-index: 1;
       width: 50%;
-      margin: 4rem 2rem;
+      margin: 4rem 3rem;
+      opacity: 0;
 
       & > img {
         width: 100%;
         height: 40rem;
+        box-shadow: 0 3px 3px 0 rgb(0, 0, 0, 0.2);
+        background: grey;
       }
 
       & > h2 { color: $color-blue-deep; }
@@ -136,7 +147,6 @@
         margin-bottom: .6rem;
       }
     } //__section
-
   } // group2
 
   .group3 {
@@ -146,13 +156,13 @@
     flex-direction: column;
     padding: 2rem 0;
 
-    & > h1 { color: white; }
-    & > p { font-size: 1.2rem; font-family: $font-KoPub-bold; }
+    & > h1 { color: white; opacity: 0; }
+    & > p { font-size: 1.2rem; font-family: $font-KoPub-bold; opacity: 0; }
     & > img {
       width: 80%;
       height: 42rem;
+      opacity: 0;
     }
-
   } // group3
 }
 
@@ -190,35 +200,103 @@
     font-family: $font-KoPub-bold;
     font-size: 1.1rem;
   } // Link
-} //header
-
+} // header
 
 // 카드 디자인
 .mainCard {
   width: 100%;
   height: 100%;
-  //min-width: 13rem;
   background: white;
   box-shadow: 0 1px 4px 1px rgb(0, 0, 0, 0.3);
 
   .contentWrap {
     height: 100%;
     @include flex-center;
+    justify-content: start;
     flex-direction: column;
-    margin: 1rem;
+    margin: 15% 1rem;
 
-    & > img {
-      width: 50%;
+    .imgWrap {
+      width: 40%;
+      height: 15%;
       max-width: 5rem;
+      border: 1px solid #CFCFCF;
+      background: #F8F9FB;
+      @include flex-center;
+      padding: 5%;
+
+      & > img {
+        width: 50%;
+      }
     }
 
     & > h2 {
       color: $color-blue-deep;
+      margin: 5% 0;
     }
 
     & > p {
-      width: 70%;
+      width: 80%;
+      height: 20%;
       text-align: center;
     }
   } // contentWrap
+}
+
+// 애니메이션
+.visible1 {
+  animation: fadeIn-bottom-top 0.6s ease forwards;
+}
+.visible2 {
+  animation: fadeIn-bottom-top 2s ease forwards;
+  animation-delay: .6s;
+  opacity: 0;
+}
+.visible3 {
+  animation: fadeIn-bottom-top 2s ease forwards;
+  animation-delay: 1.2s;
+  opacity: 0;
+}
+.visible4 {
+  animation: fadeIn-left-right 1.5s ease forwards;
+}
+.visible5 {
+  animation: fadeIn-left-right 1.5s ease forwards;
+  animation-delay: .6s;
+}
+.visible6 {
+  animation: fadeIn-bottom-top 0.8s ease forwards;
+}
+.visible7 {
+  animation: fadeIn-bottom-top 0.8s ease forwards;
+  animation-delay: .8s;
+}
+.visible8 {
+  animation: fadeIn-bottom-top 1s ease forwards;
+}
+.visible9 {
+  animation: fadeIn-bottom-top 3s ease forwards;
+  animation-delay: .8s;
+}
+
+@keyframes fadeIn-bottom-top {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn-left-right {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
