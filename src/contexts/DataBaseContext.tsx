@@ -25,6 +25,8 @@ export const DataBaseProvider: React.FC<{ children: ReactNode }> = ({ children }
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const fetchDatabases = async () => {
+        const token = localStorage.getItem('token')
+        if (!token) return;
         try {
             setLoading(true);
             const data = await getDataBasesForCurrentUser();

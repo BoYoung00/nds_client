@@ -48,11 +48,16 @@ const App: React.FC = () => {
         }
     }, [screenSize]);
 
+    const handelLogout = () => {
+        setToken(null)
+        localStorage.removeItem('token')
+    }
+
     return (
         <div className={styles.app}>
             {token ? (
                 <>
-                    <Header token={token} onLogout={() => setToken(null)} />
+                    <Header token={token} onLogout={handelLogout} />
                     <div className={styles.app__content}>
                         <Routes>
                             <Route path='/' element={<Navigate to="/database" />} />
@@ -67,7 +72,7 @@ const App: React.FC = () => {
             ) : (
                 <>
                     <Routes>
-                        <Route path='/' element={<Navigate to="/auth" />} />
+                        <Route path='/' element={<Navigate to="/main" />} />
                         <Route path="/main" element={<Main />} />
                         <Route path="/auth" element={<UserAuth />} />
                     </Routes>

@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ token, onLogout }) => {
 
     return (
         <header className={styles.header}>
-            <img className={styles.header__nav__logo} src={logo} alt="Logo" />
+            <img className={styles.header__logo} src={logo} alt="Logo" />
             <ul className={styles.header__nav}>
                 {menuItems && menuItems.map((item, index) => (
                     <li
