@@ -328,7 +328,8 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
             const response = await axios.get(`${inputData.connectURL}`);
             const columnNames = Object.keys(response.data[0]);
             setFetchColumnNames(columnNames);
-            console.log('columnNames', columnNames)
+            console.log('columnNames', columnNames);
+            setSuccessMessage('테이블 통신에 성공하셨습니다.')
         } catch (error) {
             let message = '알 수 없는 오류가 발생했습니다.';
             if (axios.isAxiosError(error)) {
