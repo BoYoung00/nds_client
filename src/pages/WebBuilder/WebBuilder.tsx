@@ -98,7 +98,7 @@ const WebBuilder: React.FC = () => {
                             <p>Loading...</p>
                         )}
                     </section>
-                    <ApplyTableData selectedTab={tabs[selectedTabIndex]} workspaceData={workspaceData} />
+                    <ApplyTableData selectedTab={tabs[selectedTabIndex]} workspaceData={workspaceData} fetchTemplateSSR={fetchTemplateSSR} />
                 </main>
             </div>
             {errorMessage && (

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import styles from "./App.module.scss";
-import {Navigate, Route, Routes} from 'react-router-dom';
+import {Navigate, Route, Routes, useNavigate} from 'react-router-dom';
 import Main from "./pages/Main";
 import UserAuth from "./pages/UserAuth/UserAuth";
 import DataBase from "./pages/DataBase/DataBase";
@@ -15,6 +15,8 @@ import {WebBuilder} from "./pages/WebBuilder";
 const App: React.FC = () => {
     const [token, setToken] = useState<string | null>(null);
     const [screenSize, setScreenSize] = useState({ width: window.screen.width, height: window.screen.height });
+    const [loading, setLoading] = useState(true); // 로딩 상태 추가
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleResize = () => {
@@ -28,29 +30,18 @@ const App: React.FC = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        if (token) {
-            setToken(token);
-        } else {
-            setToken(null);
-        }
+        setToken(token);
+        setLoading(false); // 로딩 완료
     }, []);
 
-    useEffect(() => {
-        const html = document.documentElement;
-        if (screenSize.width > 1920) {
-            html.style.fontSize = '20px';
-        } else if (screenSize.width > 1680) {
-            html.style.fontSize = '15px';
-        } else if (screenSize.width > 1280) {
-            html.style.fontSize = '13px';
-        } else {
-            html.style.fontSize = '11px';
-        }
-    }, [screenSize]);
-
     const handelLogout = () => {
-        setToken(null)
-        localStorage.removeItem('token')
+        setToken(null);
+        localStorage.removeItem('token');
+        navigate('/main');
+    };
+
+    if (loading) {
+        return <div>Loading...</div>; // 로딩 중일 때 표시할 내용
     }
 
     return (
@@ -61,7 +52,7 @@ const App: React.FC = () => {
                     <div className={styles.app__content}>
                         <Routes>
                             <Route path='/' element={<Navigate to="/database" />} />
-                            <Route path="/database" element={<TableProvider> <DataBase /> </TableProvider> } />
+                            <Route path="/database" element={<TableProvider> <DataBase /> </TableProvider>} />
                             <Route path="/revision" element={<RevisionProvider> <Revision /> </RevisionProvider>} />
                             <Route path="/api" element={<ApiArchive />} />
                             <Route path="/workspace" element={<Template />} />
@@ -70,16 +61,14 @@ const App: React.FC = () => {
                     </div>
                 </>
             ) : (
-                <>
-                    <Routes>
-                        <Route path='/' element={<Navigate to="/main" />} />
-                        <Route path="/main" element={<Main />} />
-                        <Route path="/auth" element={<UserAuth />} />
-                    </Routes>
-                </>
+                <Routes>
+                    <Route path='/' element={<Navigate to="/main" />} />
+                    <Route path="/main" element={<Main />} />
+                    <Route path="/auth" element={<UserAuth />} />
+                </Routes>
             )}
         </div>
     );
-}
+};
 
 export default App;

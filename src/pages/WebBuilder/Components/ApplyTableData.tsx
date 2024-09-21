@@ -13,9 +13,10 @@ type PageData = ShopPageMain | ShopPageCart | ShopPageOrderList | BoardPageLogin
 interface ApplyTableDataProps {
     selectedTab: string;
     workspaceData: WorkspaceResponse | null;
+    fetchTemplateSSR: () => void;
 }
 
-const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceData }) => {
+const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceData, fetchTemplateSSR }) => {
     const { template } = useParams<{ template: string }>();
 
     const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -37,7 +38,6 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
         try {
             const data = getPageData(pageType);
             setInputData(data);
-
         } catch (error) {
             console.error('Error fetching page data:', error);
         }
@@ -314,6 +314,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
         try {
             await workSpaceBuildDataSave(workspaceRequest);
             setSuccessMessage('템플릿 데이터 저장에 성공하셨습니다.')
+            fetchTemplateSSR();
         } catch (e) {
             const error = (e as Error).message || '알 수 없는 오류가 발생 하였습니다.'
             setErrorMessage(error)
