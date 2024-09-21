@@ -17,7 +17,7 @@ const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
 
 export const useDataTab = () => {
     const [loading, setLoading] = useState<boolean>(false);
-    const {selectedTable, setTables, tables} = useTable();
+    const {selectedTable, setSelectedTable, setTables, tables} = useTable();
     const [imagePaths, setImagePaths] = useState<MediaFile[]>([]);
     const [videoPaths, setVideoPaths] = useState<MediaFile[]>([]);
 
@@ -62,13 +62,12 @@ export const useDataTab = () => {
             updateDataRequests: updateDataList,
             deleteDataRequests: deleteDataList
         };
-        // console.log("requestData (SAVE)", requestData);
         try {
             const createdTableData = await createData(requestData);
-            // console.log(createdTableData)
             setSuccessMessage('데이터 저장에 성공하셨습니다.');
-            await updateTable(createdTableData.id, createdTableData);
+            await updateTable(createdTableData);
             await handleResetTableData();
+            await setSelectedTable(createdTableData);
         } catch (error) {
             const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
             setErrorMessage(errorMessage);
@@ -76,10 +75,10 @@ export const useDataTab = () => {
     };
 
     // 기존 테이블 리스트 업데이트
-    const updateTable = (id: number, updatedData: Partial<TableData>) => {
-        setTables((prevTables: TableData[]) =>
+    const updateTable = async (updatedData: Partial<TableData>) => {
+        await setTables((prevTables: TableData[]) =>
             prevTables.map(table =>
-                table.id === id
+                table.id === updatedData.id
                     ? { ...table, ...updatedData }
                     : table
             )

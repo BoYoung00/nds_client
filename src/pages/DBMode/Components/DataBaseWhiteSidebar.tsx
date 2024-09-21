@@ -50,7 +50,7 @@ const DataBaseWhiteSidebar: React.FC = () => {
                     {tables && tables.map((item) => (
                         <div
                             key={item.id}
-                            className={`${styles.item} ${selectedTable === item ? styles.selected : ''}`}
+                            className={`${styles.item} ${selectedTable?.id === item.id ? styles.selected : ''}`}
                             onClick={() => onSelected(item)}
                         >
                             {item.name}

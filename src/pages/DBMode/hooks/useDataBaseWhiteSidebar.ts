@@ -55,9 +55,22 @@ export function useDataBaseWhiteSidebar() {
     };
 
     const handleCommentBlur = async () => {
+        const prevSelectedTable = selectedTable;
         if (selectedTable) {
             try {
                 await updateTableComment(selectedTable.id, comment);
+
+                setTables(prevTableDataList => {
+                    const updatedTables = prevTableDataList.map(table =>
+                        table.id === selectedTable.id
+                            ? { ...table, comment: comment }
+                            : table
+                    );
+
+                    setSelectedTable(updatedTables.find(table => table.id === prevSelectedTable?.id) || null);
+                    return updatedTables;
+                });
+
             } catch (error) {
                 const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
                 setErrorMessage(errorMessage);

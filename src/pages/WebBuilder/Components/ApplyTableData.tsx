@@ -72,6 +72,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
 
     function getPageData(inputData: pageType): PageData {
         const responseData = initializeWorkspaceResponse(workspaceData);
+        console.log('DB 데이터', responseData)
 
         if (inputData.template === 'Shop') {
             switch (inputData.page) {
@@ -214,11 +215,12 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
         });
     };
 
+    // 테이블 데이터 저장 통신
     const handelFetchBuildDataSave = async () => {
         const userEmail = localStorage.getItem('email')
         const workspaceRequest: WorkspaceRequest = {
             connectURL: inputData?.connectURL || '',
-            template: template || 'Board',
+            template: template?.toLowerCase() || 'board',
             page: selectedTab || '',
             username: userEmail || '',
             columns: {
@@ -234,7 +236,8 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
         console.log('데이터 적용', workspaceRequest)
         try {
             const response = await workSpaceBuildDataSave(workspaceRequest);
-            console.log('템플릿 데이터 저장', response)
+            // console.log('템플릿 데이터 저장', response)
+            setSuccessMessage('템플릿 데이터 저장에 성공하셨습니다.')
         } catch (e) {
             const error = (e as Error).message || '알 수 없는 오류가 발생 하였습니다.'
             setErrorMessage(error)
