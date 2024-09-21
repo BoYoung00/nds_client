@@ -8,7 +8,7 @@ import axios from "axios";
 import {workSpaceBuildDataSave} from "../../../services/api";
 
 // PageData 타입을 정의하는 인터페이스들
-type PageData = ShopPageMain | ShopPageCart | ShopPageOrderList | BoardPageLogin | BoardPageSignUp;
+type PageData = ShopPageMain | ShopPageCart | ShopPageOrderList | BoardPageLogin | BoardPageSignUp | BoardPageMainNotice | BoardPageMainList | BoardPageViewList | BoardPageAfterLoginList | BoardPageViewNotice | BoardPageWriteUser | BoardPageAfterLoginNotice | BoardPageWriteAdmin;
 
 interface ApplyTableDataProps {
     selectedTab: string;
@@ -41,7 +41,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
         } catch (error) {
             console.error('Error fetching page data:', error);
         }
-    }, [template, selectedTab]);
+    }, [workspaceData]);
 
     useEffect(()=> {
         if (fetchColumnNames.length === 0)
@@ -72,7 +72,6 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
 
     function getPageData(inputData: pageType): PageData {
         const responseData = initializeWorkspaceResponse(workspaceData);
-        console.log('DB 데이터', responseData)
 
         if (inputData.template === 'Shop') {
             switch (inputData.page) {
@@ -127,8 +126,9 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                     return {
                         connectURL: responseData.connectURL,
                         columns: {
-                            'userID': responseData.columns?.['userID'] || '',
-                            'userPW': responseData.columns?.['userPW'] || ''
+                            'role': responseData.columns?.['role'] || '',
+                            'id': responseData.columns?.['id'] || '',
+                            'password': responseData.columns?.['password'] || ''
                         }
                     };
                 case 'sign-up':
@@ -141,7 +141,84 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                             'role': responseData.columns?.['role'] || ''
                         }
                     };
-                // 이후 페이지 데이터들은 변경 사항 있을 것 같아서 나중에 채울 예정
+                case 'main-notice':
+                    return {
+                        connectURL: responseData.connectURL,
+                        columns: {
+                            'title': responseData.columns?.['title'] || '',
+                            'date': responseData.columns?.['date'] || '',
+                        }
+                    };
+                case 'main-list':
+                    return {
+                        connectURL: responseData.connectURL,
+                        columns: {
+                            'title': responseData.columns?.['title'] || '',
+                            'date': responseData.columns?.['date'] || '',
+                        }
+                    };
+                case 'view-list':
+                    return {
+                        connectURL: responseData.connectURL,
+                        columns: {
+                            'title': responseData.columns?.['title'] || '',
+                            'date': responseData.columns?.['date'] || '',
+                            'writer': responseData.columns?.['writer'] || '',
+                            'mainText': responseData.columns?.['mainText'] || '',
+                            'img': responseData.columns?.['img'] || '',
+                        }
+                    };
+                case 'after_login-list':
+                    return {
+                        connectURL: responseData.connectURL,
+                        columns: {
+                            'title': responseData.columns?.['title'] || '',
+                            'date': responseData.columns?.['date'] || '',
+                        }
+                    };
+                case 'view-notice':
+                    return {
+                        connectURL: responseData.connectURL,
+                        columns: {
+                            'title': responseData.columns?.['title'] || '',
+                            'date': responseData.columns?.['date'] || '',
+                            'writer': responseData.columns?.['writer'] || '',
+                            'mainText': responseData.columns?.['mainText'] || '',
+                        }
+                    };
+                case 'write-user':
+                    return {
+                        connectURL: responseData.connectURL,
+                        inputs: {
+                            'userToken': responseData.columns?.['userToken'] || '',
+                            'tableHash': responseData.columns?.['tableHash'] || '',
+                        },
+                        columns: {
+                            'post_id': responseData.columns?.['post_id'] || '',
+                            'title': responseData.columns?.['title'] || '',
+                            'mainText': responseData.columns?.['mainText'] || '',
+                            'fileUpload': responseData.columns?.['fileUpload'] || '',
+                            'date': responseData.columns?.['date'] || '',
+                        }
+                    };
+                case 'after_login-notice':
+                    return {
+                        connectURL: responseData.connectURL,
+                        columns: {
+                            'title': responseData.columns?.['title'] || '',
+                            'date': responseData.columns?.['date'] || '',
+                        }
+                    };
+                case 'write-admin':
+                    return {
+                        connectURL: responseData.connectURL,
+                        columns: {
+                            'post_id': responseData.columns?.['post_id'] || '',
+                            'title': responseData.columns?.['title'] || '',
+                            'mainText': responseData.columns?.['mainText'] || '',
+                            'date': responseData.columns?.['date'] || '',
+                        }
+                    };
                 default:
                     throw new Error(`아직 페이지 데이터 값 매핑 안 함: ${inputData.page}`);
             }
@@ -235,8 +312,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
         };
         console.log('데이터 적용', workspaceRequest)
         try {
-            const response = await workSpaceBuildDataSave(workspaceRequest);
-            // console.log('템플릿 데이터 저장', response)
+            await workSpaceBuildDataSave(workspaceRequest);
             setSuccessMessage('템플릿 데이터 저장에 성공하셨습니다.')
         } catch (e) {
             const error = (e as Error).message || '알 수 없는 오류가 발생 하였습니다.'

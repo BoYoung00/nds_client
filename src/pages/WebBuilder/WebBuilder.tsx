@@ -7,25 +7,6 @@ import ApplyTableData from './Components/ApplyTableData';
 import { Notification } from '../../publicComponents/layout/modal/Notification';
 import { getWorkspaceData, userWorkspaceBuild } from '../../services/api';
 
-// 임시 데이터
-const exampleWorkspaceRequest: WorkspaceResponse = {
-    connectURL: 'http://localhost:8080/api/json/8281d79bfeaebf8131d0e9b39e4e26a7026f4763232254d758ec6e6b36c4817',
-    templateName: 'board',
-    page: 'main-list',
-    buildURL: 'http//해당 페이지에 대한 접근 가능 경로',
-    columns: {
-        itemImg: 'itemImg',
-        itemName: 'itemName',
-        itemPrice: 'itemPrice',
-        itemCount: '2',
-        shopName: 'Shop1',
-        shopComment: 'Great Shop',
-        mainImgUrl: 'http://example.com/main.jpg',
-        orderData: 'Order1',
-    },
-    htmlCode: '<div>Hello World</div>',
-};
-
 const tabConfig: { [key: string]: string[] } = {
     Shop: ['main', 'cart', 'order-list'],
     Board: [
@@ -65,6 +46,7 @@ const WebBuilder: React.FC = () => {
 
         try {
             const response = await getWorkspaceData(template.toLowerCase(), tabs[selectedTabIndex], userEmail);
+            console.log('템플릿 테이블 매핑 데이터', response)
             setWorkspaceData(response);
         } catch (error) {
             handleError(error);
@@ -88,7 +70,6 @@ const WebBuilder: React.FC = () => {
         if (template) {
             fetchTemplateSSR();
             fetchTemplateData();
-            // setWorkspaceData(exampleWorkspaceRequest); // 임시 데이터 사용
         }
     }, [template, selectedTabIndex, fetchTemplateSSR]);
 
