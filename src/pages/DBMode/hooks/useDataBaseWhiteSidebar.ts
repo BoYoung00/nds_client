@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useDataBase } from "../../../contexts/DataBaseContext";
-import { useTable } from "../../../contexts/TableContext";
-import { deleteTable, updateTableComment } from '../../../services/api';
+import {useEffect, useState} from 'react';
+import {useDataBase} from "../../../contexts/DataBaseContext";
+import {useTable} from "../../../contexts/TableContext";
+import {deleteTable, updateTableComment} from '../../../services/api';
 
 export function useDataBaseWhiteSidebar() {
     const { selectedDataBase } = useDataBase();
     const { setSelectedTable, tables, setTables, selectedTable } = useTable();
 
-    const [selectedId, setSelectedId] = useState<number>(-1);
     const [isOpenCreateTableModal, setIsOpenCreateTableModal] = useState<boolean>(false);
     const [isOpenMergeModal, setIsOpenMergeModal] = useState<boolean>(false);
     const [comment, setComment] = useState<string>('');
@@ -15,12 +14,7 @@ export function useDataBaseWhiteSidebar() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [questionMessage, setQuestionMessage] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (selectedTable) setSelectedId(selectedTable.id)
-    }, [selectedTable]);
-
     const onSelected = (table: TableData) => {
-        setSelectedId(table.id!!);
         setSelectedTable(table);
         setComment(table.comment || '');
     };
@@ -72,15 +66,12 @@ export function useDataBaseWhiteSidebar() {
     };
 
     useEffect(() => {
-        if (selectedId !== -1) {
-            const selectedTable = tables.find(table => table.id === selectedId) || null;
-            setSelectedTable(selectedTable);
+        if (selectedTable) {
             setComment(selectedTable?.comment || '');
         }
-    }, [selectedId, tables, setSelectedTable]);
+    }, [selectedTable, tables, setSelectedTable]);
 
     return {
-        selectedId,
         isOpenCreateTableModal,
         setIsOpenCreateTableModal,
         isOpenMergeModal,

@@ -10,10 +10,9 @@ import edit from "../../../assets/images/edit.png";
 
 const DataBaseWhiteSidebar: React.FC = () => {
     const { selectedDataBase } = useDataBase();
-    const { tables } = useTable();
+    const { tables, selectedTable } = useTable();
 
     const {
-        selectedId,
         isOpenCreateTableModal,
         setIsOpenCreateTableModal,
         isOpenMergeModal,
@@ -51,7 +50,7 @@ const DataBaseWhiteSidebar: React.FC = () => {
                     {tables && tables.map((item) => (
                         <div
                             key={item.id}
-                            className={`${styles.item} ${selectedId === item.id ? styles.selected : ''}`}
+                            className={`${styles.item} ${selectedTable === item ? styles.selected : ''}`}
                             onClick={() => onSelected(item)}
                         >
                             {item.name}
