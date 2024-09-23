@@ -228,6 +228,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                     return {
                         connectURL: responseData.connectURL,
                         columns: {
+                            'todo-id': responseData.columns?.['todo-id'] || '',
                             'title': responseData.columns?.['title'] || '',
                             'description': responseData.columns?.['description'] || '',
                             'startDate': responseData.columns?.['startDate'] || '',
@@ -272,6 +273,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
         'endDate': '종료 날짜',
         'category': '카테고리',
         'status': '상태',
+        'todo-id': '작업 ID',
     };
 
     // connect url 변경 핸들러

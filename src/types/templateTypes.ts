@@ -168,6 +168,7 @@ interface BoardPageWriteAdmin{
 interface TodoPageTodoList{
     connectURL: string;
     columns: {
+        'todo-id': string;
         'title': string;
         'description': string;
         'startDate': string;
