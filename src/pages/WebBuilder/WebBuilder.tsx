@@ -8,7 +8,7 @@ import { Notification } from '../../publicComponents/layout/modal/Notification';
 import { getWorkspaceData, userWorkspaceBuild } from '../../services/api';
 
 const tabConfig: { [key: string]: string[] } = {
-    Shop: ['main', 'cart', 'order-list'],
+    Shop: ['main', 'cart', 'order', 'order-list'],
     Board: [
         'login',
         'sign-up',

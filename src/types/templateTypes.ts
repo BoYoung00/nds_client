@@ -38,6 +38,11 @@ interface ShopPageCart {
     }
 }
 
+// 만약 ShopPageType 타입의 page : 'order' 이라면
+interface ShopPageOrder {
+    connectURL: string;
+}
+
 // 만약 ShopPageType 타입의 page : 'order-list' 이라면
 interface ShopPageOrderList {
     connectURL: string;

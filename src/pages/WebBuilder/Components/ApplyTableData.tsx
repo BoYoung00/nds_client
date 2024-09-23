@@ -8,7 +8,7 @@ import axios from "axios";
 import {workSpaceBuildDataSave} from "../../../services/api";
 
 // PageData 타입을 정의하는 인터페이스들
-type PageData = ShopPageMain | ShopPageCart | ShopPageOrderList | BoardPageLogin | BoardPageSignUp | BoardPageMainNotice | BoardPageMainList | BoardPageViewList | BoardPageAfterLoginList | BoardPageViewNotice | BoardPageWriteUser | BoardPageAfterLoginNotice | BoardPageWriteAdmin | TodoPageTodoList;
+type PageData = ShopPageMain | ShopPageCart | ShopPageOrder | ShopPageOrderList | BoardPageLogin | BoardPageSignUp | BoardPageMainNotice | BoardPageMainList | BoardPageViewList | BoardPageAfterLoginList | BoardPageViewNotice | BoardPageWriteUser | BoardPageAfterLoginNotice | BoardPageWriteAdmin | TodoPageTodoList;
 
 interface ApplyTableDataProps {
     selectedTab: string;
@@ -102,6 +102,10 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                             "ItemPrice": responseData.columns?.['ItemPrice'] || '',
                             "ItemCount": responseData.columns?.['ItemCount'] || ''
                         }
+                    };
+                case 'order':
+                    return {
+                        connectURL: '',
                     };
                 case 'order-list':
                     return {
