@@ -43,7 +43,7 @@ const Notification: React.FC<NotificationProps> = ({ onClose, type, message, onC
 
             <div className={`${styles.notification} ${getNotificationStyle(type)}`}>
                 <h3>{getNotificationTitle(type)}</h3>
-                <p>{message}</p>
+                <p>{formatMessage(message)}</p>
                 {type === 'question' && (
                     <div className={styles.buttonGroup}>
                         <button onClick={handleConfirm}>실행</button>
@@ -57,7 +57,6 @@ const Notification: React.FC<NotificationProps> = ({ onClose, type, message, onC
                 )}
             </div>
         </>
-
     );
 };
 
@@ -88,6 +87,21 @@ function getNotificationTitle(type: NotificationProps['type']): string {
 }
 
 export default Notification;
+
+function formatMessage(message: string | null): JSX.Element | null {
+    if (!message) return null;
+
+    return (
+        <>
+            {message.split('\n').map((line, index) => (
+                <React.Fragment key={index}>
+                    {line}
+                    <br />
+                </React.Fragment>
+            ))}
+        </>
+    );
+}
 
 
 // 사용 방법

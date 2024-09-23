@@ -15,6 +15,7 @@ const Template: React.FC = () => {
                 <main>
                     <TemplateCard imgUrl={login} title={'Board'} category={['게시판']} />
                     <TemplateCard imgUrl={login} title={'Shop'} category={['쇼핑몰']} />
+                    <TemplateCard imgUrl={login} title={'Todo'} category={['쇼핑몰']} />
                     <div className={`${styles.templateCard} ${styles.ready}`}>준비 중...</div>
                 </main>
             </section>

@@ -21,6 +21,7 @@ const tabConfig: { [key: string]: string[] } = {
         'write-user',
         'write-admin',
     ],
+    Todo: ['todo-list'],
 };
 
 const WebBuilder: React.FC = () => {

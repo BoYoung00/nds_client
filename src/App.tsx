@@ -47,7 +47,7 @@ const App: React.FC = () => {
         setLoading(false); // 로딩 완료
     }, []);
 
-    const handelLogout = () => {
+    const handleLogout = () => {
         setToken(null);
         localStorage.removeItem('token');
         navigate('/main');
@@ -61,7 +61,7 @@ const App: React.FC = () => {
         <div className={styles.app}>
             {token ? (
                 <>
-                    <Header token={token} onLogout={handelLogout} />
+                    <Header token={token} onLogout={handleLogout} />
                     <div className={styles.app__content}>
                         <Routes>
                             <Route path='/' element={<Navigate to="/database" />} />

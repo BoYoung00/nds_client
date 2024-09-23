@@ -8,7 +8,7 @@ import axios from "axios";
 import {workSpaceBuildDataSave} from "../../../services/api";
 
 // PageData 타입을 정의하는 인터페이스들
-type PageData = ShopPageMain | ShopPageCart | ShopPageOrderList | BoardPageLogin | BoardPageSignUp | BoardPageMainNotice | BoardPageMainList | BoardPageViewList | BoardPageAfterLoginList | BoardPageViewNotice | BoardPageWriteUser | BoardPageAfterLoginNotice | BoardPageWriteAdmin;
+type PageData = ShopPageMain | ShopPageCart | ShopPageOrderList | BoardPageLogin | BoardPageSignUp | BoardPageMainNotice | BoardPageMainList | BoardPageViewList | BoardPageAfterLoginList | BoardPageViewNotice | BoardPageWriteUser | BoardPageAfterLoginNotice | BoardPageWriteAdmin | TodoPageTodoList;
 
 interface ApplyTableDataProps {
     selectedTab: string;
@@ -31,8 +31,9 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
     };
 
     useEffect(() => {
+        setFetchColumnNames([]);
         const pageType: pageType = {
-            template: template as 'Board' | 'Shop',
+            template: template as 'Board' | 'Shop' | 'Todo',
             page: template === 'Board' ? selectedTab as BoardPageType : selectedTab as ShopPageType
         };
         try {
@@ -44,8 +45,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
     }, [workspaceData]);
 
     useEffect(()=> {
-        if (fetchColumnNames.length === 0)
-            handelFetchRestApiData();
+        if (fetchColumnNames.length === 0) handelFetchRestApiData();
     }, [inputData])
 
     // inputs가 존재하는 타입인지 확인하는 타입 가드 함수
@@ -79,7 +79,6 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                     return {
                         connectURL: responseData.connectURL,
                         inputs: {
-                            "cartTableUrl": responseData.columns?.['cartTableUrl'] || '',
                             "shopName": responseData.columns?.['shopName'] || '',
                             "shopComment": responseData.columns?.['shopComment'] || '',
                             "mainImgUrl": responseData.columns?.['mainImgUrl'] || ''
@@ -94,9 +93,6 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                 case 'cart':
                     return {
                         connectURL: responseData.connectURL,
-                        inputs: {
-                            "OrderTableUrl": responseData.columns?.['OrderTableUrl'] || '',
-                        },
                         columns: {
                             "CartID": responseData.columns?.['CartID'] || '',
                             "ItemID": responseData.columns?.['ItemID'] || '',
@@ -111,14 +107,17 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                     return {
                         connectURL: responseData.connectURL,
                         columns: {
-                            'itemImg': responseData.columns?.['itemImg'] || '',
-                            'itemName': responseData.columns?.['itemName'] || '',
-                            'itemPrice': responseData.columns?.['itemPrice'] || '',
-                            'itemCount': responseData.columns?.['itemCount'] || ''
+                            "CartID": responseData.columns?.['CartID'] || '',
+                            "ItemID": responseData.columns?.['ItemID'] || '',
+                            "UserID": responseData.columns?.['UserID'] || '',
+                            "ItemImage": responseData.columns?.['ItemImage'] || '',
+                            "ItemName": responseData.columns?.['ItemName'] || '',
+                            "ItemPrice": responseData.columns?.['ItemPrice'] || '',
+                            "ItemCount": responseData.columns?.['ItemCount'] || ''
                         }
                     };
                 default:
-                    throw new Error(`Unknown Shop Page Type: ${inputData.page}`);
+                    throw new Error(`페이지 매핑 데이터 타입이 없음: ${inputData.page}`);
             }
         } else if (inputData.template === 'Board') {
             switch (inputData.page) {
@@ -161,11 +160,20 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                     return {
                         connectURL: responseData.connectURL,
                         columns: {
+                            'post_id': responseData.columns?.['post_id'] || '',
                             'title': responseData.columns?.['title'] || '',
                             'date': responseData.columns?.['date'] || '',
                             'writer': responseData.columns?.['writer'] || '',
                             'mainText': responseData.columns?.['mainText'] || '',
                             'img': responseData.columns?.['img'] || '',
+                        }
+                    };
+                case 'after_login-notice':
+                    return {
+                        connectURL: responseData.connectURL,
+                        columns: {
+                            'title': responseData.columns?.['title'] || '',
+                            'date': responseData.columns?.['date'] || '',
                         }
                     };
                 case 'after_login-list':
@@ -180,6 +188,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                     return {
                         connectURL: responseData.connectURL,
                         columns: {
+                            'post_id': responseData.columns?.['post_id'] || '',
                             'title': responseData.columns?.['title'] || '',
                             'date': responseData.columns?.['date'] || '',
                             'writer': responseData.columns?.['writer'] || '',
@@ -190,22 +199,13 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                     return {
                         connectURL: responseData.connectURL,
                         inputs: {
-                            'userToken': responseData.columns?.['userToken'] || '',
-                            'tableHash': responseData.columns?.['tableHash'] || '',
+                            'imgUrl': responseData.columns?.['imgUrl'] || '',
                         },
                         columns: {
                             'post_id': responseData.columns?.['post_id'] || '',
                             'title': responseData.columns?.['title'] || '',
                             'mainText': responseData.columns?.['mainText'] || '',
                             'fileUpload': responseData.columns?.['fileUpload'] || '',
-                            'date': responseData.columns?.['date'] || '',
-                        }
-                    };
-                case 'after_login-notice':
-                    return {
-                        connectURL: responseData.connectURL,
-                        columns: {
-                            'title': responseData.columns?.['title'] || '',
                             'date': responseData.columns?.['date'] || '',
                         }
                     };
@@ -220,7 +220,24 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                         }
                     };
                 default:
-                    throw new Error(`아직 페이지 데이터 값 매핑 안 함: ${inputData.page}`);
+                    throw new Error(`페이지 매핑 데이터 타입이 없음: ${inputData.page}`);
+            }
+        }  else if (inputData.template === 'Todo') {
+            switch (inputData.page) {
+                case 'todo-list':
+                    return {
+                        connectURL: responseData.connectURL,
+                        columns: {
+                            'title': responseData.columns?.['title'] || '',
+                            'description': responseData.columns?.['description'] || '',
+                            'startDate': responseData.columns?.['startDate'] || '',
+                            'endDate': responseData.columns?.['endDate'] || '',
+                            'category': responseData.columns?.['category'] || '',
+                            'status': responseData.columns?.['status'] || '',
+                        }
+                    };
+                default:
+                    throw new Error(`페이지 매핑 데이터 타입이 없음: ${inputData.page}`);
             }
         } else {
             throw new Error(`Unknown Template: ${inputData.template}`);
@@ -232,14 +249,29 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
         "shopName": "쇼핑몰 이름",
         "shopComment": "쇼핑몰 설명",
         "mainImgUrl": "메인 이미지 URL",
-        "cartTableUrl": '카트 테이블 Rest Api Url',
         'ItemID': '아이템 번호',
         "ItemImage": "아이템 이미지",
         "ItemName": "아이템 이름",
         "ItemPrice": "아이템 가격",
         "ItemCount": "아이템 수량",
-        "userID": "사용자 아이디",
-        "userPW": "비밀번호"
+        'title': '제목',
+        'mainText': '메인 글',
+        'date': '날짜',
+        'role': '권한',
+        'id': '아이디',
+        'password': '비밀번호',
+        'writer': '작성자',
+        'img': '이미지',
+        'post_id': '게시물 ID',
+        'fileUpload': '파일 업로드',
+        'UserID': '사용자 ID',
+        'CartID': '카트 ID',
+        'name': '사용자 이름',
+        'description': '설명',
+        'startDate': '시작 날짜',
+        'endDate': '종료 날짜',
+        'category': '카테고리',
+        'status': '상태',
     };
 
     // connect url 변경 핸들러
@@ -268,7 +300,6 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                     }
                 };
             }
-
             return prevData;
         });
     };
@@ -330,7 +361,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
             const columnNames = Object.keys(response.data[0]);
             setFetchColumnNames(columnNames);
             console.log('columnNames', columnNames);
-            setSuccessMessage('테이블 통신에 성공하셨습니다.')
+            // setSuccessMessage('테이블 통신에 성공하셨습니다.')
         } catch (error) {
             let message = '알 수 없는 오류가 발생했습니다.';
             if (axios.isAxiosError(error)) {
@@ -432,7 +463,7 @@ interface InputColumnDataProps {
 const InputColumnData: React.FC<InputColumnDataProps> = ({ isSelect = true, title, value, onChange, columnNames }) => {
     return (
         <div className={styles.columnSelect}>
-            <p>{title}</p>
+            <p>{title} { isSelect ? '행' : ''}</p>
             {isSelect ?
                 <select value={value} onChange={(e) => onChange(e.target.value)}>
                     <option value="">{title}(으)로 사용할 행을 선택해주세요.</option>

@@ -76,7 +76,12 @@ export const useMerge = (): UseMerge => {
                 if (!isSaveDirect) // 프리뷰 보기 버튼 눌렀을 시
                     await handleFetchTableMergePreview(tableMergeConfirmRequest);
             } else {
-                setErrorMessage('두 테이블은 병합이 불가능 합니다. (이유 : PK 중복 또는 행 중복)')
+                setErrorMessage(
+                    '병합을 진행하기 전에 다음 사항을 확인해 주세요:\n' +
+                    '\n' +
+                    '기본 키(PK) 중복: 기본 키 값이 중복되지 않는지 확인하세요.\n' +
+                    '행 이름 중복: 행 이름이 중복되지 않도록 주의하세요.\n' +
+                    `행 데이터 길이 불일치: 각 행의 데이터 길이가 일치 하는지 검토해 주세요.`)
             }
         } catch (error) {
             const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
