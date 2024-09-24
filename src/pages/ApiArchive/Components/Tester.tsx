@@ -1,19 +1,62 @@
 import React, { useState } from 'react';
 import styles from '../ApiArchive.module.scss';
 
-
 const Tester: React.FC = () => {
+    const [url, setUrl] = useState<string>('');
+    const [response, setResponse] = useState<string>('');
+    const [body, setBody] = useState<string>('');
+
+    const handleRequest = async (method: string) => {
+        try {
+            const options: RequestInit = {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+
+            // POST, PUT 요청일 때 body 포함
+            if (method === 'POST' || method === 'PUT') {
+                options.body = body;
+            }
+
+            const res = await fetch(url, options);
+            const data = await res.json();
+            setResponse(JSON.stringify(data, null, 2));  // JSON 형식으로 결과를 출력
+        } catch (error) {
+            setResponse('Error: ' + error);
+        }
+    };
 
     return (
         <div className={styles.tester}>
             <p>API Tester</p>
             <span>URL:</span>
-            <input type="text" placeholder="Enter API URL" />
+            <input
+                type="text"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="Enter API URL"
+            />
+            <div>
+                <span>Body (for POST/PUT):</span>
+                <textarea
+                    style={{resize:'none'}}
+                    rows={5}
+                    value={body}
+                    onChange={(e) => setBody(e.target.value)}
+                    placeholder="Enter request body (JSON format)"
+                />
+            </div>
             <div className={styles.butBox}>
-                <button>GET</button>
-                <button>POST</button>
-                <button>PUT</button>
-                <button>DELETE</button>
+                <button onClick={() => handleRequest('GET')}>GET</button>
+                <button onClick={() => handleRequest('POST')}>POST</button>
+                <button onClick={() => handleRequest('PUT')}>PUT</button>
+                <button onClick={() => handleRequest('DELETE')}>DELETE</button>
+            </div>
+            <div className={styles.responseBox}>
+                <h3>Response:</h3>
+                <pre>{response}</pre> {/* 서버 응답을 보여주는 곳 */}
             </div>
         </div>
     );

@@ -26,6 +26,8 @@ const tabConfig: { [key: string]: string[] } = {
 
 const WebBuilder: React.FC = () => {
     const { template } = useParams<{ template: string }>();
+    const apiUrl = process.env.REACT_APP_API_URL;
+    const userEmail = localStorage.getItem('email');
     const [workspaceData, setWorkspaceData] = useState<WorkspaceResponse | null>(null);
     const [htmlContent, setHtmlContent] = useState<string | null>(null);
     const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
@@ -34,6 +36,7 @@ const WebBuilder: React.FC = () => {
         if (!template) return [];
         return tabConfig[template] || [];
     }, [template]);
+    const pageUrl = apiUrl + '/workspace/' + template?.toLowerCase() + '/' + tabs[selectedTabIndex] + '/' + userEmail;
 
     const handleError = useCallback((error: unknown) => {
         const errorMsg = (error as Error).message || '알 수 없는 오류가 발생하였습니다.';
@@ -81,9 +84,9 @@ const WebBuilder: React.FC = () => {
                     <Link to="/workspace">목록으로 <br /> 돌아가기</Link>
                     <div className={styles.urlWrap}>
                         <span>페이지 URL : </span>
-                        <input type="text" value={workspaceData?.buildURL || ''} readOnly />
+                        <input type="text" value={pageUrl} readOnly />
                     </div>
-                    <CopyButton url={workspaceData?.buildURL || ''} />
+                    <CopyButton url={pageUrl} />
                 </header>
                 <main className={styles.webBuilder__main}>
                     <TabBar
