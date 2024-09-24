@@ -29,13 +29,16 @@ const WebBuilder: React.FC = () => {
     const apiUrl = process.env.REACT_APP_API_URL;
     const userEmail = localStorage.getItem('email');
     const [workspaceData, setWorkspaceData] = useState<WorkspaceResponse | null>(null);
-    const [htmlContent, setHtmlContent] = useState<string | null>(null);
+    // const [htmlContent, setHtmlContent] = useState<string | null>(null);
     const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [iframeSrc, setIframeSrc] = useState<string | null>(null);
+
     const tabs = useMemo(() => {
         if (!template) return [];
         return tabConfig[template] || [];
     }, [template]);
+
     const pageUrl = apiUrl + '/workspace/' + template?.toLowerCase() + '/' + tabs[selectedTabIndex] + '/' + userEmail;
 
     const handleError = useCallback((error: unknown) => {
@@ -58,24 +61,30 @@ const WebBuilder: React.FC = () => {
     }, [template, tabs, selectedTabIndex, handleError]);
 
     // 템플릿 SSR 통신
-    const fetchTemplateSSR = useCallback(async () => {
-        const userEmail = localStorage.getItem('email');
-        if (!template || !userEmail || tabs.length === 0 || selectedTabIndex >= tabs.length) return;
-
-        try {
-            const response = await userWorkspaceBuild(template.toLowerCase(), tabs[selectedTabIndex], userEmail);
-            setHtmlContent(response);
-        } catch (error) {
-            handleError(error);
-        }
-    }, [template, tabs, selectedTabIndex, handleError]);
+    // const fetchTemplateSSR = useCallback(async () => {
+    //     if (!template || !userEmail || tabs.length === 0 || selectedTabIndex >= tabs.length) return;
+    //
+    //     try {
+    //         const response = await userWorkspaceBuild(template.toLowerCase(), tabs[selectedTabIndex], userEmail);
+    //         setHtmlContent(response);
+    //     } catch (error) {
+    //         handleError(error);
+    //     }
+    // }, [template, tabs, selectedTabIndex, handleError]);
 
     useEffect(() => {
         if (template) {
-            fetchTemplateSSR();
+            // fetchTemplateSSR();
             fetchTemplateData();
         }
-    }, [template, selectedTabIndex, fetchTemplateSSR]);
+    }, [template, selectedTabIndex]);
+
+    // useEffect에서 페이지 URL을 설정
+    useEffect(() => {
+        if (pageUrl) {
+            setIframeSrc(pageUrl); // 페이지 URL 설정
+        }
+    }, [pageUrl]);
 
     return (
         <>
@@ -96,13 +105,20 @@ const WebBuilder: React.FC = () => {
                         width={3}
                     />
                     <section className={styles.pagePreview}>
-                        {htmlContent ? (
-                            <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+                        {iframeSrc ? ( // iframeSrc가 설정된 후에 iframe을 렌더링
+                            <iframe
+                                src={iframeSrc}
+                                title="Page Preview"
+                                width="100%"
+                                height="100%"
+                                frameBorder="0"
+                                style={{ border: 'none' }}
+                            />
                         ) : (
                             <p>Loading...</p>
                         )}
                     </section>
-                    <ApplyTableData selectedTab={tabs[selectedTabIndex]} workspaceData={workspaceData} fetchTemplateSSR={fetchTemplateSSR} />
+                    <ApplyTableData selectedTab={tabs[selectedTabIndex]} workspaceData={workspaceData} />
                 </main>
             </div>
             {errorMessage && (

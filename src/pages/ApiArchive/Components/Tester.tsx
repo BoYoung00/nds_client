@@ -14,15 +14,22 @@ const Tester: React.FC = () => {
                     'Content-Type': 'application/json',
                 },
             };
-
             // POST, PUT 요청일 때 body 포함
             if (method === 'POST' || method === 'PUT') {
                 options.body = body;
             }
 
             const res = await fetch(url, options);
-            const data = await res.json();
-            setResponse(JSON.stringify(data, null, 2));  // JSON 형식으로 결과를 출력
+            const contentType = res.headers.get('content-type');
+
+            // JSON 응답일 때만 JSON 파싱
+            if (contentType && contentType.includes('application/json')) {
+                const data = await res.json();
+                setResponse(JSON.stringify(data, null, 2));  // JSON 형식으로 결과를 출력
+            } else {
+                const text = await res.text();
+                setResponse(text);  // 텍스트 형식의 응답 처리
+            }
         } catch (error) {
             setResponse('Error: ' + error);
         }

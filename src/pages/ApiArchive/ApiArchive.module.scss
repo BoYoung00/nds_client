@@ -95,4 +95,9 @@
       cursor: pointer;
     }
   }
+
+  .responseBox pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
 }

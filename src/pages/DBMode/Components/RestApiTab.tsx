@@ -19,7 +19,7 @@ const RestApiTab: React.FC = () => {
 
         try {
             await registerApi(selectedTable.tableHash)
-            setSuccessMessage('해당 URL들을 API 보관함에 저장하셨습니다. "API ARCHIVE"를 확인해주세요.')
+            setSuccessMessage(`해당 URL들을 API 보관함에 저장하셨습니다. \n "API ARCHIVE"를 확인해주세요.`)
         } catch (error) {
             const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
             setErrorMessage(errorMessage);

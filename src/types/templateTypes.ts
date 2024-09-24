@@ -28,7 +28,7 @@ interface ShopPageMain {
 interface ShopPageCart {
     connectURL: string;
     columns: {
-        'CartID': string;
+        'OrderID': string;
         'ItemID': string;
         'UserID': string;
         'ItemImage': string;
@@ -47,7 +47,7 @@ interface ShopPageOrder {
 interface ShopPageOrderList {
     connectURL: string;
     columns: {
-        'CartID': string;
+        'OrderID': string;
         'ItemID': string;
         'UserID': string;
         'ItemImage': string;

@@ -103,6 +103,18 @@ export const useDataTab = () => {
         }
     }
 
+    // tables가 업데이트될 때, selectedTable의 id와 일치하는 테이블을 다시 선택
+    useEffect(() => {
+        if (tables.length > 0 && selectedTable) {
+            const matchingTable = tables.find(table => table.id === selectedTable.id);
+            if (matchingTable) {
+                setSelectedTable(matchingTable);  // id가 일치하는 테이블로 업데이트
+            } else {
+                setSelectedTable(null);  // 일치하는 테이블이 없으면 null로 초기화
+            }
+        }
+    }, [tables]);
+
     // 행 추가
     const handleAddData = () => {
         if (tableStructure) {
@@ -117,9 +129,7 @@ export const useDataTab = () => {
                 ];
                 return acc;
             }, {} as TableInnerStructure);
-
             // console.log(newData)
-
             setCreateRowLine(createRowLine + 1);
             setTableStructure(newData);
             setSelectedRow(Object.values(newData)[0].length - 1);

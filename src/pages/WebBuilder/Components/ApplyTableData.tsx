@@ -13,10 +13,10 @@ type PageData = ShopPageMain | ShopPageCart | ShopPageOrder | ShopPageOrderList 
 interface ApplyTableDataProps {
     selectedTab: string;
     workspaceData: WorkspaceResponse | null;
-    fetchTemplateSSR: () => void;
+    // fetchTemplateSSR: () => void;
 }
 
-const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceData, fetchTemplateSSR }) => {
+const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceData }) => {
     const { template } = useParams<{ template: string }>();
 
     const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -94,7 +94,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                     return {
                         connectURL: responseData.connectURL,
                         columns: {
-                            "CartID": responseData.columns?.['CartID'] || '',
+                            "OrderID": responseData.columns?.['OrderID'] || '',
                             "ItemID": responseData.columns?.['ItemID'] || '',
                             "UserID": responseData.columns?.['UserID'] || '',
                             "ItemImage": responseData.columns?.['ItemImage'] || '',
@@ -111,7 +111,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                     return {
                         connectURL: responseData.connectURL,
                         columns: {
-                            "CartID": responseData.columns?.['CartID'] || '',
+                            "OrderID": responseData.columns?.['OrderID'] || '',
                             "ItemID": responseData.columns?.['ItemID'] || '',
                             "UserID": responseData.columns?.['UserID'] || '',
                             "ItemImage": responseData.columns?.['ItemImage'] || '',
@@ -269,9 +269,9 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
         'img': '이미지',
         'post_id': '게시물 ID',
         'fileUpload': '파일 업로드',
-        'UserID': '사용자 ID',
-        'CartID': '카트 ID',
-        'name': '사용자 이름',
+        'UserID': '회원 ID',
+        'OrderID': '주문 ID',
+        'name': '회원 이름',
         'description': '설명',
         'startDate': '시작 날짜',
         'endDate': '종료 날짜',
@@ -351,7 +351,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
         try {
             await workSpaceBuildDataSave(workspaceRequest);
             setSuccessMessage('템플릿 데이터 저장에 성공하셨습니다.')
-            fetchTemplateSSR();
+            // fetchTemplateSSR();
         } catch (e) {
             const error = (e as Error).message || '알 수 없는 오류가 발생 하였습니다.'
             setErrorMessage(error)

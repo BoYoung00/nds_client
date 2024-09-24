@@ -131,7 +131,7 @@ const ERDiagram: React.FC = () => {
                         segmentOrientation: go.Link.OrientUpright,
                         segmentOffset: new go.Point(10, -10),
                     },
-                    new go.Binding("text", "from", (from) => (from ? '1' : ''))
+                    new go.Binding("text", "from", (from) => (from ? 'N' : ''))
                 ),
                 $(go.TextBlock,
                     {
@@ -141,7 +141,7 @@ const ERDiagram: React.FC = () => {
                         segmentOrientation: go.Link.OrientUpright,
                         segmentOffset: new go.Point(-8, -10),
                     },
-                    new go.Binding("text", "to", (to) => (to ? 'N' : ''))
+                    new go.Binding("text", "to", (to) => (to ? '1' : ''))
                 )
             );
 
