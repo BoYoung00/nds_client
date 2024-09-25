@@ -1,28 +1,33 @@
 import {useEffect, useState} from 'react';
-import {downloadNdsFile} from "../../../services/api";
+import {downloadNdsFile, updateDatabaseComment} from "../../../services/api";
 import {downloadFile} from "../../../utils/utils";
 import {useDataBase} from "../../../contexts/DataBaseContext";
 
 export const useDataBaseBlueSidebar = () => {
     const [loading, setLoading] = useState<boolean>(true);
-    const { selectedDataBase, setSelectedDataBase } = useDataBase();
+    const { selectedDataBase, setSelectedDataBase, setDatabases, databases } = useDataBase();
 
-    const [selectedDatabaseID, setSelectedDatabaseID] = useState(selectedDataBase ? selectedDataBase?.id! : -1);
+    const [comment, setComment] = useState<string>('');
+    // const [selectedDatabaseID, setSelectedDatabaseID] = useState(selectedDataBase ? selectedDataBase?.id! : -1);
     const [isOpenCreateDBModal, setIsOpenCreateDBModal] = useState<boolean>(false);
     const [isOpenQueryModal, setIsOpenQueryModal] = useState<boolean>(false);
+
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     useEffect(() => {
-        setSelectedDatabaseID(selectedDataBase ? selectedDataBase?.id! : -1)
-    }, [selectedDataBase])
+        if (selectedDataBase) {
+            setComment(selectedDataBase?.comment || '');
+        }
+    }, [selectedDataBase, databases, setSelectedDataBase]);
+
 
     const onSelected = (dataBase: DataBaseEntity) => {
-        setSelectedDatabaseID(dataBase.id!!);
         setSelectedDataBase(dataBase);
+        setComment(dataBase.comment || '');
     }
 
     const handleQuery = () => {
-        if (selectedDatabaseID === -1) {
+        if (selectedDataBase?.id === -1) {
             setErrorMessage("데이터베이스를 선택해주세요.");
         } else {
             setIsOpenQueryModal(true);
@@ -30,11 +35,12 @@ export const useDataBaseBlueSidebar = () => {
     }
 
     const handleScript = async () => {
-        if (selectedDatabaseID === -1) {
+        if (!selectedDataBase) return;
+        if (selectedDataBase.id === -1) {
             setErrorMessage("데이터베이스를 선택해주세요.");
         } else {
             try {
-                const { blob: fileBlob, fileName } = await downloadNdsFile(selectedDatabaseID);
+                const { blob: fileBlob, fileName } = await downloadNdsFile(selectedDataBase.id!);
                 downloadFile(fileBlob, fileName); // 파일 다운로드
             } catch (error) {
                 console.error('파일 다운로드 중 오류 발생:', error);
@@ -44,15 +50,43 @@ export const useDataBaseBlueSidebar = () => {
     };
 
     const handleDelete = () => {
-        if (selectedDatabaseID === -1) {
+        if (selectedDataBase?.id === -1) {
             setErrorMessage("데이터베이스를 선택해주세요.");
         } else {
             console.log('삭제 로직');
         }
     }
 
+    const handleCommentChange = (newComment: string) => {
+        if (comment !== newComment)
+            setComment(newComment);
+    };
+
+    const handleCommentBlur = async () => {
+        const prevSelectedDatabase = selectedDataBase;
+        if (selectedDataBase) {
+            try {
+                await updateDatabaseComment(selectedDataBase.id! , comment);
+
+                setDatabases(prevDatabaseDataList => {
+                    const updatedDatabases = prevDatabaseDataList.map(database =>
+                        database.id === selectedDataBase.id
+                            ? { ...database, comment: comment }
+                            : database
+                    );
+                    setSelectedDataBase(updatedDatabases.find(database => database.id === prevSelectedDatabase?.id) || null);
+                    return updatedDatabases;
+                });
+
+            } catch (error) {
+                const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
+                setErrorMessage(errorMessage);
+            }
+        }
+    };
+
     return {
-        selectedDatabaseID,
+        comment,
         modals: {
             isOpenCreateDBModal,
             setIsOpenCreateDBModal,
@@ -66,6 +100,8 @@ export const useDataBaseBlueSidebar = () => {
             handleQuery,
             handleScript,
             handleDelete,
+            handleCommentChange,
+            handleCommentBlur
         }
     };
 };

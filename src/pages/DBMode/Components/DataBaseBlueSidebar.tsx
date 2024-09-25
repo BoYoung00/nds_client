@@ -8,10 +8,10 @@ import { useDataBase } from "../../../contexts/DataBaseContext";
 import edit from "../../../assets/images/edit.png"
 
 const DataBaseBlueSidebar: React.FC = () => {
-    const { databases } = useDataBase();
+    const { databases, selectedDataBase } = useDataBase();
 
     const {
-        selectedDatabaseID,
+        comment,
         modals: {
             isOpenCreateDBModal,
             setIsOpenCreateDBModal,
@@ -25,19 +25,20 @@ const DataBaseBlueSidebar: React.FC = () => {
             handleQuery,
             handleScript,
             handleDelete,
+            handleCommentChange,
+            handleCommentBlur,
         }
     } = useDataBaseBlueSidebar();
 
     const [isEditing, setIsEditing] = useState(false);
-    const [comment, setComment] = useState(databases?.find(dataBase => dataBase.id === selectedDatabaseID)?.comment || '');
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setComment(e.target.value);
+        handleCommentChange(e.target.value);
     };
 
     const handleBlur = () => {
         setIsEditing(false);
-        // comment 수정 통신
+        handleCommentBlur();
     };
 
     return (
@@ -47,7 +48,7 @@ const DataBaseBlueSidebar: React.FC = () => {
                     {databases && databases.map((item) => (
                         <div
                             key={item.id}
-                            className={`${styles.item} ${selectedDatabaseID === item.id ? styles.selected : ''}`}
+                            className={`${styles.item} ${selectedDataBase?.id === item.id ? styles.selected : ''}`}
                             onClick={() => onSelected(item)}
                         >
                             {item.name}

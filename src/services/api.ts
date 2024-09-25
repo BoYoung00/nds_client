@@ -21,10 +21,29 @@ export const createDataBase = async (name: string, comment: string) => {
         throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
     }
 };
+
 /*
 const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
 setErrorMessage(errorMessage);
 */
+
+// 데이터베이스 코멘트 업데이트
+export const updateDatabaseComment = async (updateDataBaseId: number, updateDataBaseComment: string = '') => {
+    try {
+        const response = await client.put('/api/databases', {updateDataBaseId, updateDataBaseComment});
+        if (response.status === 200) {
+            return response.data; // 성공적으로 업데이트된 데이터 반환
+        }
+        throw new Error(`Error: ${response.data.message}`);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
 
 // 데이터베이스 리스트 불러오기
 export const getDataBasesForCurrentUser = async () => {
@@ -311,6 +330,24 @@ export const getUserArchiveApis = async () => {
         return response.data; // 리스트 반환
     } catch (error) {
         throw error;
+    }
+};
+
+// REST API Archive 삭제
+export const restApiDelete = async (id: number) => {
+    try {
+        const response = await client.delete(`/api/user-apis/${id}`);
+        if (response.status === 200) {
+            return response.data; // 성공적으로 삭제된 데이터 반환
+        }
+        throw new Error(`Error: ${response.data.message}`);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
     }
 };
 

@@ -10,9 +10,17 @@ export function useDataBaseWhiteSidebar() {
     const [isOpenCreateTableModal, setIsOpenCreateTableModal] = useState<boolean>(false);
     const [isOpenMergeModal, setIsOpenMergeModal] = useState<boolean>(false);
     const [comment, setComment] = useState<string>('');
+
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [questionMessage, setQuestionMessage] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (selectedTable) {
+            setComment(selectedTable?.comment || '');
+        }
+    }, [selectedTable, tables, setSelectedTable]);
+
 
     const onSelected = (table: TableData) => {
         setSelectedTable(table);
@@ -77,12 +85,6 @@ export function useDataBaseWhiteSidebar() {
             }
         }
     };
-
-    useEffect(() => {
-        if (selectedTable) {
-            setComment(selectedTable?.comment || '');
-        }
-    }, [selectedTable, tables, setSelectedTable]);
 
     return {
         isOpenCreateTableModal,
