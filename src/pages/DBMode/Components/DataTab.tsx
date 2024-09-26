@@ -5,11 +5,11 @@ import addData from '../../../assets/images/addData.png';
 import deleteData from '../../../assets/images/deleteData.png';
 import save from '../../../assets/images/save.png';
 import updateSave from '../../../assets/images/updateSave.png';
-import search from '../../../assets/images/search.png';
 import {Notification} from '../../../publicComponents/layout/modal/Notification';
 import {useAutoColumnWidth, useDataTab, useSearchPosition} from "../hooks/useDataTab";
 import Search from "../../../publicComponents/layout/modal/Search/Search";
 import {useTable} from "../../../contexts/TableContext";
+import TableView from "../../../publicComponents/layout/TableView";
 
 const DataTab: React.FC = () => {
     const { fetchTables } = useTable();
@@ -24,7 +24,10 @@ const DataTab: React.FC = () => {
             deleteDataList,
             deletedRows,
             imagePaths,
-            videoPaths
+            videoPaths,
+            isJoinTable,
+            isSsrViewVisible,
+            joinTableStructure
         },
         handlers: {
             handleAddData,
@@ -35,7 +38,8 @@ const DataTab: React.FC = () => {
             handleRefreshClick,
             handleResetTableData,
             handleSelectData,
-            findJoinDataList
+            findJoinDataList,
+            toggleSsrView
         },
         modals: {
             questionMessage,
@@ -77,10 +81,6 @@ const DataTab: React.FC = () => {
                             <img src={updateSave} alt="updateSave" />
                         }
                         SAVE
-                    </span>
-                    <span>
-                        <img src={search} alt="search" style={{ marginBottom: '2.5px' }}/>
-                        FIND_COLUMN
                     </span>
                 </header>
                 <main className={styles.dataTab__main}>
@@ -149,6 +149,16 @@ const DataTab: React.FC = () => {
                         </tbody>
                     </table>
                 </main>
+                { isJoinTable &&
+                    <div className={styles.joinTableView}>
+                        {isSsrViewVisible &&
+                            <div className={styles.ssrView}>
+                                <TableView tableStructure={joinTableStructure} useAltStyle={false}/>
+                            </div>
+                        }
+                        <p onClick={toggleSsrView}>Join</p>
+                    </div>
+                }
             </div>
 
             {/*새로고침 모달*/}

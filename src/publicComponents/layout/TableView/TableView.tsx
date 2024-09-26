@@ -3,17 +3,18 @@ import styles from './TableView.module.scss';
 
 interface TableViewProps {
     tableStructure: TableInnerStructure | null;
+    useAltStyle?: boolean;
 }
 
-const TableView: React.FC<TableViewProps> = ({ tableStructure }) => {
+const TableView: React.FC<TableViewProps> = ({ tableStructure, useAltStyle = true }) => {
     if (!tableStructure) return null;
 
     const columns = Object.keys(tableStructure);
     const numRows = tableStructure[columns[0]]?.length || 0;
 
     return (
-        <div className={styles.tableView}>
-            <main className={styles.tableView__main} style={{border: 'none', overflow: 'none',}}>
+        <div className={useAltStyle ? styles.tableView : styles.altTableView}>
+            <main className={useAltStyle ? styles.tableView__main : styles.altTableView__main}>
                 <table>
                     <thead>
                     <tr>
@@ -35,7 +36,7 @@ const TableView: React.FC<TableViewProps> = ({ tableStructure }) => {
                                             type="text"
                                             value={cellData.data}
                                             readOnly
-                                            className={styles.readOnlyInput}
+                                            className={useAltStyle ? styles.readOnlyInput : styles.altReadOnlyInput}
                                             placeholder="NULL"
                                         />
                                     </td>

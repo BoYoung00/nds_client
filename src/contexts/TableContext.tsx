@@ -39,7 +39,7 @@ export const TableProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             setLoading(true);
             const data = await getTablesForDataBaseID(selectedDataBase.id!);
             setTables(data);
-            // console.log('테이블 리스트', data);
+            console.log('테이블 리스트', data);
         } catch (error) {
             setErrorMessage('테이블 목록을 가져오는 데 실패했습니다.');
         } finally {

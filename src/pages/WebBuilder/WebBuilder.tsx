@@ -5,7 +5,7 @@ import CopyButton from '../../publicComponents/UI/CopyButton';
 import TabBar from '../../publicComponents/layout/TabBar';
 import ApplyTableData from './Components/ApplyTableData';
 import { Notification } from '../../publicComponents/layout/modal/Notification';
-import { getWorkspaceData, userWorkspaceBuild } from '../../services/api';
+import { getWorkspaceData } from '../../services/api';
 
 const tabConfig: { [key: string]: string[] } = {
     Shop: ['main', 'cart', 'order', 'order-list'],

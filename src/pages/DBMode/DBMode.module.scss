@@ -179,7 +179,8 @@
 
 //DataTab 디자인
 .dataTab {
-  width: 99%; height: 85%;
+  width: 99%; height: 90%;
+  position: relative;
 
   &__header {
     @include flex-space-between;
@@ -206,10 +207,11 @@
 
   &__main {
     width: 100%; height: 100%;
-    max-height: 60vh;
+    max-height: 65vh;
     background: white;
     border: 1px solid #777777;
     overflow: auto;
+    position: relative;
 
     table {
       @include table-styles;
@@ -243,7 +245,38 @@
         cursor: default;
       }
     }
-  }
+  } // main
+
+  .joinTableView {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: end;
+
+    & > p {
+      width: 2.5rem; height: 2.5rem;
+      background: $color-blue-deep;
+      border-radius: 100%;
+      @include flex-center;
+      color: white;
+      font-family: $font-KoPub-bold;
+      cursor: pointer;
+      margin: 0 .5rem 0 0;
+    }
+
+    .ssrView {
+      background: white;
+      width: 40rem; height: 25rem;
+      margin-bottom: 2rem;
+      border: 1px solid grey;
+      overflow: auto;
+    }
+
+    .hidden {
+      display: none;
+    }
+  } // joinTableView
 }
 
 

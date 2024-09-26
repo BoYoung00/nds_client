@@ -452,6 +452,16 @@ export const tableMergeSave = async (tableMergeSaveRequest: TableMergeSaveReques
     }
 };
 
+// join 테이블 프리뷰 (SSR)
+export const findJoinPreviewData = async (tableId: number) => {
+    try {
+        const response = await client.get(`/api/tables/join/preview/${tableId}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 // 스탬핑 : 변경 및 수정 사항 커밋
 export const revisionDataFirstCommit = async (dataBaseId: number, commitMessage: string) => {
     try {
@@ -519,7 +529,7 @@ export const moveToHistoryPoint = async (databaseId: number, stampingId: number)
     }
 };
 
-// 템플릿 프리뷰 (SSR)
+// 템플릿 프리뷰 (링크)
 export const userWorkspaceBuild = async (template: string, page: string, username: string) => {
     try {
         const response = await client.get(`/workspace/${template}/${page}/${username}`);

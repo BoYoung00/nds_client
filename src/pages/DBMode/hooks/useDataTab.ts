@@ -1,6 +1,6 @@
-import React, {MouseEventHandler, RefObject, useEffect, useRef, useState} from 'react';
+import React, {RefObject, useEffect, useRef, useState} from 'react';
 import {findColumnInfo} from "../../../utils/utils";
-import {createData, getImagesPathList, getVideoPathList} from "../../../services/api";
+import {createData, findJoinPreviewData, getImagesPathList, getVideoPathList} from "../../../services/api";
 import {useTable} from "../../../contexts/TableContext";
 
 const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
@@ -27,6 +27,9 @@ export const useDataTab = () => {
     const [selectedRow, setSelectedRow] = useState<number | null>(null);
     const [createRowLine, setCreateRowLine] = useState<number>(0);
     const [deletedRows, setDeletedRows] = useState<number[]>([]); // 삭제된 행 상태
+    const [joinTableStructure, setJoinTableStructure] = useState<TableInnerStructure | null>(null)
+    const [isJoinTable, setIsJoinTable] =useState<boolean>(false);
+    const [isSsrViewVisible, setIsSsrViewVisible] = useState(false);
 
     // 통신 데이터
     const [createDataList, setCreateDataList] = useState<DataDTO[]>([]);
@@ -100,6 +103,16 @@ export const useDataTab = () => {
             setDeletedRows([]);
             setSelectedRow(null);
             setCreateRowLine(0);
+            setIsJoinTable(false);
+
+            const columns = Object.keys(selectedTable.tableInnerStructure);
+            columns.forEach(columnKey => {
+                const { joinTableHash } = findColumnInfo(columnKey);
+                if (joinTableHash) {
+                    handleFetchJoinTablePreview();
+                    setIsJoinTable(true)
+                }
+            })
         }
     }
 
@@ -300,6 +313,21 @@ export const useDataTab = () => {
         }
     };
 
+    // join 테이블 프리뷰 SSR 통신
+    const handleFetchJoinTablePreview = async () => {
+        try {
+            const response = await findJoinPreviewData(selectedTable?.id!);
+            setJoinTableStructure(response);
+        } catch (error) {
+            const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
+            setErrorMessage(errorMessage);
+        }
+    };
+
+    const toggleSsrView = () => {
+        setIsSsrViewVisible(prevState => !prevState);
+    };
+
     return {
         hooks: {
             tableStructure,
@@ -310,7 +338,10 @@ export const useDataTab = () => {
             deleteDataList,
             deletedRows,
             imagePaths,
-            videoPaths
+            videoPaths,
+            isJoinTable,
+            isSsrViewVisible,
+            joinTableStructure
         },
         handlers: {
             handleAddData,
@@ -321,7 +352,8 @@ export const useDataTab = () => {
             handleRefreshClick,
             handleResetTableData,
             handleSelectData,
-            findJoinDataList
+            findJoinDataList,
+            toggleSsrView,
         },
         modals: {
             successMessage,
