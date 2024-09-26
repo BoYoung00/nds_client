@@ -180,7 +180,6 @@
 //DataTab 디자인
 .dataTab {
   width: 99%; height: 90%;
-  position: relative;
 
   &__header {
     @include flex-space-between;
@@ -211,7 +210,6 @@
     background: white;
     border: 1px solid #777777;
     overflow: auto;
-    position: relative;
 
     table {
       @include table-styles;
@@ -249,8 +247,8 @@
 
   .joinTableView {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 4.5rem;
+    right: 4rem;
     display: flex;
     align-items: end;
 
@@ -269,9 +267,19 @@
       background: white;
       width: 40rem; height: 25rem;
       margin-bottom: 2rem;
-      border: 1px solid grey;
+      box-shadow: 0 2px 5px 1px rgb(0,0,0,0.3);
       overflow: auto;
-    }
+      @include flex-center;
+      align-items: start;
+
+      .joinInfo {
+        padding: 0 .5rem;
+        width: 35%; height: 100%;
+        border-right: 1px solid #cccccc;
+
+        & > p { color: $color-blue-deep; font-family: $font-KoPub-bold; }
+      } // joinInfo
+    } // ssrView
 
     .hidden {
       display: none;

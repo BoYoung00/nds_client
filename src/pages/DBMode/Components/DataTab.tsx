@@ -153,6 +153,18 @@ const DataTab: React.FC = () => {
                     <div className={styles.joinTableView}>
                         {isSsrViewVisible &&
                             <div className={styles.ssrView}>
+                                <div className={styles.joinInfo}>
+                                    {/*일단 하드 코딩*/}
+                                    <p>조인 정보</p>
+                                    <strong>- 부모 테이블</strong> <br/>
+                                    이름 : table2 <br/>
+                                    설명 : 설명 <br/>
+                                    PK행 이름 : p <br/><br/>
+                                    <strong>- 자식 테이블</strong> <br/>
+                                    이름 : table3 <br/>
+                                    설명 : FK 예제 <br/>
+                                    FK행 이름 : FK <br/>
+                                </div>
                                 <TableView tableStructure={joinTableStructure} useAltStyle={false}/>
                             </div>
                         }

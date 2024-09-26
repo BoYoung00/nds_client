@@ -27,7 +27,7 @@ export const useDataTab = () => {
     const [selectedRow, setSelectedRow] = useState<number | null>(null);
     const [createRowLine, setCreateRowLine] = useState<number>(0);
     const [deletedRows, setDeletedRows] = useState<number[]>([]); // 삭제된 행 상태
-    const [joinTableStructure, setJoinTableStructure] = useState<TableInnerStructure | null>(null)
+    const [joinTableStructure, setJoinTableStructure] = useState<TableInnerStructure | null>(null);
     const [isJoinTable, setIsJoinTable] =useState<boolean>(false);
     const [isSsrViewVisible, setIsSsrViewVisible] = useState(false);
 
@@ -411,7 +411,7 @@ export const useSearchPosition = (initialPosition: { x: number, y: number } | nu
     // 버튼 클릭 시 검색창 토글 및 위치 설정
     const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         const { clientX: x, clientY: y } = event;
-        setSearchPosition({ x, y });
+        setSearchPosition({ x, y: y-40 });
         setShowSearch(prevShowSearch => !prevShowSearch);
     };
 
