@@ -213,6 +213,7 @@ interface UserAPIResponse {
 }
 
 interface UserAPIDTO {
+    id: number;
     userToken: string;
     api: string;
     dataBaseName: string;

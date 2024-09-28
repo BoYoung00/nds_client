@@ -10,9 +10,10 @@ import {useAutoColumnWidth, useDataTab, useSearchPosition} from "../hooks/useDat
 import Search from "../../../publicComponents/layout/modal/Search/Search";
 import {useTable} from "../../../contexts/TableContext";
 import TableView from "../../../publicComponents/layout/TableView";
+import {findColumnInfo} from "../../../utils/utils";
 
 const DataTab: React.FC = () => {
-    const { fetchTables } = useTable();
+    const { fetchTables, selectedTable } = useTable();
 
     const {
         hooks: {
@@ -27,7 +28,9 @@ const DataTab: React.FC = () => {
             videoPaths,
             isJoinTable,
             isSsrViewVisible,
-            joinTableStructure
+            joinTableStructure,
+            joinParentsTable,
+            showCopyMessage
         },
         handlers: {
             handleAddData,
@@ -39,7 +42,8 @@ const DataTab: React.FC = () => {
             handleResetTableData,
             handleSelectData,
             findJoinDataList,
-            toggleSsrView
+            toggleSsrView,
+            handleCopyJoinTableUrl
         },
         modals: {
             questionMessage,
@@ -112,7 +116,7 @@ const DataTab: React.FC = () => {
                                                     value={cellData.data}
                                                     columnKey={columnKey}
                                                     rowIndex={rowIndex}
-                                                    dataList={findJoinDataList(joinTableHash)}
+                                                    dataList={findJoinDataList()}
                                                     handleSelectData={handleSelectData}
                                                 />
                                                 :
@@ -151,24 +155,43 @@ const DataTab: React.FC = () => {
                 </main>
                 { isJoinTable &&
                     <div className={styles.joinTableView}>
-                        {isSsrViewVisible &&
+                        {isSsrViewVisible && (
                             <div className={styles.ssrView}>
-                                <div className={styles.joinInfo}>
-                                    {/*일단 하드 코딩*/}
-                                    <p>조인 정보</p>
-                                    <strong>- 부모 테이블</strong> <br/>
-                                    이름 : table2 <br/>
-                                    설명 : 설명 <br/>
-                                    PK행 이름 : p <br/><br/>
-                                    <strong>- 자식 테이블</strong> <br/>
-                                    이름 : table3 <br/>
-                                    설명 : FK 예제 <br/>
-                                    FK행 이름 : FK <br/>
-                                </div>
-                                <TableView tableStructure={joinTableStructure} useAltStyle={false}/>
+                                <section className={styles.joinInfoBox}>
+                                    <section className={styles.joinInfo}>
+                                        <p>조인 정보</p>
+                                        <strong>- 부모 테이블</strong> <br/>
+                                        이름 : {joinParentsTable?.name} <br/>
+                                        설명 : {joinParentsTable?.comment} <br/>
+                                        PK행 이름 : {
+                                        Object.keys(joinParentsTable?.tableInnerStructure || {})
+                                            .map((key: string) => findColumnInfo(key))
+                                            .filter((columnInfo) => columnInfo.isPk)  // PK인 컬럼만 필터링
+                                            .map((columnInfo) => columnInfo.name)     // 컬럼 이름만 추출
+                                            .join(', ') || '없음'
+                                    } <br/><br/>
+                                        <strong>- 자식 테이블</strong> <br/>
+                                        이름 : {selectedTable?.name} <br/>
+                                        설명 : {selectedTable?.comment} <br/>
+                                        FK행 이름 : {
+                                        Object.keys(selectedTable?.tableInnerStructure || {})
+                                            .map((key: string) => findColumnInfo(key))
+                                            .filter((columnInfo) => columnInfo.isFk)  // FK인 컬럼만 필터링
+                                            .map((columnInfo) => columnInfo.name)     // 컬럼 이름만 추출
+                                            .join(', ') || '없음'
+                                    } <br/>
+                                    </section>
+                                    <section className={styles.copyButtonContainer}>
+                                        {showCopyMessage && <span className={styles.copyMessage}>복사 되었습니다.</span>}
+                                        <button className={styles.copyButton} onClick={handleCopyJoinTableUrl}>
+                                            REST API Url 복사
+                                        </button>
+                                    </section>
+                                </section>
+                                <TableView tableStructure={joinTableStructure} useAltStyle={false} />
                             </div>
-                        }
-                        <p onClick={toggleSsrView}>Join</p>
+                        )}
+                        <p onClick={(e) => {e.stopPropagation(); toggleSsrView();}}>Join</p>
                     </div>
                 }
             </div>

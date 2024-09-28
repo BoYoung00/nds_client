@@ -1,11 +1,12 @@
 interface pageType {
-    template: 'Board' | 'Shop' | 'Todo'; // 더 추가될 수 있음
-    page: BoardPageType | ShopPageType | TodoPageType;
+    template: 'Board' | 'Shop' | 'Todo' | 'Gallery'; // 더 추가될 수 있음
+    page: BoardPageType | ShopPageType | TodoPageType | GalleryPageType;
 }
 
 type ShopPageType = 'main' | 'cart' | 'order' | 'order-list';
 type BoardPageType = 'login' | 'sign-up' | 'main-notice' | 'main-list' | 'view-notice' | 'view-list' | 'after_login-notice' | 'after_login-list' | 'write-user' | 'write-admin';
 type TodoPageType = 'todo-list';
+type GalleryPageType = 'gallery-list';
 
 // 쇼핑몰
 // 만약 ShopPageType 타입의 page : 'main' 이라면
@@ -180,5 +181,18 @@ interface TodoPageTodoList{
         'endDate': string;
         'category': string;
         'status': string;
+    }
+}
+
+// 갤러리 (Gallery)
+// 만약 GalleryPage 타입의 page : 'gallery-list' 이라면
+interface GalleryPageGalleryList{
+    connectURL: string;
+    columns: {
+        'id': string;
+        'title': string;
+        'date': string;
+        'comment': string;
+        'img': string;
     }
 }

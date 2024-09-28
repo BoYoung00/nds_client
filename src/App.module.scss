@@ -203,8 +203,7 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
 @mixin copyMessage-style {
   width: 6.7rem;
   position: absolute;
-  top: 0;
-  left: 0;
+  left: -5px;
   transform: translateX(-50%);
   background-color: #333;
   color: #fff;
@@ -212,18 +211,6 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
   border-radius: 5px;
   opacity: 1;
   animation: fadeOut 1.5s forwards;
-
-  @keyframes fadeOut {
-    0% {
-      opacity: 1;
-    }
-    80% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
 }
 
 @keyframes fadeOut {
@@ -273,9 +260,7 @@ body {
     width: .7rem;
     height: .7rem;
   }
-  //*::-webkit-scrollbar-track {
-  //  background: #f1f1f1;
-  //}
+
   *::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 5px;

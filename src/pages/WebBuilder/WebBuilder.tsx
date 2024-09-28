@@ -22,6 +22,7 @@ const tabConfig: { [key: string]: string[] } = {
         'write-admin',
     ],
     Todo: ['todo-list'],
+    Gallery: ['gallery-list'],
 };
 
 const WebBuilder: React.FC = () => {

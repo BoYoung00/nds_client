@@ -1,5 +1,5 @@
 import React, {RefObject, useEffect, useRef, useState} from 'react';
-import {findColumnInfo} from "../../../utils/utils";
+import {copyToClipboard, findColumnInfo} from "../../../utils/utils";
 import {createData, findJoinPreviewData, getImagesPathList, getVideoPathList} from "../../../services/api";
 import {useTable} from "../../../contexts/TableContext";
 
@@ -29,7 +29,9 @@ export const useDataTab = () => {
     const [deletedRows, setDeletedRows] = useState<number[]>([]); // 삭제된 행 상태
     const [joinTableStructure, setJoinTableStructure] = useState<TableInnerStructure | null>(null);
     const [isJoinTable, setIsJoinTable] =useState<boolean>(false);
+    const [joinParentsTable, setJoinParentsTable] = useState<TableData | null>(null); // (조인 데이터이라면) 부모 테이블의 정보 저장
     const [isSsrViewVisible, setIsSsrViewVisible] = useState(false);
+    const [showCopyMessage, setShowCopyMessage] = useState(false);
 
     // 통신 데이터
     const [createDataList, setCreateDataList] = useState<DataDTO[]>([]);
@@ -45,6 +47,17 @@ export const useDataTab = () => {
     useEffect(() => {
         handleResetTableData();
         fetchMedias();
+
+        // 조인 테이블인지 찾기
+        const columns = Object.keys(selectedTable?.tableInnerStructure!);
+        columns.forEach(columnKey => {
+            const { joinTableHash } = findColumnInfo(columnKey);
+            if (joinTableHash) {
+                handleFetchJoinTablePreview();
+                setIsJoinTable(true)
+                findJoinParentsData(joinTableHash);
+            }
+        })
     }, [selectedTable])
 
     // 데이터 저장 (비동기 처리)
@@ -104,15 +117,6 @@ export const useDataTab = () => {
             setSelectedRow(null);
             setCreateRowLine(0);
             setIsJoinTable(false);
-
-            const columns = Object.keys(selectedTable.tableInnerStructure);
-            columns.forEach(columnKey => {
-                const { joinTableHash } = findColumnInfo(columnKey);
-                if (joinTableHash) {
-                    handleFetchJoinTablePreview();
-                    setIsJoinTable(true)
-                }
-            })
         }
     }
 
@@ -244,19 +248,23 @@ export const useDataTab = () => {
         }
     };
 
-    // 조인 데이터 리스트 찾기
-    const findJoinDataList = (tableHash: string): string[] => {
-        const matchingTable = tables.find((table) => table.tableHash === tableHash);
+    // 부모 조인 테이블 정보 가져오기
+    const findJoinParentsData = (tableHash: string) => {
+        const parentsTable = tables.find((table) => table.tableHash === tableHash);
+        if (parentsTable) setJoinParentsTable(parentsTable);
+    }
 
-        if (!matchingTable) {
+    // 조인 데이터 리스트 찾기
+    const findJoinDataList = (): string[] => {
+        if (!joinParentsTable) {
             return [];
         }
 
         const dataList: string[] = [];
 
-        for (const key in matchingTable.tableInnerStructure) {
+        for (const key in joinParentsTable.tableInnerStructure) {
             const { isPk } = findColumnInfo(key)
-            const columns = matchingTable.tableInnerStructure[key];
+            const columns = joinParentsTable.tableInnerStructure[key];
 
             if (isPk) {
                 columns.forEach((column) => {
@@ -328,6 +336,16 @@ export const useDataTab = () => {
         setIsSsrViewVisible(prevState => !prevState);
     };
 
+    // 조인 테이블 접근 url 복사
+    const handleCopyJoinTableUrl = () => {
+        if (joinParentsTable) {
+            const apiUrl = process.env.REACT_APP_API_URL;
+            const url = apiUrl + '/api/json/join/' + joinParentsTable.tableHash
+            copyToClipboard(url, () => setShowCopyMessage(true));
+            setShowCopyMessage(false);
+        }
+    }
+
     return {
         hooks: {
             tableStructure,
@@ -341,7 +359,9 @@ export const useDataTab = () => {
             videoPaths,
             isJoinTable,
             isSsrViewVisible,
-            joinTableStructure
+            joinTableStructure,
+            joinParentsTable,
+            showCopyMessage
         },
         handlers: {
             handleAddData,
@@ -354,6 +374,7 @@ export const useDataTab = () => {
             handleSelectData,
             findJoinDataList,
             toggleSsrView,
+            handleCopyJoinTableUrl
         },
         modals: {
             successMessage,

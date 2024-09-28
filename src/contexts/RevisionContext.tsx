@@ -47,7 +47,7 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
         try {
             setLoading(true);
             const response: StampingEntity[] = await revisionHistory(selectedDataBase.id!);
-            console.log('스탬핑 리스트', response)
+            // console.log('스탬핑 리스트', response)
 
             const currentStamping = response.find(s => s.isCurrent); // 체크아웃 선별
             setCurrentStamping(currentStamping ? currentStamping : null)

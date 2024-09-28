@@ -8,7 +8,7 @@ import axios from "axios";
 import {workSpaceBuildDataSave} from "../../../services/api";
 
 // PageData 타입을 정의하는 인터페이스들
-type PageData = ShopPageMain | ShopPageCart | ShopPageOrder | ShopPageOrderList | BoardPageLogin | BoardPageSignUp | BoardPageMainNotice | BoardPageMainList | BoardPageViewList | BoardPageAfterLoginList | BoardPageViewNotice | BoardPageWriteUser | BoardPageAfterLoginNotice | BoardPageWriteAdmin | TodoPageTodoList;
+type PageData = ShopPageMain | ShopPageCart | ShopPageOrder | ShopPageOrderList | BoardPageLogin | BoardPageSignUp | BoardPageMainNotice | BoardPageMainList | BoardPageViewList | BoardPageAfterLoginList | BoardPageViewNotice | BoardPageWriteUser | BoardPageAfterLoginNotice | BoardPageWriteAdmin | TodoPageTodoList | GalleryPageGalleryList;
 
 interface ApplyTableDataProps {
     selectedTab: string;
@@ -33,7 +33,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
     useEffect(() => {
         setFetchColumnNames([]);
         const pageType: pageType = {
-            template: template as 'Board' | 'Shop' | 'Todo',
+            template: template as 'Board' | 'Shop' | 'Todo' | 'Gallery',
             page: template === 'Board' ? selectedTab as BoardPageType : selectedTab as ShopPageType
         };
         try {
@@ -244,6 +244,22 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                 default:
                     throw new Error(`페이지 매핑 데이터 타입이 없음: ${inputData.page}`);
             }
+        } else if (inputData.template === 'Gallery') {
+            switch (inputData.page) {
+                case 'gallery-list':
+                    return {
+                        connectURL: responseData.connectURL,
+                        columns: {
+                            'id': responseData.columns?.['id'] || '',
+                            'title': responseData.columns?.['title'] || '',
+                            'date': responseData.columns?.['date'] || '',
+                            'comment': responseData.columns?.['comment'] || '',
+                            'img': responseData.columns?.['img'] || '',
+                        }
+                    };
+                default:
+                    throw new Error(`페이지 매핑 데이터 타입이 없음: ${inputData.page}`);
+            }
         } else {
             throw new Error(`Unknown Template: ${inputData.template}`);
         }
@@ -278,6 +294,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
         'category': '카테고리',
         'status': '상태',
         'todo-id': '작업 ID',
+        'comment': '설명',
     };
 
     // connect url 변경 핸들러

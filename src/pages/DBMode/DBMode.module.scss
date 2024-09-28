@@ -266,18 +266,44 @@
     .ssrView {
       background: white;
       width: 40rem; height: 25rem;
+      padding: .5rem;
       margin-bottom: 2rem;
       box-shadow: 0 2px 5px 1px rgb(0,0,0,0.3);
       overflow: auto;
       @include flex-center;
       align-items: start;
 
-      .joinInfo {
-        padding: 0 .5rem;
+      .joinInfoBox {
+        padding-right: .5rem;
         width: 35%; height: 100%;
         border-right: 1px solid #cccccc;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        gap: 1rem;
 
-        & > p { color: $color-blue-deep; font-family: $font-KoPub-bold; }
+        .joinInfo {
+          & > p { color: $color-blue-deep; font-family: $font-KoPub-bold; margin: .5rem 0; }
+        } //joinInfo
+
+        // 복사 버튼 디자인
+        .copyButtonContainer {
+          position: relative;
+          display: inline-block;
+
+          & > .copyButton {
+            @include button-style(true, 100%, .8rem, .4rem);
+          }
+
+          & > .copyMessage {
+            font-size: .8rem;
+            color: grey;
+            position: absolute;
+            top: -1rem;
+            opacity: 1;
+            animation: fadeOut 1.5s forwards;
+          }
+        } // copyButtonContainer
       } // joinInfo
     } // ssrView
 
