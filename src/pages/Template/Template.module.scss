@@ -27,7 +27,7 @@
 .ready {
   @include flex-center;
   font-size: 1.3rem;
-  font-family: $font-KoPub-bold;
+  font-weight: $font-weight-bold;
   color: $color-gray-middle;
 }
 
@@ -61,7 +61,7 @@
 
       p {
         margin: 0 1rem 0 0;
-        font-family: $font-KoPub-bold;
+        font-weight: $font-weight-bold;
         color: $color-gray-deep;
       }
     } // category

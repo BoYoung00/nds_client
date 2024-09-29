@@ -1,5 +1,5 @@
 import styles from './Ui.module.scss';
-import React, {useState} from "react";
+import React from "react";
 
 interface TableListInfoProps {
     tableList: string[];

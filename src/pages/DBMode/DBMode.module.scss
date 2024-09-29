@@ -41,7 +41,7 @@
 
 // 사이드바 공통 디자인
 .dataBaseSidebar {
-  font-family: $font-KoPub-bold;
+  font-weight: $font-weight-bold;
   padding: 2rem 0;
   display: flex;
   flex-direction: column;
@@ -258,7 +258,7 @@
       border-radius: 100%;
       @include flex-center;
       color: white;
-      font-family: $font-KoPub-bold;
+      font-weight: $font-weight-bold;
       cursor: pointer;
       margin: 0 .5rem 0 0;
     }
@@ -283,7 +283,7 @@
         gap: 1rem;
 
         .joinInfo {
-          & > p { color: $color-blue-deep; font-family: $font-KoPub-bold; margin: .5rem 0; }
+          & > p { color: $color-blue-deep; font-weight: $font-weight-bold; margin: .5rem 0; }
         } //joinInfo
 
         // 복사 버튼 디자인
@@ -304,7 +304,11 @@
             animation: fadeOut 1.5s forwards;
           }
         } // copyButtonContainer
-      } // joinInfo
+      } // joinInfoBox
+
+      .tableViewBox {
+        width: 65%;
+      } // tableViewBox
     } // ssrView
 
     .hidden {
@@ -389,7 +393,7 @@
       white-space: nowrap;
       margin-right: .5rem;
       flex-shrink: 0; // 크기를 고정
-      font-family: $font-KoPub-bold;
+      font-weight: $font-weight-bold;
     }
 
     .filterUrlWrap {
@@ -435,7 +439,7 @@
           @include noDrag;
           padding: 5px;
           cursor: pointer;
-          font-family: $font-KoPub-bold;
+          font-weight: $font-weight-bold;
           font-size: 1.3rem;
 
           &:hover { color: $color-blue-deep; }
@@ -458,7 +462,7 @@
           span {
             @include nowrap;
             color: $color-blue-deep;
-            font-family: $font-KoPub-bold;
+            font-weight: $font-weight-bold;
           }
         }
 
@@ -529,7 +533,7 @@
     @include insideBox(40%, 96%);
 
     .description {
-      font-family: $font-KoPub-bold;
+      font-weight: $font-weight-bold;
       text-align: center;
       white-space: nowrap;
       h2 { color: $color-blue-deep; }
@@ -603,7 +607,7 @@
 
         span {
           color: $color-blue-deep;
-          font-family: $font-KoPub-bold;
+          font-weight: $font-weight-bold;
           font-size: 1.5rem;
           text-align: right;
         }
@@ -703,7 +707,7 @@
       .addBut {
         @include flex-center;
         color: $color-blue-deep;
-        font-family: $font-KoPub-bold;
+        font-weight: $font-weight-bold;
         font-size: 1.5rem;
 
         input[type="file"] {

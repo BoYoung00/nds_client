@@ -27,7 +27,7 @@
 
       & > p:first-child {
         font-size: 2rem;
-        font-family: $font-KoPub-bold;
+        font-weight: $font-weight-bold;
         margin: 0;
       }
     } // __header
@@ -52,7 +52,7 @@
         & > h2 { color: $color-blue-deep; }
         & > p { color: $color-gray-deep; }
         & > p > span {
-          font-family: $font-KoPub-bold;
+          font-weight: $font-weight-bold;
           display: block;
           color: black;
           margin-bottom: .6rem;
@@ -142,7 +142,7 @@
       }
       & > p > span {
         display: block;
-        font-family: $font-KoPub-bold;
+        font-weight: $font-weight-bold;
         color: black;
         margin-bottom: .6rem;
       }
@@ -157,7 +157,7 @@
     padding: 2rem 0;
 
     & > h1 { color: white; opacity: 0; }
-    & > p { font-size: 1.2rem; font-family: $font-KoPub-bold; opacity: 0; }
+    & > p { font-size: 1.2rem; font-weight: $font-weight-bold; opacity: 0; }
     & > img {
       width: 80%;
       height: 42rem;
@@ -186,7 +186,7 @@
     padding: 0;
     gap: 1.5rem;
     color: #515151;
-    font-family: $font-KoPub-bold;
+    font-weight: $font-weight-bold;
     font-size: 1.2rem;
     margin: 1rem .5rem;
 
@@ -197,7 +197,7 @@
     padding: .5rem 1rem;
     text-decoration: none;
     color: #515151;
-    font-family: $font-KoPub-bold;
+    font-weight: $font-weight-bold;
     font-size: 1.1rem;
   } // Link
 } // header

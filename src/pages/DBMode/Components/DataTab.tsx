@@ -188,7 +188,9 @@ const DataTab: React.FC = () => {
                                         </button>
                                     </section>
                                 </section>
-                                <TableView tableStructure={joinTableStructure} useAltStyle={false} />
+                                <section className={styles.tableViewBox}>
+                                    <TableView tableStructure={joinTableStructure} useAltStyle={false} />
+                                </section>
                             </div>
                         )}
                         <p onClick={(e) => {e.stopPropagation(); toggleSsrView();}}>Join</p>

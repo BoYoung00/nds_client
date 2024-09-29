@@ -3,7 +3,7 @@
 @mixin tab-style {
   @include nowrap;
   text-align: center;
-  font-family: $font-KoPub-bold;
+  font-weight: $font-weight-bold;
   cursor: pointer;
   padding: .5em .8em 1em .8em;
   border: 1px solid #bcbcbc;

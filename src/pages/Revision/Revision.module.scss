@@ -112,7 +112,7 @@ $widthSize: 80%;
     li {
       padding: .3rem .8rem;
       cursor: pointer;
-      font-family: $font-KoPub-bold;
+      font-weight: $font-weight-bold;
 
       & > span { color: $color-gray-middle; font-size: .7rem }
 
@@ -242,7 +242,7 @@ $widthSize: 80%;
   th, td {
     min-width: 5rem;
     padding: 0;
-    font-family: $font-KoPub-bold;
+    font-weight: $font-weight-bold;
     text-align: center;
   }
 

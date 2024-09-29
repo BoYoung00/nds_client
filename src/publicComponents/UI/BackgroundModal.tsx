@@ -42,7 +42,7 @@ const BackgroundModal: React.FC<BackgroundModalProps> = ({ width = 80, height = 
 
     const closeButtonStyle: React.CSSProperties = {
         fontSize: '15px',
-        fontFamily: 'KoPubWorld Bold',
+        fontFamily: 'KoPubWorld돋움체 Medium',
         cursor: 'pointer',
     };
 

@@ -1,26 +1,14 @@
-@font-face {
-  font-family: KoPubWorld Bold; /* 폰트 이름 정의 */
-  src: url('assets/font/KoPubWorld Dotum Bold.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: KoPubWorld Light; /* 폰트 이름 정의 */
-  src: url('assets/font/KoPubWorld Dotum Light.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: KoPubWorld Medium; /* 폰트 이름 정의 */
-  src: url('assets/font/KoPubWorld Dotum Medium.ttf') format('truetype');
-}
 
 $color-blue-deep: #00A3FF;
 $color-blue-light: #62C6FF;
+
 $color-gray-deep: #515151;
 $color-gray-middle: #9b9b9b;
 $color-gray-light: #F5F5F5;
-$font-KoPub-bold: KoPubWorld Bold, sans-serif;
-$font-KoPub-medium: KoPubWorld Medium, sans-serif;
-$font-KoPub-light: KoPubWorld Light, sans-serif;
+
+$font-KoPub-medium: 'KoPubWorld돋움체 Medium', sans-serif;
+$font-KoPub-light: 'KoPubWorld돋움체 Light', sans-serif;
+$font-weight-bold: 700; // Bold weight
 
 
 @mixin flex-center {
@@ -83,12 +71,11 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
   background: none;
   cursor: pointer;
   font-size: $fontSize;
+  font-family: $font-KoPub-medium;
   color: $color;
 
   @if $isBold {
-    font-family: $font-KoPub-bold;
-  } @else {
-    font-family: $font-KoPub-medium;
+    font-weight: $font-weight-bold;
   }
 }
 
@@ -110,7 +97,8 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
   font-size: $fontSize;
   border-radius: 4px;
   cursor: pointer;
-  font-family: $font-KoPub-bold;
+  font-family: $font-KoPub-medium;
+  font-weight: $font-weight-bold;
   text-align: center;
 
   @if($isBlueBut) {
@@ -193,7 +181,7 @@ $font-KoPub-light: KoPubWorld Light, sans-serif;
 
 // 밑줄 텍스트 디자인
 @mixin line-text-style {
-  font-family: $font-KoPub-bold;
+  font-weight: $font-weight-bold;
   color: $color-blue-deep;
   text-decoration: underline;
   cursor: pointer;

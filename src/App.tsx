@@ -11,6 +11,7 @@ import Template from "./pages/Template";
 import {TableProvider} from "./contexts/TableContext";
 import {RevisionProvider} from "./contexts/RevisionContext";
 import {WebBuilder} from "./pages/WebBuilder";
+import {DataBaseProvider} from "./contexts/DataBaseContext";
 
 const App: React.FC = () => {
     const [token, setToken] = useState<string | null>(null);
@@ -62,16 +63,18 @@ const App: React.FC = () => {
             {token ? (
                 <>
                     <Header token={token} onLogout={handleLogout} />
-                    <div className={styles.app__content}>
-                        <Routes>
-                            <Route path='/' element={<Navigate to="/database" />} />
-                            <Route path="/database" element={<TableProvider> <DataBase /> </TableProvider>} />
-                            <Route path="/revision" element={<RevisionProvider> <Revision /> </RevisionProvider>} />
-                            <Route path="/api" element={<ApiArchive />} />
-                            <Route path="/workspace" element={<Template />} />
-                            <Route path="/workspace/:template" element={<WebBuilder />} />
-                        </Routes>
-                    </div>
+                    <DataBaseProvider>
+                        <div className={styles.app__content}>
+                            <Routes>
+                                <Route path='/' element={<Navigate to="/database" />} />
+                                <Route path="/database" element={<TableProvider> <DataBase /> </TableProvider>} />
+                                <Route path="/revision" element={<RevisionProvider> <Revision /> </RevisionProvider>} />
+                                <Route path="/api" element={<ApiArchive />} />
+                                <Route path="/workspace" element={<Template />} />
+                                <Route path="/workspace/:template" element={<WebBuilder />} />
+                            </Routes>
+                        </div>
+                    </DataBaseProvider>
                 </>
             ) : (
                 <Routes>
