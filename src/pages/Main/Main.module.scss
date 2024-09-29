@@ -38,7 +38,7 @@
 
       &__img {
         width: 70%;
-        height: 35rem;
+        height: auto;
         margin: 4rem;
         opacity: 0;
         transform: translateY(50px);
@@ -129,7 +129,7 @@
 
       & > img {
         width: 100%;
-        height: 40rem;
+        height: auto;
         box-shadow: 0 3px 3px 0 rgb(0, 0, 0, 0.2);
         background: grey;
       }
@@ -160,7 +160,7 @@
     & > p { font-size: 1.2rem; font-weight: $font-weight-bold; opacity: 0; }
     & > img {
       width: 80%;
-      height: 42rem;
+      height: auto;
       opacity: 0;
     }
   } // group3

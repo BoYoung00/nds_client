@@ -11,6 +11,10 @@ import ellipse_red from '../../assets/images/ellipse_red.png';
 import ellipse_blue from '../../assets/images/ellipse_blue.png';
 import { Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
+import database from '../../assets/images/main/database.png';
+import apiArchive from '../../assets/images/main/apiArchive.png';
+import revision from '../../assets/images/main/revision.png';
+import workspace from '../../assets/images/main/workspace.png';
 
 const Main: React.FC = () => {
     // 헤더 이동
@@ -52,7 +56,7 @@ const Main: React.FC = () => {
                 <ul>
                     <img className={styles.header__logo} src={logo} alt="Logo" />
                     <li onClick={() => scrollToSection(section1Ref)}>DATABASE</li>
-                    <li onClick={() => scrollToSection(section2Ref)}>VERSION</li>
+                    <li onClick={() => scrollToSection(section2Ref)}>REVISION</li>
                     <li onClick={() => scrollToSection(section2Ref)}>API ARCHIVE</li>
                     <li onClick={() => scrollToSection(section3Ref)}>WORKSPACE</li>
                 </ul>
@@ -63,12 +67,12 @@ const Main: React.FC = () => {
                 <div ref={section1Ref} className={styles.group1}>
                     <section className={`${styles.group1__header} ${observer1InView ? styles.visible1 : ''}`} ref={observer1Ref}>
                         <p>서비스 소개</p>
-                        <p>우리 D-SIM은 웹으로 쉽게 데이터 베이스를 관리할 수 있는 서비스를 제공합니다.</p>
+                        <p>우리 D-SIM은 웹으로 쉽게 데이터베이스를 관리할 수 있는 서비스를 제공합니다.</p>
                     </section>
                     <section className={styles.group1__mainTop}>
                         <img
-                            src={''}
-                            alt="상단 이미지"
+                            src={database}
+                            alt="database"
                             className={`${styles.group1__mainTop__img} ${observer2InView ? styles.visible2 : ''}`} ref={observer2Ref}
                         />
                         <div className={`${styles.group1__mainTop__comment} ${observer3InView ? styles.visible3 : ''}`} ref={observer3Ref}>
@@ -115,15 +119,15 @@ const Main: React.FC = () => {
 
                 <div ref={section2Ref} className={styles.group2}>
                     <section className={`${styles.group2__section} ${observer6InView ? styles.visible6 : ''}`} ref={observer6Ref}>
-                        <img src="" alt="" />
-                        <h2>VERSION</h2>
+                        <img src={revision} alt="revision" />
+                        <h2>REVISION</h2>
                         <p>
                             <span>“데이터베이스 버전 관리”</span>
                             데이터베이스 변경 내역을 저장하고, 원하는 시점으로 쉽게 되돌리거나 체크아웃할 수 있습니다. 리셋 기능으로 잘못된 변경도 간편하게 복구하세요.
                         </p>
                     </section>
                     <section className={`${styles.group2__section} ${observer7InView ? styles.visible7 : ''}`} ref={observer7Ref}>
-                        <img src="" alt="" />
+                        <img src={apiArchive} alt="apiArchive" />
                         <h2>API ARCHIVE</h2>
                         <p>
                             <span>“API 보관함”</span>
@@ -134,7 +138,7 @@ const Main: React.FC = () => {
 
                 <div ref={section3Ref} className={styles.group3} >
                     <h1 className={`${observer8InView ? styles.visible8 : ''}`}>WORKSPACE</h1>
-                    <img src="" alt="" className={`${observer8InView ? styles.visible8 : ''}`} ref={observer8Ref}/>
+                    <img src={workspace} alt="workspace" className={`${observer8InView ? styles.visible8 : ''}`} ref={observer8Ref}/>
                     <p className={`${observer8InView ? styles.visible9 : ''}`}>직접 만든 데이터베이스를 바탕으로 템플릿을 이용해 본인만의 웹 사이트를 만들어보세요.</p>
                 </div>
             </div>
