@@ -38,7 +38,7 @@ const DBMode:React.FC = () => {
 
     return (
         <div className={styles.dbMode}>
-            <TabBar tabs={['Data', 'Like', 'Rest API', 'Query', 'Excel', 'Resource']} onTabSelect={(index) => setSelectedTab(index)}/>
+            <TabBar tabs={['Data', 'Custom API', 'Rest API', 'Query', 'Excel', 'Resource']} onTabSelect={(index) => setSelectedTab(index)}/>
             <main className={styles.dbMode__content}>
                 <DataBaseBlueSidebar /> {/* 데이터베이스 사이드바 */}
                 <DataBaseWhiteSidebar /> {/* 테이블 사이드바 */}

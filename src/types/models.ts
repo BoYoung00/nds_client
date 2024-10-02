@@ -108,7 +108,7 @@ interface FilterRequest {
 
 // 필터 Response 타입
 interface CustomAPIResponse {
-    apiFilterRequest: FilterResponse[];
+    apiFilterResponse: FilterResponse[];
     attributeNames: string[];
 }
 interface FilterResponse {

@@ -69,9 +69,8 @@ export function useLikeTab() {
         try {
             setLoading(true);
             const data: CustomAPIResponse = await getUserLikeFilters(tableHash);
-            if (data.apiFilterRequest.length === 0 ||
-                data.attributeNames.length === 0) return;
-            initializeFilters(data.apiFilterRequest);
+            // if (data.apiFilterRequest.length === 0 || data.attributeNames.length === 0) return;
+            initializeFilters(data.apiFilterResponse);
             setAttributeNames(data.attributeNames);
         } catch (error) {
             // setErrorMessage('필터 목록을 가져오는 데 실패했습니다.');
