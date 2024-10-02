@@ -69,7 +69,7 @@ export function useLikeTab() {
         try {
             setLoading(true);
             const data: CustomAPIResponse = await getUserLikeFilters(tableHash);
-            // if (data.apiFilterRequest.length === 0 || data.attributeNames.length === 0) return;
+            if (data.apiFilterResponse.length === 0 && data.attributeNames.length === 0) return;
             initializeFilters(data.apiFilterResponse);
             setAttributeNames(data.attributeNames);
         } catch (error) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './TableView.module.scss';
 
 interface TableViewProps {
@@ -41,7 +41,7 @@ const TableView: React.FC<TableViewProps> = ({ tableStructure, useAltStyle = tru
                             const isChecked = attributeNames.includes(columnName); // 체크 여부 확인
 
                             return (
-                                <th key={index} onClick={() => handleCheckboxChange(columnName)} style={{ cursor: 'pointer' }}>
+                                <th key={index} onClick={() => handleCheckboxChange(columnName)}>
                                     {columnName}
                                     {isFilter && (
                                         <input
@@ -51,7 +51,6 @@ const TableView: React.FC<TableViewProps> = ({ tableStructure, useAltStyle = tru
                                         />
                                     )}
                                 </th>
-
                             );
                         })}
                     </tr>
@@ -62,14 +61,8 @@ const TableView: React.FC<TableViewProps> = ({ tableStructure, useAltStyle = tru
                             {columns.map((columnKey, colIndex) => {
                                 const cellData = tableStructure[columnKey][rowIndex] || { id: null, data: '', dataType: '' };
                                 return (
-                                    <td key={colIndex}>
-                                        <input
-                                            type="text"
-                                            value={cellData.data}
-                                            readOnly
-                                            className={useAltStyle ? styles.readOnlyInput : styles.altReadOnlyInput}
-                                            placeholder="NULL"
-                                        />
+                                    <td key={colIndex} className={useAltStyle ? styles.readOnlyInput : styles.altReadOnlyInput}>
+                                        {cellData.data ? cellData.data : 'NULL'}
                                     </td>
                                 );
                             })}

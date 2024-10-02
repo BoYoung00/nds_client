@@ -43,7 +43,7 @@ $font-weight-bold: 700; // Bold weight
   width: max-content;
 
   thead > tr > th > input[type='checkbox'] {
-    width: auto;
+    width: 1rem; height: 1rem;
   }
 
   th, td {

@@ -17,13 +17,13 @@
 
   &__main {
     table {
-      font-size: .8rem;
-      width: 100%;
+      font-size: .9rem;
       border-collapse: collapse;
       border: 1px solid #ccc;
 
       th, td {
-        padding: 0.5rem;
+        min-width: 3rem;
+        padding: .5rem;
         text-align: left;
         border: 1px solid #ccc;
       }

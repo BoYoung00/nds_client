@@ -29,7 +29,8 @@ const DataTab: React.FC = () => {
             isJoinTable,
             isSsrViewVisible,
             joinTableStructure,
-            showCopyMessage
+            showCopyMessage,
+            parentTables
         },
         handlers: {
             handleAddData,
@@ -159,16 +160,14 @@ const DataTab: React.FC = () => {
                                 <section className={styles.joinInfoBox}>
                                     <section className={styles.joinInfo}>
                                         <p>관계 정보</p>
-                                        {/*<strong>- 부모 테이블</strong> <br/>*/}
-                                        {/*이름 : {joinParentsTable?.name} <br/>*/}
-                                        {/*설명 : {joinParentsTable?.comment} <br/>*/}
-                                        {/*PK행 이름 : {*/}
-                                        {/*Object.keys(joinParentsTable?.tableInnerStructure || {})*/}
-                                        {/*    .map((key: string) => findColumnInfo(key))*/}
-                                        {/*    .filter((columnInfo) => columnInfo.isPk)  // PK인 컬럼만 필터링*/}
-                                        {/*    .map((columnInfo) => columnInfo.name)     // 컬럼 이름만 추출*/}
-                                        {/*    .join(', ') || '없음'*/}
-                                        {/*} <br/><br/>*/}
+                                        {parentTables && parentTables.length > 0 && parentTables.map((parentTable, index) => (
+                                            <div key={index}>
+                                                <strong>- {index + 1}번 부모 테이블 </strong> <br />
+                                                이름 : {parentTable.name} <br />
+                                                설명 : {parentTable.comment} <br />
+                                                PK행 이름 : {parentTable.pkName} <br /><br />
+                                            </div>
+                                        ))}
                                         <strong>- 자식 테이블</strong> <br/>
                                         이름 : {selectedTable?.name} <br/>
                                         설명 : {selectedTable?.comment} <br/>

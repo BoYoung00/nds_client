@@ -3,6 +3,10 @@ import {copyToClipboard, findColumnInfo} from "../../../utils/utils";
 import {createData, findJoinPreviewData, getImagesPathList, getVideoPathList} from "../../../services/api";
 import {useTable} from "../../../contexts/TableContext";
 
+interface ParentTableInfo {
+    name: string, comment: string, pkName: string
+}
+
 const createEmptyData = (columnKey: string, columnLength: number): DataDTO => {
     const { columnID, type, columnHash } = findColumnInfo(columnKey);
     return {
@@ -20,6 +24,7 @@ export const useDataTab = () => {
     const {selectedTable, setSelectedTable, setTables, tables} = useTable();
     const [imagePaths, setImagePaths] = useState<MediaFile[]>([]);
     const [videoPaths, setVideoPaths] = useState<MediaFile[]>([]);
+    const [parentTables, setParentTables] = useState<ParentTableInfo[]>([]);
 
     const [tableStructure, setTableStructure] = useState<TableInnerStructure | undefined>(undefined);
     const [editingCell, setEditingCell] = useState<{ columnKey: string; rowIndex: number } | null>(null);
@@ -52,11 +57,19 @@ export const useDataTab = () => {
         columns.forEach(columnKey => {
             const { joinTableHash } = findColumnInfo(columnKey);
             if (joinTableHash) {
-                handleFetchJoinTablePreview();
                 setIsJoinTable(true)
+                findParentTableInfo(joinTableHash);
             }
         })
+        if (isJoinTable) handleFetchJoinTablePreview();
     }, [selectedTable])
+
+    // 조인 테이블이면 부모 테이블 정보 저장
+    useEffect(() => {
+        if (isJoinTable) {
+            handleFetchJoinTablePreview();
+        }
+    }, [isJoinTable]);
 
     // 데이터 저장 (비동기 처리)
     useEffect(() => {
@@ -115,6 +128,7 @@ export const useDataTab = () => {
             setSelectedRow(null);
             setCreateRowLine(0);
             setIsJoinTable(false);
+            setParentTables([]);
         }
     }
 
@@ -226,9 +240,7 @@ export const useDataTab = () => {
                 columnLine: parseInt(updatedCellData[rowIndex].lineHash),
                 dataType: type,
             };
-
             // console.log("행 수정", newData)
-
             if (newData.id === null) {
                 setCreateDataList(prevList => [
                     ...prevList.filter(data =>
@@ -247,24 +259,42 @@ export const useDataTab = () => {
     };
 
     // 조인 데이터 데이터 리스트 찾기
+    const findParentTableInfo = (joinTableHash: string) => {
+        const parentsTable = tables.find(table => table.tableHash === joinTableHash);
+
+        if (!parentsTable) return;
+
+        const parentsTablePK = Object.keys(parentsTable?.tableInnerStructure || {})
+            .map(findColumnInfo)
+            .filter(columnInfo => columnInfo.isPk)
+            .map(columnInfo => columnInfo.name)
+            .join(', ');
+
+        setParentTables(prevState => [
+            ...prevState,
+            { name: parentsTable.name, comment: parentsTable.comment, pkName: parentsTablePK }
+        ]);
+
+    };
+
+
+    // 조인 데이터 데이터 리스트 찾기
     const findJoinDataList = (tableHash: string): string[] => {
-        const parentsTable = tables.find((table) => table.tableHash === tableHash);
+        const parentsTable = tables.find(table => table.tableHash === tableHash);
         if (!parentsTable) return [];
 
-        const dataList: string[] = [];
-
-        for (const key in parentsTable.tableInnerStructure) {
-            const { isPk } = findColumnInfo(key)
+        return Object.keys(parentsTable.tableInnerStructure).reduce((dataList: string[], key) => {
+            const { isPk } = findColumnInfo(key);
             const columns = parentsTable.tableInnerStructure[key];
 
             if (isPk) {
-                columns.forEach((column) => {
-                    dataList.push(column.data);
-                });
+                columns.forEach(column => dataList.push(column.data));
             }
-        }
-        return dataList;
+
+            return dataList;
+        }, []);
     };
+
 
     // 테이블 이미지 리스트 가져오기
     const fetchMedias = async () => {
@@ -349,7 +379,8 @@ export const useDataTab = () => {
             isJoinTable,
             isSsrViewVisible,
             joinTableStructure,
-            showCopyMessage
+            showCopyMessage,
+            parentTables
         },
         handlers: {
             handleAddData,
