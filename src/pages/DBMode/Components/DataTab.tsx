@@ -159,7 +159,7 @@ const DataTab: React.FC = () => {
                             <div className={styles.ssrView}>
                                 <section className={styles.joinInfoBox}>
                                     <section className={styles.joinInfo}>
-                                        <p>조인 정보</p>
+                                        <p>관계 정보</p>
                                         <strong>- 부모 테이블</strong> <br/>
                                         이름 : {joinParentsTable?.name} <br/>
                                         설명 : {joinParentsTable?.comment} <br/>
@@ -193,7 +193,7 @@ const DataTab: React.FC = () => {
                                 </section>
                             </div>
                         )}
-                        <p onClick={(e) => {e.stopPropagation(); toggleSsrView();}}>Join</p>
+                        <p onClick={(e) => {e.stopPropagation(); toggleSsrView();}}>Rel.</p>
                     </div>
                 }
             </div>
@@ -267,7 +267,7 @@ const DataCell: React.FC<DataCellProps> = ({
                 className={styles.searchBut}
                 onClick={handleButtonClick}
             >
-                {type === 'join' ? 'Join' : 'Media'}
+                {type === 'join' ? 'Link' : 'Media'}
             </button>
             {showSearch && searchPosition && (
                 <span

@@ -188,6 +188,9 @@ interface TodoPageTodoList{
 // 만약 GalleryPage 타입의 page : 'gallery-list' 이라면
 interface GalleryPageGalleryList{
     connectURL: string;
+    inputs: {
+        'galleryName': string;
+    }
     columns: {
         'id': string;
         'title': string;

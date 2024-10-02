@@ -145,7 +145,7 @@ const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ handleSetColumnDa
                             <th className={styles.fk}>FK</th>
                             <th className={styles.uk}>UK</th>
                             <th className={styles.nn}>NN</th>
-                            <th className={styles.join}>조인</th>
+                            <th className={styles.join}>관계 연결</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -255,7 +255,7 @@ const TableRow: React.FC<TableRowProps> = ({ joinTables, handleSelectJoinTable, 
                     <h5 onClick={() => setShowSearch(!showSearch)}>검색</h5>
                     <span className={styles.searchBox}>
                         <Search
-                            title={"조인 테이블 검색"}
+                            title={"부모 테이블 검색"}
                             showSearch={showSearch}
                             setShowSearch={setShowSearch}
                             dataList={joinTables}

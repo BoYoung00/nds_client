@@ -179,7 +179,7 @@
 
 //DataTab 디자인
 .dataTab {
-  width: 99%; height: 90%;
+  width: 99%; height: 80%;
 
   &__header {
     @include flex-space-between;
@@ -247,7 +247,7 @@
 
   .joinTableView {
     position: absolute;
-    bottom: 4.5rem;
+    bottom: 3rem;
     right: 4rem;
     display: flex;
     align-items: end;

@@ -249,6 +249,9 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
                 case 'gallery-list':
                     return {
                         connectURL: responseData.connectURL,
+                        inputs: {
+                          'galleryName': responseData.columns?.['galleryName'] || '',
+                        },
                         columns: {
                             'id': responseData.columns?.['id'] || '',
                             'title': responseData.columns?.['title'] || '',
@@ -295,6 +298,7 @@ const ApplyTableData: React.FC<ApplyTableDataProps> = ({ selectedTab, workspaceD
         'status': '상태',
         'todo-id': '작업 ID',
         'comment': '설명',
+        'galleryName': '갤러리 이름'
     };
 
     // connect url 변경 핸들러
