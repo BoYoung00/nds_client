@@ -292,7 +292,7 @@ export const getUserLikeFilters = async (tableHash: string) => {
 };
 
 // Like 필터링 데이터 저장
-export const saveFilteredTableData = async (tableHash: string, tableFilterRequests: FilterRequest[]) => {
+export const saveFilteredTableData = async (tableHash: string, tableFilterRequests: CustomAPIRequest) => {
     try {
         const response = await client.post(`/api/json/like/${tableHash}`, tableFilterRequests);
         if (response.status === 200) {

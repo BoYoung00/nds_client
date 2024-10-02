@@ -29,7 +29,6 @@ export const useDataTab = () => {
     const [deletedRows, setDeletedRows] = useState<number[]>([]); // 삭제된 행 상태
     const [joinTableStructure, setJoinTableStructure] = useState<TableInnerStructure | null>(null);
     const [isJoinTable, setIsJoinTable] =useState<boolean>(false);
-    const [joinParentsTable, setJoinParentsTable] = useState<TableData | null>(null); // (조인 데이터이라면) 부모 테이블의 정보 저장
     const [isSsrViewVisible, setIsSsrViewVisible] = useState(false);
     const [showCopyMessage, setShowCopyMessage] = useState(false);
 
@@ -55,7 +54,6 @@ export const useDataTab = () => {
             if (joinTableHash) {
                 handleFetchJoinTablePreview();
                 setIsJoinTable(true)
-                findJoinParentsData(joinTableHash);
             }
         })
     }, [selectedTable])
@@ -248,23 +246,16 @@ export const useDataTab = () => {
         }
     };
 
-    // 부모 조인 테이블 정보 가져오기
-    const findJoinParentsData = (tableHash: string) => {
+    // 조인 데이터 데이터 리스트 찾기
+    const findJoinDataList = (tableHash: string): string[] => {
         const parentsTable = tables.find((table) => table.tableHash === tableHash);
-        if (parentsTable) setJoinParentsTable(parentsTable);
-    }
-
-    // 조인 데이터 리스트 찾기
-    const findJoinDataList = (): string[] => {
-        if (!joinParentsTable) {
-            return [];
-        }
+        if (!parentsTable) return [];
 
         const dataList: string[] = [];
 
-        for (const key in joinParentsTable.tableInnerStructure) {
+        for (const key in parentsTable.tableInnerStructure) {
             const { isPk } = findColumnInfo(key)
-            const columns = joinParentsTable.tableInnerStructure[key];
+            const columns = parentsTable.tableInnerStructure[key];
 
             if (isPk) {
                 columns.forEach((column) => {
@@ -321,7 +312,7 @@ export const useDataTab = () => {
         }
     };
 
-    // join 테이블 프리뷰 SSR 통신
+    // join 테이블 프리뷰 데이터 통신
     const handleFetchJoinTablePreview = async () => {
         try {
             const response = await findJoinPreviewData(selectedTable?.id!);
@@ -338,12 +329,10 @@ export const useDataTab = () => {
 
     // 조인 테이블 접근 url 복사
     const handleCopyJoinTableUrl = () => {
-        if (joinParentsTable) {
-            const apiUrl = process.env.REACT_APP_API_URL;
-            const url = apiUrl + '/api/json/join/' + joinParentsTable.tableHash
-            copyToClipboard(url, () => setShowCopyMessage(true));
-            setShowCopyMessage(false);
-        }
+        const apiUrl = process.env.REACT_APP_API_URL;
+        const url = apiUrl + '/api/json/join/' + selectedTable?.tableHash
+        copyToClipboard(url, () => setShowCopyMessage(true));
+        setShowCopyMessage(false);
     }
 
     return {
@@ -360,7 +349,6 @@ export const useDataTab = () => {
             isJoinTable,
             isSsrViewVisible,
             joinTableStructure,
-            joinParentsTable,
             showCopyMessage
         },
         handlers: {

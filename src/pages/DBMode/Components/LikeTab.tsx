@@ -18,6 +18,8 @@ const LikeTab: React.FC = () => {
             inputValues,
             selectOptions,
             filterApiUrl,
+            attributeNames,
+            setAttributeNames,
         },
         handlers: {
             handleSelectChange,
@@ -119,7 +121,7 @@ const LikeTab: React.FC = () => {
                     <img src={doubleArrow} alt="화살표" />
                 </section>
                 <section className={styles.likeTab__previewContainer} style={{padding: '0'}}>
-                    <TableView tableStructure={filteredTableStructure} />
+                    <TableView tableStructure={filteredTableStructure} isFilter={true} attributeNames={attributeNames} setAttributeNames={setAttributeNames}/>
                 </section>
             </div>
 

@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {findColumnInfo} from "../../../utils/utils";
-import {getTableHashUrl, getUserLikeFilters, saveFilteredTableData} from "../../../services/api";
+import {findJoinPreviewData, getTableHashUrl, getUserLikeFilters, saveFilteredTableData} from "../../../services/api";
 import {useTable} from "../../../contexts/TableContext";
 
 
@@ -13,6 +13,7 @@ export function useLikeTab() {
     const [filteredTableStructure, setFilteredTableStructure] = useState<TableInnerStructure | null>(null);
     const [columnNames, setColumnNames] = useState<string[]>([]);
     const [filterApiUrl, setFilterApiUrl] = useState<string | null>(null);
+    const [attributeNames, setAttributeNames] = useState<string[]>([]); // 행 선택 값
 
     const [columns, setColumns] = useState<string[]>(['']);
     const [selectedColumnData, setSelectedColumnData] = useState<{ id: number, columnHash: string, type: string }[]>([]); // column 선택 값
@@ -30,8 +31,16 @@ export function useLikeTab() {
             setInputValues(['']);
             setSelectOptions(['']);
 
-            setTableStructure(selectedTable.tableInnerStructure);
-
+            // 조인 테이블인지 찾기
+            const columns = Object.keys(selectedTable?.tableInnerStructure!);
+            columns.forEach(columnKey => {
+                const { joinTableHash } = findColumnInfo(columnKey);
+                if (joinTableHash) {
+                    handleFetchJoinTablePreview();
+                } else {
+                    setTableStructure(selectedTable.tableInnerStructure);
+                }
+            })
             fetchFilters(selectedTable.tableHash); // 필터 가져오기
             handelFetchFilterUrl(); // url 가져오기
         }
@@ -55,15 +64,17 @@ export function useLikeTab() {
         }
     }, [tableStructure, columns, inputValues, selectOptions]);
 
-    // 필터 목록을 가져오는 함수
+    // 필터 목록을 가져오는 함수 (get 통신)
     const fetchFilters = async (tableHash: string) => {
         try {
             setLoading(true);
-            const data = await getUserLikeFilters(tableHash);
-            if (data.length === 0) return;
-            initializeFilters(data);
+            const data: CustomAPIResponse = await getUserLikeFilters(tableHash);
+            if (data.apiFilterRequest.length === 0 ||
+                data.attributeNames.length === 0) return;
+            initializeFilters(data.apiFilterRequest);
+            setAttributeNames(data.attributeNames);
         } catch (error) {
-            setErrorMessage('필터 목록을 가져오는 데 실패했습니다.');
+            // setErrorMessage('필터 목록을 가져오는 데 실패했습니다.');
         } finally {
             setLoading(false);
         }
@@ -86,6 +97,64 @@ export function useLikeTab() {
         setSelectedColumnData(newSelectedColumnData);
         setInputValues(newInputValues);
         setSelectOptions(newSelectOptions);
+    };
+
+    // 필터를 저장 하는 함수 (통신)
+    const fetchFilterSave = async () => {
+        if (!validateFilters() || !selectedTable?.tableHash) return;
+
+        const filterRequests = columns.map((_, index) => {
+            const columnData = selectedColumnData[index];
+            const isNumeric = ['INTEGER', 'REAL'].includes(columnData.type);
+            return {
+                filterColumnID: columnData.id,
+                filterColumnHash: columnData.columnHash,
+                filterIntegerValue: isNumeric ? parseFloat(inputValues[index]) : null,
+                filterIntegerOption: isNumeric ? selectOptions[index] : null,
+                filterWordValue: !isNumeric ? inputValues[index] : null,
+                filterWorldOption: !isNumeric ? selectOptions[index] : null
+            };
+        });
+        const customAPIRequest: CustomAPIRequest = {
+            apiFilterRequest: filterRequests,
+            attributeNames: attributeNames,
+        }
+        console.log('customAPIRequest', customAPIRequest)
+        try {
+            setLoading(true);
+            await saveFilteredTableData(selectedTable.tableHash, customAPIRequest);
+            setSuccessMessage("필터 저장에 성공하셨습니다.");
+            if (filterApiUrl === null) handelFetchFilterUrl();
+        } catch (error) {
+            const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
+            setErrorMessage(errorMessage);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // REST API url 통신
+    const handelFetchFilterUrl = async () => {
+        if (!selectedTable) return;
+
+        try {
+            const response = await getTableHashUrl(selectedTable.tableHash);
+            setFilterApiUrl(response);
+        } catch (error) {
+            // 해당 테이블에 필터가 없을 경우
+            setFilterApiUrl(null);
+        }
+    }
+
+    // join 테이블 프리뷰 데이터 통신
+    const handleFetchJoinTablePreview = async () => {
+        try {
+            const response = await findJoinPreviewData(selectedTable?.id!);
+            setTableStructure(response);
+        } catch (error) {
+            const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
+            setErrorMessage(errorMessage);
+        }
     };
 
     // 프리뷰에 필터를 적용하는 함수
@@ -213,49 +282,6 @@ export function useLikeTab() {
         return true;
     };
 
-    // 필터를 저장하는 함수 (통신)
-    const fetchFilterSave = async () => {
-        if (!validateFilters() || !selectedTable?.tableHash) return;
-
-        const filterRequests = columns.map((_, index) => {
-            const columnData = selectedColumnData[index];
-            const isNumeric = ['INTEGER', 'REAL'].includes(columnData.type);
-            return {
-                filterColumnID: columnData.id,
-                filterColumnHash: columnData.columnHash,
-                filterIntegerValue: isNumeric ? parseFloat(inputValues[index]) : null,
-                filterIntegerOption: isNumeric ? selectOptions[index] : null,
-                filterWordValue: !isNumeric ? inputValues[index] : null,
-                filterWorldOption: !isNumeric ? selectOptions[index] : null
-            };
-        });
-
-        try {
-            setLoading(true);
-            await saveFilteredTableData(selectedTable.tableHash, filterRequests);
-            setSuccessMessage("필터 저장에 성공하셨습니다.");
-            if (filterApiUrl === null) handelFetchFilterUrl();
-        } catch (error) {
-            const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
-            setErrorMessage(errorMessage);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // REST API url 통신
-    const handelFetchFilterUrl = async () => {
-        if (!selectedTable) return;
-
-        try {
-            const response = await getTableHashUrl(selectedTable.tableHash);
-            setFilterApiUrl(response);
-        } catch (error) {
-            // 해당 테이블에 필터가 없을 경우
-            setFilterApiUrl(null);
-        }
-
-    }
 
     return {
         hooks: {
@@ -268,6 +294,8 @@ export function useLikeTab() {
             inputValues,
             selectOptions,
             filterApiUrl,
+            attributeNames,
+            setAttributeNames,
         },
         handlers: {
             handleSelectChange,

@@ -93,6 +93,10 @@ interface MediaFile {
 }
 
 // 필터 Request 타입
+interface CustomAPIRequest {
+    apiFilterRequest: FilterRequest[];
+    attributeNames: string[];
+}
 interface FilterRequest {
     filterColumnID: number;
     filterColumnHash: string;
@@ -103,6 +107,10 @@ interface FilterRequest {
 }
 
 // 필터 Response 타입
+interface CustomAPIResponse {
+    apiFilterRequest: FilterResponse[];
+    attributeNames: string[];
+}
 interface FilterResponse {
     filterTableHash: string;
     filterType: number;
