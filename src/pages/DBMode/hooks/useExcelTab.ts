@@ -13,6 +13,7 @@ export const useExcelTab = () => {
     const [file, setFile] = useState<File | null>(null);
     const [tableViewData, setTableViewData] = useState<string[][] | null>(null);
     const [dataSet, setDataSet] = useState<Map<string, string[]> | null>(null);
+    const [attributeNames, setAttributeNames] = useState<string[]>([]); // 행 선택 값
 
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -61,11 +62,12 @@ export const useExcelTab = () => {
         setDataSet(dataSet);
     };
 
+    // 파일 다운로드 통신
     const handleExportTable = async () => {
         if (!selectedTable) return;
 
         try {
-            const { blob: fileBlob, fileName } = await exportTable(selectedTable.id);
+            const { blob: fileBlob, fileName } = await exportTable(selectedTable.id, attributeNames);
             downloadFile(fileBlob, fileName); // 파일 다운로드
         } catch (error) {
             setErrorMessage('파일 다운로드 중 오류가 발생했습니다.');
@@ -99,14 +101,20 @@ export const useExcelTab = () => {
 
     return {
         loading,
-        file,
-        tableViewData,
-        handleFileChange,
-        handleExportTable,
-        handleFetchSaveCsvData,
-        successMessage,
-        setSuccessMessage,
-        errorMessage,
-        setErrorMessage,
+        hooks: {
+            file,
+            tableViewData,
+            attributeNames,
+            setAttributeNames,
+            successMessage,
+            setSuccessMessage,
+            errorMessage,
+            setErrorMessage,
+        },
+        handles: {
+            handleFileChange,
+            handleExportTable,
+            handleFetchSaveCsvData,
+        }
     };
 };

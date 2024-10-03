@@ -369,10 +369,13 @@ export const registerApi = async (tableHash: string) => {
 };
 
 
-// CSV 엑셀 다운로드
-export const exportTable = async (tableID: number) => {
+// CSV 엑셀 파일 다운로드
+export const exportTable = async (tableID: number, selectColumnNames: string[]) => {
     try {
         const response = await client.get(`/api/csv/export/${tableID}`, {
+            params: {
+                selectColumnNames: selectColumnNames.join(','), // 배열을 콤마로 구분된 문자열로 변환
+            },
             responseType: 'blob',
         });
         const disposition = response.headers['content-disposition'];
@@ -383,6 +386,7 @@ export const exportTable = async (tableID: number) => {
         throw error;
     }
 };
+
 
 // CSV 엑셀 데이터 저장
 export const saveCsvData = async (csvDataRequest: CsvDataRequest) => {

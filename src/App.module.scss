@@ -43,13 +43,13 @@ $font-weight-bold: 700; // Bold weight
   width: max-content;
 
   thead > tr > th > input[type='checkbox'] {
-    width: 1rem; height: 1rem;
+    width: 1.2rem; height: 1.2rem;
+    vertical-align: middle;
   }
 
   th, td {
-    min-width: 14rem;
+    min-width: 5rem;
     text-align: left;
-    width: max-content;
   }
 
   th {

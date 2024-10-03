@@ -525,68 +525,94 @@
   position: relative;
 
   main {
-    width: 100%; height: 90%;
-    max-height: 62vh;
+    width: 100%; height: 100%;
     @include flex-center;
-  }
+    gap: .5rem;
 
-  &__fileContainer {
-    @include insideBox(40%, 96%);
+    .fileContainer {
+      @include insideBox(50%, 98%);
+      border: none;
+      overflow-y: hidden;
 
-    .description {
-      font-weight: $font-weight-bold;
-      text-align: center;
-      white-space: nowrap;
-      h2 { color: $color-blue-deep; }
-      span { color: $color-blue-deep; }
-      .csvImg { width: calc(30% + 15rem); }
+      .description {
+        //font-weight: $font-weight-bold;
+        white-space: nowrap;
+        width: 100%; height: 30%;
+
+        strong { color: $color-gray-deep; }
+        h2 { margin-top: 0;}
+        span { color: $color-blue-deep; }
+        .csvImgWrap { display: flex; gap: 1rem; margin-left: 1rem }
+        .csvImg { width: calc(15% + 15rem); }
+        p { margin: .3rem; }
+      }
+
+      .fileInputWrapper {
+        height: 10%; width: 100%;
+        p { margin: 0; }
+      }
+
+      .importPreviewWrap {
+        height: 59%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .dataPreviewWrap {
+          width: 100%; height: 100%;
+
+          h3 { margin-bottom: 0; }
+
+          .dataPreview {
+            width: 100%;
+            height: 85%;
+            max-height: 30vh;
+            overflow: auto;
+            border: 1px solid #cbcbcb;
+          }
+        } // dataPreviewWrap
+
+        table {
+          @include table-styles();
+          margin: 0;
+        }
+      } // previewWrapper
     }
 
-    .fileInputWrapper {
-      @include flex-center;
+    .previewContainer {
+      @include insideBox(50%, 98%);
+      border: none;
+      overflow: hidden;
+      display: flex;
+      justify-content: space-between;
       flex-direction: column;
 
-      input[type='file'] { display: none; }
+      .excelTop {
+        width: 100%;
+        height: 100%;
 
-      .chooseFileButton {
-        @include button-style(true, 5rem);
-        padding: .3rem .5rem;
+        h2 { margin-top: 0;  }
+        p { margin: 0; }
       }
-    }
+
+      .ExportPreviewWrap {
+        width: 100%;
+        height: 95%;
+        max-height: 55vh;
+        border: 1px solid #cbcbcb;
+        overflow: auto;
+        display: flex;
+        justify-content: left;
+        align-items: start;
+        padding: 0;
+      }
+    } // previewContainer
   }
 
-  &__doubleArrowImg {
-    width: 2.5rem;
-    transform: rotate(-90deg);
-  }
-
-  &__previewContainer {
-    @include insideBox(60%, 96%);
-
-    table {
-      @include table-styles();
-      margin: 0;
-    }
-  }
-
-  .tableAddDataBut {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-
-    & > button {
-      @include button-style(true, 14rem);
-    }
-  }
-
-  .excelDownload {
-    @include line-text-style;
-    position: absolute;
-    right: 1rem;
-    top: -3.2rem;
+  .excelBut {
+    @include button-style(true, auto, 1rem);
   }
 }
-
 
 
 

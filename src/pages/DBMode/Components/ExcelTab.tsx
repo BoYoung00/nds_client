@@ -1,22 +1,30 @@
 import React from 'react';
 import styles from '../DBMode.module.scss';
-import doubleArrow from '../../../assets/images/doubleArrow.png';
-import csv from '../../../assets/images/CSV.png';
-import { Notification } from '../../../publicComponents/layout/modal/Notification';
+import {Notification} from '../../../publicComponents/layout/modal/Notification';
 import {useExcelTab} from "../hooks/useExcelTab";
+import TableView from "../../../publicComponents/layout/TableView";
+import {useTable} from "../../../contexts/TableContext";
 
 const ExcelTab: React.FC = () => {
+    const { selectedTable } = useTable();
+
     const {
         loading,
-        file,
-        tableViewData,
-        handleFileChange,
-        handleExportTable,
-        handleFetchSaveCsvData,
-        successMessage,
-        setSuccessMessage,
-        errorMessage,
-        setErrorMessage,
+        hooks: {
+            file,
+            tableViewData,
+            attributeNames,
+            setAttributeNames,
+            successMessage,
+            setSuccessMessage,
+            errorMessage,
+            setErrorMessage,
+        },
+        handles: {
+            handleFileChange,
+            handleExportTable,
+            handleFetchSaveCsvData,
+        }
     } = useExcelTab();
 
     const displayExcelData = (data: string[][]) => {
@@ -42,41 +50,51 @@ const ExcelTab: React.FC = () => {
     return (
         <>
             <div className={styles.excelTab}>
-                <span className={styles.excelDownload} onClick={handleExportTable}>
-                  테이블 엑셀 추출
-                </span>
                 <main>
-                    <section className={styles.excelTab__fileContainer}>
+                    <section className={styles.previewContainer}>
+                        <div className={styles.excelTop}>
+                            <h2>CSV Export</h2>
+                            <p>엑셀로 추출할 행을 선택해주세요.</p>
+                            <div className={styles.ExportPreviewWrap}>
+                                <TableView tableStructure={selectedTable?.tableInnerStructure!} isFilter={true} attributeNames={attributeNames} setAttributeNames={setAttributeNames}/>
+                            </div>
+                        </div>
+                        <button className={styles.excelBut} onClick={handleExportTable}>
+                            테이블 엑셀 다운로드
+                        </button>
+                    </section>
+
+                    <section style={{borderLeft: `1px solid gray`, height: '100%'}}></section>
+
+                    <section className={styles.fileContainer}>
                         <div className={styles.description}>
-                            <h2>CSV 엑셀 데이터 적용 방법</h2>
+                            <h2>CSV Import</h2>
+                            <p>CSV 파일로 테이블에 데이터 추가하는 방법:</p>
                             <p>
-                                1. 엑셀 가장 상단 행은 데이터베이스 <span>행 이름과 동일</span>해야 합니다.
+                                1. 엑셀 가장 상단 행은 <span>테이블 행 이름과 동일</span>해야 합니다.
                             </p>
-                            <p>ex) </p>
-                            <img className={styles.csvImg} src={csv} alt="CSV" />
                             <p>
                                 2. 해당 시트의 이름은 항상 <span>"Sheet1"</span>으로 해주세요.
                             </p>
                             <p>
-                                3. 파일 선택을 누르고 추가할 EXCEL 파일을 첨부 후 추가 버튼을 눌러주세요.
+                                3. 파일 선택을 눌러 Excel 파일을 첨부 후 <span>"테이블에 데이터 추가"</span>를 눌러주세요.
                             </p>
                         </div>
-                        <div className={styles.fileInputWrapper}>
-                            <label className={styles.addBut}>
-                                <input type="file" accept=".xls,.xlsx" onChange={handleFileChange} />
-                                <p className={styles.chooseFileButton}>파일 선택</p>
-                            </label>
-                            {file && <div className={styles.selectedFileName}>{file.name}</div>}
+                        <label className={styles.fileInputWrapper}>
+                            <p>Excel 파일 선택:</p>
+                            <input type="file" accept=".xls,.xlsx" onChange={handleFileChange} />
+                        </label>
+                        <div className={styles.importPreviewWrap}>
+                            <div className={styles.dataPreviewWrap}>
+                                <h3>Excel Data Preview</h3>
+                                <div className={styles.dataPreview}>
+                                    {tableViewData && displayExcelData(tableViewData)}
+                                </div>
+                            </div>
+                            <button className={styles.excelBut} onClick={handleFetchSaveCsvData}>테이블에 데이터 추가</button>
                         </div>
                     </section>
-                    <img className={styles.excelTab__doubleArrowImg} src={doubleArrow} alt="화살표" />
-                    <section className={styles.excelTab__previewContainer}>
-                        {tableViewData && displayExcelData(tableViewData)}
-                    </section>
                 </main>
-                <footer className={styles.tableAddDataBut}>
-                    <button onClick={handleFetchSaveCsvData}>테이블에 데이터 추가하기</button>
-                </footer>
             </div>
 
             {successMessage && (
