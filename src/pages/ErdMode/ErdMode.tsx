@@ -31,14 +31,16 @@ const ErdMode: React.FC = () => {
             case 0:
                 return <DataTab />;
             case 1:
-                return <LikeTab  />;
+                return <RestApiTab />;
             case 2:
-                return <RestApiTab  />;
+                return <LikeTab  />;
             case 3:
                 return <QueryTab />;
             case 4:
-                return <ExcelTab />;
+                return <QueryTab isSQL={false} />;
             case 5:
+                return <ExcelTab />;
+            case 6:
                 return <ResourceTab />;
             default:
                 return null;

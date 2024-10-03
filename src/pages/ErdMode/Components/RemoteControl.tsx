@@ -5,7 +5,8 @@ import RemoveTable from '../../../assets/images/erd/deleteTable.png';
 import dataImage from '../../../assets/images/erd/data.png';
 import likeImage from '../../../assets/images/erd/like.png';
 import restApiImage from '../../../assets/images/erd/restApi.png';
-import queryImage from '../../../assets/images/erd/query.png';
+import sqlImage from '../../../assets/images/erd/sql.png';
+import classImage from '../../../assets/images/erd/class.png';
 import excelImage from '../../../assets/images/erd/excel.png';
 import resourceImage from '../../../assets/images/erd/resource.png';
 import {CreateTable} from "../../../publicComponents/layout/modal/CreateTable";
@@ -29,9 +30,10 @@ const RemoteControl: React.FC<RemoteControlProps> = ({ selectedIndex, onSelect }
 
     const items = [
         { image: dataImage, text: 'DATA' },
-        { image: likeImage, text: 'LIKE' },
         { image: restApiImage, text: 'REST API' },
-        { image: queryImage, text: 'QUERY' },
+        { image: likeImage, text: 'CUSTOM API' },
+        { image: sqlImage, text: 'SQL' },
+        { image: classImage, text: 'CLASS' },
         { image: excelImage, text: 'EXCEL' },
         { image: resourceImage, text: 'RESOURCE' },
     ];
