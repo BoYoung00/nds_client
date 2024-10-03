@@ -107,7 +107,6 @@
   font-size: 1.1rem;
 
   .item { padding: 1rem 2rem; }
-
   .selected { background-color: #008ddd; }
 
   .createButton {
@@ -117,10 +116,10 @@
   }
 
   footer {
+    margin-bottom: 1.5rem;
+
     .buttonBox { border-top: 1px solid white; }
-
     button { @include button-none-style(1rem, white, false); }
-
     .editIcon { filter: invert(100%); }
   }
 
@@ -222,7 +221,7 @@
         }
 
         .searchBut {
-          @include button-style(true, 22%, .9rem);
+          @include button-style(true, 25%, .9rem);
         }
 
         .searchBox {

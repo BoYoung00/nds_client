@@ -74,18 +74,21 @@ const ApiArchive: React.FC = () => {
                             fontSize="2rem"
                             smallText="REST API URL을 보관함에 저장하여 관리하세요."
                             isCenter
-                        />
-                        <div className={styles.tabContainer}>
-                            <TabButtons
-                                buttons={['Normal', 'Filter']}
-                                activeTab={activeTab}
-                                onTabClick={setActiveTab}
-                            />
-                        </div>
-                        <p className={styles.testerBut} onClick={handleToggle}>
-                            Tester
-                        </p>
-                        {onTester && <Tester />}
+                        >
+                            <section className={styles.wrap}>
+                                <div className={styles.tabContainer}>
+                                    <TabButtons
+                                        buttons={['Normal', 'Filter']}
+                                        activeTab={activeTab}
+                                        onTabClick={setActiveTab}
+                                    />
+                                </div>
+                                <p className={styles.testerBut} onClick={handleToggle}>
+                                    Tester
+                                </p>
+                                {onTester && <Tester />}
+                            </section>
+                        </LineTitle>
                     </header>
                     <main>
                         {activeTab === 'Normal'

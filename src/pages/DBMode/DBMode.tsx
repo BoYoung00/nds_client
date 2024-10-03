@@ -22,14 +22,16 @@ const DBMode:React.FC = () => {
             case 0:
                 return <DataTab />;
             case 1:
-                return <LikeTab  />;
-            case 2:
                 return <RestApiTab  />;
+            case 2:
+                return <LikeTab  />;
             case 3:
                 return <QueryTab />;
             case 4:
-                return <ExcelTab />;
+                return <QueryTab isSQL={false} />;
             case 5:
+                return <ExcelTab />;
+            case 6:
                 return <ResourceTab />;
             default:
                 return null;
@@ -38,7 +40,7 @@ const DBMode:React.FC = () => {
 
     return (
         <div className={styles.dbMode}>
-            <TabBar tabs={['Data', 'Custom API', 'Rest API', 'Query', 'Excel', 'Resource']} onTabSelect={(index) => setSelectedTab(index)}/>
+            <TabBar tabs={['Data', 'Rest API', 'Custom API', 'SQL', 'Class', 'Excel', 'Resource']} onTabSelect={(index) => setSelectedTab(index)}/>
             <main className={styles.dbMode__content}>
                 <DataBaseBlueSidebar /> {/* 데이터베이스 사이드바 */}
                 <DataBaseWhiteSidebar /> {/* 테이블 사이드바 */}

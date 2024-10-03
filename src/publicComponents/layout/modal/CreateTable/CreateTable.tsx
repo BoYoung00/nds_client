@@ -11,9 +11,10 @@ import {useDataBase} from "../../../../contexts/DataBaseContext";
 interface CreateDBProps {
     isOpenModal: boolean;
     onCloseModal(isOpenModal: boolean): void;
+    isEntity?: boolean;
 }
 
-const CreateTable: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal }) => {
+const CreateTable: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal, isEntity=false }) => {
 
     if (!isOpenModal) return null;
 
@@ -24,7 +25,7 @@ const CreateTable: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal }) => 
                 height={75}
                 onClose={onCloseModal}
             >
-                <CreateTableForm />
+                <CreateTableForm isEntity={isEntity}/>
             </BackgroundModal>
         </>
     );
@@ -32,8 +33,12 @@ const CreateTable: React.FC<CreateDBProps> = ({ isOpenModal, onCloseModal }) => 
 
 export default CreateTable;
 
+interface CreateTableFormProps {
+    isEntity?: boolean;
+}
+
 // 안에 내용 (상단)
-export const CreateTableForm: React.FC = () => {
+export const CreateTableForm: React.FC<CreateTableFormProps> = ({isEntity=false}) => {
     const { selectedDataBase } = useDataBase();
 
     const {
@@ -50,11 +55,11 @@ export const CreateTableForm: React.FC = () => {
     return (
         <>
             <div className={styles.modal}>
-                <LineTitle text={"새로운 테이블 생성"} />
+                <LineTitle text={isEntity ? '새로운 엔티티 생성' : '새로운 테이블 생성'} />
                 <form className={styles.modal__form} onSubmit={handleSubmit}>
                     <div className={styles.modal__form__group}>
                         <section>
-                            <label htmlFor="name">테이블명</label>
+                            <label htmlFor="name">{isEntity ? '엔티티명' : '테이블명'}</label>
                             <input
                                 type="text"
                                 id="name"
@@ -85,9 +90,12 @@ export const CreateTableForm: React.FC = () => {
                         </section>
                     </div>
                     <div className={styles.modal__form__group}>
-                        <CreateTableColumn handleSetColumnData={ (newData: RowState[]) => setColumns(newData) }/>
+                        <CreateTableColumn
+                            isEntity={isEntity}
+                            handleSetColumnData={ (newData: RowState[]) => setColumns(newData) }
+                        />
                     </div>
-                    <button className={styles.modal__form__submit}>테이블 생성</button>
+                    <button className={styles.modal__form__submit}>{isEntity ? '엔티티 생성' : '테이블 생성'}</button>
                 </form>
             </div>
 
@@ -109,9 +117,10 @@ export const CreateTableForm: React.FC = () => {
 // 테이블 컬럼
 interface CreateTableColumnProps {
     handleSetColumnData: (newData: RowState[]) => void;
+    isEntity?: boolean;
 }
 
-const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ handleSetColumnData }) => {
+const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ handleSetColumnData, isEntity=false }) => {
     const {
         rows,
         handleSelectChange,
@@ -129,7 +138,7 @@ const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ handleSetColumnDa
         <>
             <div className={styles.createTableColumn}>
                 <section className={styles.createTableColumn__titleSection}>
-                    <label>테이블 컬럼</label>
+                    <label>{isEntity ? '엔티티 컬럼' : '테이블 컬럼'}</label>
                     <div className={styles.createTableColumn__buttonBox}>
                         <span onClick={handleAddRow}>+</span>
                         <span onClick={() => handleRemoveRow(rows.length - 1)}>-</span>

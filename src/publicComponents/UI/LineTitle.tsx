@@ -5,21 +5,19 @@ interface TitleProps {
     smallText?: string;
     isCenter?: boolean;
     fontSize?: string;
+    children?: React.ReactNode;
 }
 
-const LineTitle: React.FC<TitleProps> = ({ text, smallText , isCenter = false, fontSize = '25px' }) => {
+const LineTitle: React.FC<TitleProps> = ({ text, smallText , isCenter = false, fontSize = '25px', children }) => {
     const commonStyles: React.CSSProperties = {
         width: `100%`,
         background: 'none',
         borderBottom: '1px solid #999999',
         textAlign: isCenter ? 'center' : 'left',
         display: isCenter ? 'block' : 'flex',
-        fontFamily: 'KoPubWorld돋움체 Medium',
-        fontWeight: '700',
-        color: '#00A3FF',
-        fontSize: `${fontSize}`,
         alignItems: 'flex-end',
-        paddingBottom: isCenter ? '3.5rem' : '0',
+        fontFamily: 'KoPubWorld돋움체 Medium',
+        paddingBottom: '.5rem'
     };
 
     const textContainerStyles: React.CSSProperties = {
@@ -28,24 +26,28 @@ const LineTitle: React.FC<TitleProps> = ({ text, smallText , isCenter = false, f
         flexDirection: isCenter ? 'column' : 'row',
     };
 
+    const titleStyle: React.CSSProperties = {
+        fontWeight: '700',
+        color: '#00A3FF',
+        fontSize: `${fontSize}`,
+        marginRight: '1rem'
+    }
+
     const smallTextStyles: React.CSSProperties = {
         fontSize: '1rem',
         color: '#515151',
-        marginTop: isCenter ? '.5rem' : '0',
-        marginLeft: isCenter ? '0' : '1rem',
-        paddingBottom: '.3rem',
-        fontFamily: 'KoPubWorld돋움체 Medium',
     };
 
     return (
         <div style={commonStyles}>
             <div style={textContainerStyles}>
-                <div>{text}</div>
+                <div style={titleStyle}>{text}</div>
                 {smallText && (
                     <span style={smallTextStyles}>
                         {smallText}
                     </span>
                 )}
+                {children && <div>{children}</div> }
             </div>
         </div>
     );

@@ -62,8 +62,14 @@ const Tester: React.FC = () => {
                 <button onClick={() => handleRequest('DELETE')}>DELETE</button>
             </div>
             <div className={styles.responseBox}>
-                <h3>Response:</h3>
-                <pre>{response}</pre> {/* 서버 응답을 보여주는 곳 */}
+                <h3 style={{marginBottom: '0', fontSize: '1rem'}}>Response:</h3>
+                <textarea
+                    style={{resize:'none'}}
+                    rows={7}
+                    value={response}
+                    placeholder='No result value yet'
+                    readOnly
+                />
             </div>
         </div>
     );

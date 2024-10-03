@@ -265,7 +265,7 @@ const DataCell: React.FC<DataCellProps> = ({
                 className={styles.searchBut}
                 onClick={handleButtonClick}
             >
-                {type === 'join' ? 'Link' : 'Media'}
+                {type === 'join' ? 'FK_value' : 'Media'}
             </button>
             {showSearch && searchPosition && (
                 <span

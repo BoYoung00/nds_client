@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from '../DBMode.module.scss';
 import CodeEditor from '../../../publicComponents/UI/CodeEditor';
 import CopyButton from '../../../publicComponents/UI/CopyButton';
 import TabButtons from '../../../publicComponents/UI/TabButtons';
 import {useQueryTab} from "../hooks/useQueryTab";
-import {useDataBase} from "../../../contexts/DataBaseContext";
 
-const QueryTab: React.FC = () => {
-    const [activeTab, setActiveTab] = useState<string>('SQL');
+interface QueryTabProps {
+    isSQL?: boolean;
+}
+
+const QueryTab: React.FC<QueryTabProps> = ({isSQL=true}) => {
+    const [activeTab, setActiveTab] = useState<string>('');
 
     const { query } = useQueryTab(activeTab);
 
@@ -15,11 +18,18 @@ const QueryTab: React.FC = () => {
         setActiveTab(tab);
     };
 
+    useEffect(() => {
+        if (isSQL)
+            setActiveTab('DDL')
+        else
+            setActiveTab('DTO')
+    }, [isSQL])
+
     return (
         <div className={styles.QueryTab}>
             <div className={styles.tabContainer}>
                 <TabButtons
-                    buttons={['SQL', 'DTO']}
+                    buttons={isSQL ? ['DDL', 'DML'] : ['DTO']}
                     activeTab={activeTab}
                     onTabClick={handleTabClick}
                 />

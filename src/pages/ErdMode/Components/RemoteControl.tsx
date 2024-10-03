@@ -37,11 +37,10 @@ const RemoteControl: React.FC<RemoteControlProps> = ({ selectedIndex, onSelect }
     ];
 
     const handleDelete = () => {
-        console.log('테이블 삭제 로직')
         if (selectedTable === null) {
-            setErrorMessage("테이블을 선택해주세요.");
+            setErrorMessage("엔티티를 선택해주세요.");
         } else {
-            setQuestionMessage(`${selectedTable.name} 테이블을 삭제 하시겠습니까?`);
+            setQuestionMessage(`${selectedTable.name} 엔티티를 삭제 하시겠습니까?`);
         }
     };
 
@@ -64,11 +63,11 @@ const RemoteControl: React.FC<RemoteControlProps> = ({ selectedIndex, onSelect }
             <div className={styles.remoteControl}>
                 <div className={styles.controlItem} onClick={() => setIsOpenCreateTableModal(true)}>
                     <img src={addTable} alt='add' className={styles.icon} />
-                    <span className={styles.label}>CREATE<br />TABLE</span>
+                    <span className={styles.label}>CREATE<br />ENTITY</span>
                 </div>
                 <div className={styles.controlItem} onClick={handleDelete}>
                     <img src={RemoveTable} alt='remove' className={styles.icon} />
-                    <span className={styles.label}>DELETE<br />TABLE</span>
+                    <span className={styles.label}>DELETE<br />ENTITY</span>
                 </div>
                 <hr />
                 {items.map((item, index) => (
@@ -87,6 +86,7 @@ const RemoteControl: React.FC<RemoteControlProps> = ({ selectedIndex, onSelect }
             <CreateTable
                 isOpenModal={isOpenCreateTableModal}
                 onCloseModal={() => setIsOpenCreateTableModal(false)}
+                isEntity={true}
             />
 
             {/*테이블 삭제*/}
