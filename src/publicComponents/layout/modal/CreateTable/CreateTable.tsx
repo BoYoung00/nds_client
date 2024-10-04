@@ -166,6 +166,7 @@ const CreateTableColumn: React.FC<CreateTableColumnProps> = ({ handleSetColumnDa
                                 index={index}
                                 row={row}
                                 handleSelectChange={handleSelectChange}
+                                isEntity={isEntity}
                             />
                         ))}
                         </tbody>
@@ -190,9 +191,10 @@ interface TableRowProps {
     index: number;
     row: RowState;
     handleSelectChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, index: number) => void;
+    isEntity?: boolean;
 }
 
-const TableRow: React.FC<TableRowProps> = ({ joinTables, handleSelectJoinTable, index, row, handleSelectChange }) => {
+const TableRow: React.FC<TableRowProps> = ({ joinTables, handleSelectJoinTable, index, row, handleSelectChange, isEntity=false }) => {
     const [showSearch, setShowSearch] = useState<boolean>(false);
 
     return (
@@ -264,7 +266,7 @@ const TableRow: React.FC<TableRowProps> = ({ joinTables, handleSelectJoinTable, 
                     <h5 onClick={() => setShowSearch(!showSearch)}>검색</h5>
                     <span className={styles.searchBox}>
                         <Search
-                            title={"부모 테이블 검색"}
+                            title={isEntity ? "부모 엔티티 검색" : "부모 테이블 검색"}
                             showSearch={showSearch}
                             setShowSearch={setShowSearch}
                             dataList={joinTables}
