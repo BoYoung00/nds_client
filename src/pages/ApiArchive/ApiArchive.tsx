@@ -84,7 +84,7 @@ const ApiArchive: React.FC = () => {
                                     />
                                 </div>
                                 <p className={styles.testerBut} onClick={handleToggle}>
-                                    Tester
+                                    API Tester
                                 </p>
                                 {onTester && <Tester />}
                             </section>
