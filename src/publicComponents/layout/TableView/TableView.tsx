@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './TableView.module.scss';
 
 interface TableViewProps {
@@ -6,28 +6,54 @@ interface TableViewProps {
     useAltStyle?: boolean;
     isFilter?: boolean;
     attributeNames?: string[];
-    setAttributeNames?: React.Dispatch<React.SetStateAction<string[]>>; // 추가
+    setAttributeNames?: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const TableView: React.FC<TableViewProps> = ({ tableStructure, useAltStyle = true, isFilter = false, attributeNames = [], setAttributeNames }) => {
-    if (!tableStructure) return null;
+    const [isAllChecked, setIsAllChecked] = useState(false);
 
-    const columns = Object.keys(tableStructure);
-    const numRows = tableStructure[columns[0]]?.length || 0;
+    const columns = tableStructure ? Object.keys(tableStructure) : [];
+    const numRows = tableStructure && columns.length > 0 ? tableStructure[columns[0]]?.length || 0 : 0;
 
     const handleCheckboxChange = (columnName: string) => {
         if (!setAttributeNames) return;
 
         setAttributeNames(prev => {
             if (prev.includes(columnName)) {
-                // 이미 존재하면 제거
                 return prev.filter(name => name !== columnName);
             } else {
-                // 존재하지 않으면 추가
                 return [...prev, columnName];
             }
         });
     };
+
+    const handleAllCheckboxChange = () => {
+        if (!setAttributeNames) return;
+
+        if (isAllChecked) {
+            setAttributeNames([]);
+        } else {
+            const allColumnNames = columns.map((columnKey, index) => {
+                const columnNameMatch = columnKey.match(/name=([\w가-힣]+),/);
+                return columnNameMatch ? columnNameMatch[1] : `Column ${index + 1}`;
+            });
+            setAttributeNames(allColumnNames);
+        }
+
+        setIsAllChecked(!isAllChecked);
+    };
+
+    useEffect(() => {
+        if (tableStructure && columns.length > 0) {
+            const allColumnNames = columns.map((columnKey, index) => {
+                const columnNameMatch = columnKey.match(/name=([\w가-힣]+),/);
+                return columnNameMatch ? columnNameMatch[1] : `Column ${index + 1}`;
+            });
+            setIsAllChecked(attributeNames.length === allColumnNames.length);
+        }
+    }, [attributeNames, columns, tableStructure]); // tableStructure를 의존성에 추가
+
+    if (!tableStructure) return null;
 
     return (
         <div className={useAltStyle ? styles.tableView : styles.altTableView}>
@@ -35,10 +61,19 @@ const TableView: React.FC<TableViewProps> = ({ tableStructure, useAltStyle = tru
                 <table>
                     <thead>
                     <tr>
+                        {isFilter && (
+                            <th style={{minWidth: '1rem'}}>
+                                <input
+                                    type="checkbox"
+                                    checked={isAllChecked}
+                                    onChange={handleAllCheckboxChange}
+                                />
+                            </th>
+                        )}
                         {columns.map((columnKey, index) => {
                             const columnNameMatch = columnKey.match(/name=([\w가-힣]+),/);
                             const columnName = columnNameMatch ? columnNameMatch[1] : `Column ${index + 1}`;
-                            const isChecked = attributeNames.includes(columnName); // 체크 여부 확인
+                            const isChecked = attributeNames.includes(columnName);
 
                             return (
                                 <th key={index} onClick={() => handleCheckboxChange(columnName)}>
@@ -47,7 +82,7 @@ const TableView: React.FC<TableViewProps> = ({ tableStructure, useAltStyle = tru
                                         <input
                                             type="checkbox"
                                             checked={isChecked}
-                                            onChange={(e) => e.stopPropagation()} // input의 onChange 이벤트가 th의 클릭 이벤트와 중복 실행되지 않도록 방지
+                                            onChange={(e) => e.stopPropagation()}
                                         />
                                     )}
                                 </th>
@@ -58,6 +93,7 @@ const TableView: React.FC<TableViewProps> = ({ tableStructure, useAltStyle = tru
                     <tbody>
                     {[...Array(numRows)].map((_, rowIndex) => (
                         <tr key={rowIndex}>
+                            {isFilter && <td style={{minWidth: '1rem'}} />}
                             {columns.map((columnKey, colIndex) => {
                                 const cellData = tableStructure[columnKey][rowIndex] || { id: null, data: '', dataType: '' };
                                 return (
