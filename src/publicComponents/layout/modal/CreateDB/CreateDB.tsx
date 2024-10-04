@@ -89,7 +89,7 @@ const CreateDBForm: React.FC<CreateDBFormProps> = ({ onCloseModal }) => {
                 {/* 파일 업로더 */}
                 <div className={styles.modal__fileUploader}>
                     <label className={styles.modal__fileUploader__label}>
-                        파일 스크립터로 생성하기
+                        .nds 파일로 생성하기
                         <input
                             type="file"
                             accept=".nds"

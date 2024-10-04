@@ -83,7 +83,7 @@ const DataBaseBlueSidebar: React.FC = () => {
                     </section>
                     <section className={styles.buttonBox}>
                         {/*<button onClick={handleQuery}>쿼리 추출</button>*/}
-                        <button onClick={handleScript}>파일 스크립트 다운로드</button>
+                        <button onClick={handleScript}>.nds 파일 다운로드</button>
                         <button onClick={handleDelete}>데이터베이스 삭제</button>
                     </section>
                 </footer>

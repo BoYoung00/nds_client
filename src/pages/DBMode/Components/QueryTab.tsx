@@ -20,7 +20,7 @@ const QueryTab: React.FC<QueryTabProps> = ({isSQL=true}) => {
 
     useEffect(() => {
         if (isSQL)
-            setActiveTab('DDL')
+            setActiveTab('create')
         else
             setActiveTab('DTO')
     }, [isSQL])
@@ -29,7 +29,7 @@ const QueryTab: React.FC<QueryTabProps> = ({isSQL=true}) => {
         <div className={styles.QueryTab}>
             <div className={styles.tabContainer}>
                 <TabButtons
-                    buttons={isSQL ? ['DDL', 'DML'] : ['DTO']}
+                    buttons={isSQL ? ['create', 'insert'] : ['DTO']}
                     activeTab={activeTab}
                     onTabClick={handleTabClick}
                 />

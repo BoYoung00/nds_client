@@ -170,10 +170,10 @@ export function useQueryTab(activeTab: string) {
                 return string.charAt(0).toUpperCase() + string.slice(1);
             };
 
-            if (activeTab === 'DDL') {
+            if (activeTab === 'create') {
                 const ddl = generateCreateTableQueries(selectedDataBase?.name!, tables, selectedTable);
                 setQuery(ddl);
-            } else if (activeTab === 'DML') {
+            } else if (activeTab === 'insert') {
                 const dml = generateSQLQuery(selectedTable);
                 setQuery(dml === '' ? '아직 데이터가 존재하지 않습니다.' : dml);
             } else if (activeTab === 'DTO') {

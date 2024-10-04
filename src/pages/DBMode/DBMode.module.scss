@@ -536,11 +536,17 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      gap: 1rem;
 
-      .fileContainerTop { width: 100%; height: 100% }
+      .fileContainerTop {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
 
       .description {
-        //font-weight: $font-weight-bold;
         white-space: nowrap;
         width: 100%; height: 30%;
 
@@ -558,10 +564,16 @@
       }
 
       .importPreviewWrap {
-        height: 50%;
+        height: 60%;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
 
         .dataPreviewWrap {
-          width: 100%; height: 90%;
+          width: 100%; height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: end;
 
           h3 { margin-bottom: 0; }
 
@@ -588,18 +600,22 @@
       display: flex;
       justify-content: space-between;
       flex-direction: column;
+      gap: 1rem;
 
-      .excelTop {
+      .excelTopBox {
         width: 100%;
         height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
 
         h2 { margin-top: 0;  }
         p { margin: 0; }
-      }
+      } //excelTopBox
 
       .ExportPreviewWrap {
         width: 100%;
-        height: 95%;
+        height: 100%;
         max-height: 52vh;
         border: 1px solid #cbcbcb;
         overflow: auto;
