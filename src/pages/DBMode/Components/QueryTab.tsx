@@ -9,13 +9,18 @@ interface QueryTabProps {
     isSQL?: boolean;
 }
 
-const QueryTab: React.FC<QueryTabProps> = ({isSQL=true}) => {
+const QueryTab: React.FC<QueryTabProps> = ({isSQL = true}) => {
     const [activeTab, setActiveTab] = useState<string>('');
+    const [dbType, setDbType] = useState<'MySQL' | 'Oracle'>('MySQL');  // DB 타입 상태 추가
 
-    const { query } = useQueryTab(activeTab);
+    const { query, downloadSQLFile } = useQueryTab(activeTab, dbType);
 
     const handleTabClick = (tab: string) => {
         setActiveTab(tab);
+    };
+
+    const handleDbTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setDbType(e.target.value as 'MySQL' | 'Oracle');
     };
 
     useEffect(() => {
@@ -33,10 +38,21 @@ const QueryTab: React.FC<QueryTabProps> = ({isSQL=true}) => {
                     activeTab={activeTab}
                     onTabClick={handleTabClick}
                 />
-                <CopyButton url={query} />
+                { isSQL &&
+                    <div className={styles.sqlFileDownloadBox}>
+                        <select id="dbTypeSelect" value={dbType} onChange={handleDbTypeChange}>
+                            <option value="MySQL">MySQL</option>
+                            <option value="Oracle">Oracle</option>
+                        </select>
+                        <button onClick={() => downloadSQLFile()}>.sql 파일 <br/> 다운로드</button>
+                    </div>
+                }
             </div>
             <div className={styles.codeEditorWrapper}>
                 <CodeEditor code={query} />
+                <span className={styles.copyButtonWrap}>
+                    <CopyButton url={query} />
+                </span>
             </div>
         </div>
     );

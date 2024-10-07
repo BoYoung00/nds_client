@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styles from '../ErdMode.module.scss';
 import addTable from '../../../assets/images/erd/addTable.png';
 import RemoveTable from '../../../assets/images/erd/deleteTable.png';
@@ -9,10 +9,9 @@ import sqlImage from '../../../assets/images/erd/sql.png';
 import classImage from '../../../assets/images/erd/class.png';
 import excelImage from '../../../assets/images/erd/excel.png';
 import resourceImage from '../../../assets/images/erd/resource.png';
-import {CreateTable} from "../../../publicComponents/layout/modal/CreateTable";
-import {Notification} from "../../../publicComponents/layout/modal/Notification";
-import {useTable} from "../../../contexts/TableContext";
-import {deleteTable} from "../../../services/api";
+import { CreateTable } from "../../../publicComponents/layout/modal/CreateTable";
+import { Notification } from "../../../publicComponents/layout/modal/Notification";
+import {useRemoteControl} from "../hooks/useRemoteControl";
 
 interface RemoteControlProps {
     selectedIndex: number;
@@ -20,13 +19,18 @@ interface RemoteControlProps {
 }
 
 const RemoteControl: React.FC<RemoteControlProps> = ({ selectedIndex, onSelect }) => {
-    const { tables, setTables, selectedTable, setSelectedTable } = useTable();
-
-    const [isOpenCreateTableModal, setIsOpenCreateTableModal] = useState<boolean>(false);
-    
-    const [questionMessage, setQuestionMessage] = useState<string | null>(null);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const {
+        isOpenCreateTableModal,
+        setIsOpenCreateTableModal,
+        questionMessage,
+        setQuestionMessage,
+        successMessage,
+        setSuccessMessage,
+        errorMessage,
+        setErrorMessage,
+        handleDelete,
+        fetchDelete,
+    } = useRemoteControl();
 
     const items = [
         { image: dataImage, text: 'DATA' },
@@ -37,28 +41,6 @@ const RemoteControl: React.FC<RemoteControlProps> = ({ selectedIndex, onSelect }
         { image: excelImage, text: 'EXCEL' },
         { image: resourceImage, text: 'RESOURCE' },
     ];
-
-    const handleDelete = () => {
-        if (selectedTable === null) {
-            setErrorMessage("엔티티를 선택해주세요.");
-        } else {
-            setQuestionMessage(`${selectedTable.name} 엔티티를 삭제 하시겠습니까?`);
-        }
-    };
-
-    const FetchDelete = async () => {
-        if(!selectedTable) return;
-
-        try {
-            const response = await deleteTable(selectedTable.id!);
-            await setTables(tables.filter(table => table !== selectedTable));
-            setSelectedTable(null);
-            setSuccessMessage(response.message);
-        } catch (error) {
-            const errorMessage = (error as Error).message || '알 수 없는 오류가 발생했습니다.';
-            setErrorMessage(errorMessage);
-        }
-    };
 
     return (
         <>
@@ -92,19 +74,19 @@ const RemoteControl: React.FC<RemoteControlProps> = ({ selectedIndex, onSelect }
             />
 
             {/*테이블 삭제*/}
-            { questionMessage && <Notification
+            {questionMessage && <Notification
                 onClose={() => setQuestionMessage(null)}
                 type="question"
                 message={questionMessage}
-                onConfirm={FetchDelete}
-            /> }
+                onConfirm={fetchDelete}
+            />}
 
             {/*성공 모달*/}
-            { successMessage && <Notification
+            {successMessage && <Notification
                 onClose={() => setSuccessMessage(null)}
                 type="success"
                 message={successMessage}
-            /> }
+            />}
 
             {/* 오류 모달 */}
             {errorMessage && <Notification
