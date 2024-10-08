@@ -33,6 +33,7 @@ export const RevisionProvider: React.FC<{ children: ReactNode }> = ({ children }
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     useEffect(() => {
+        setSelectedStamping(null); // 초기화
         fetchStampings();
     }, [selectedDataBase])
 

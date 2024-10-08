@@ -20,6 +20,7 @@ export const useStampingChange = () => {
 
     useEffect(() => {
         handleFetchDiffData();
+        setSelectedTableName(null);
     }, [selectedDataBase]);
 
     const handleFetchDiffData = async () => {
