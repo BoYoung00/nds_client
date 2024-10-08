@@ -61,7 +61,11 @@ const ErdMode: React.FC = () => {
                     background={'#F5F5F5'}
                 />
                 <main className={styles.erdMode__main}>
-                    <div className={styles.cover}/>
+                    <div className={styles.cover}>
+                        엔티티 관계 연결 하는 방법: <br />
+                        1. Ctrl + 드래그 <br />
+                        2. '부모 → 자식' 으로 드래그
+                    </div>
                     <ERDiagram />
                     {selectedTable && (
                         <section className={`${styles.tabContent} ${isVisible ? styles.tabContentVisible : ''}`}>

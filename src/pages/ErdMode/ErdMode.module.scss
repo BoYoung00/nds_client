@@ -30,10 +30,13 @@
     }
 
     .cover {
-      width: 14.5rem; height: 5.5rem;
+      width: 15rem; height: 5.5rem;
       position: absolute;
       background: white;
       z-index: 3;
+      font-size: .8rem;
+      color: grey;
+      padding: .5rem;
     }
   } // main
 }
