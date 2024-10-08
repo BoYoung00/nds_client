@@ -6,18 +6,18 @@ interface NotificationProps {
     type: 'success' | 'question' | 'error';
     message: string | null;
     onConfirm?: ConfirmFunction | null;
+    onCloseConfirm?: ConfirmFunction | null;
 }
 
-const Notification: React.FC<NotificationProps> = ({ onClose, type, message, onConfirm }) => {
+const Notification: React.FC<NotificationProps> = ({ onClose, type, message, onConfirm, onCloseConfirm }) => {
 
     const handleClose = () => {
+        if (onCloseConfirm) onCloseConfirm();
         onClose();
     };
 
     const handleConfirm = () => {
-        if (onConfirm) {
-            onConfirm();
-        }
+        if (onConfirm) onConfirm();
         onClose();
     };
 

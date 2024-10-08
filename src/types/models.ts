@@ -197,6 +197,13 @@ interface Link {
     to: number;
 }
 
+// ERD 관계 연결 Request
+interface RelationRequest {
+    dataBaseID: number;
+    parentTableHash: string;
+    childTableHash: string;
+}
+
 // 스탬핑 변경 데이터
 interface StampingDiffDTO {
     data: string;
