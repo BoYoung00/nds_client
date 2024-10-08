@@ -90,9 +90,9 @@ const Main: React.FC = () => {
                         </div>
                         <div className={`${styles.cardBox} ${observer5InView ? styles.visible5 : ''}`} ref={observer5Ref}>
                             <MainCard title={'DATA'} comment={`데이터베이스 테이블에 \n 데이터를 넣어 관리하는 기능`} src={dataImage} />
-                            <MainCard title={'LIKE'} comment={'테이블 데이터를 필터링 하여 \n Rest Api Url로 접근해 \n 사용할 수 있는 기능'} src={likeImage} />
                             <MainCard title={'REST API'} comment={'테이블에 접근 가능한 \n Rest Api Url들을 모두 모아\n 한 눈에 볼 수 있는 기능'} src={restApiImage} />
-                            <MainCard title={'QUERY'} comment={'테이블을 DBMS에서 직접 생성할 수 \n 있도록 쿼리문을 자동으로 \n 뽑아내주는 기능'} src={queryImage} />
+                            <MainCard title={'CUSTOM API'} comment={'테이블 데이터를 필터링 하여 \n Rest Api Url로 접근해 \n 사용할 수 있는 기능'} src={likeImage} />
+                            <MainCard title={'SQL, CLASS'} comment={'여러 가지 DB 시스템에 대한 .sql 파일 추출 및 데이터 전송을 위해 사용되는 DTO 자동 생성 기능'} src={queryImage} />
                             <MainCard title={'EXCEL'} comment={'CSV 파일을 통하여 테이블 \n 데이터를 추출하고, import \n 할 수 있게 해주는 기능'} src={excelImage} />
                             <MainCard title={'RESOURCE'} comment={'Media 타입의 이미지, 동영상\n 파일들을 관리해주는 기능'} src={resourceImage} />
                         </div>
