@@ -43,6 +43,8 @@ const QueryTab: React.FC<QueryTabProps> = ({isSQL = true}) => {
                         <select id="dbTypeSelect" value={dbType} onChange={handleDbTypeChange}>
                             <option value="MySQL">MySQL</option>
                             <option value="Oracle">Oracle</option>
+                            <option value="Oracle">MariaDB</option>
+                            <option value="Oracle">SQLite</option>
                         </select>
                         <button onClick={() => downloadSQLFile()}>.sql 파일 <br/> 다운로드</button>
                     </div>
