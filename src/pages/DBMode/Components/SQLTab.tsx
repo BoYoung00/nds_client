@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import styles from '../DBMode.module.scss';
 import CodeEditor from '../../../publicComponents/UI/CodeEditor';
 import CopyButton from '../../../publicComponents/UI/CopyButton';

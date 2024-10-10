@@ -1,0 +1,84 @@
+@import "src/App.module";
+
+.autoApiConnect {
+  @include container-default-style;
+
+  .createFunButWrap {
+    display: flex;
+    justify-content: end;
+    margin-top: 1rem;
+
+    .createFunBut {
+      @include button-style(true, 7rem);
+    }
+  }
+
+  .item {
+    padding: 1rem;
+    border-bottom: 1px solid #d2d2d2;
+    cursor: pointer;
+
+    & > h2 {
+      color: $color-blue-deep;
+      margin: 0 0 .5rem 0;
+    }
+
+    & > p {
+      color: $color-gray-middle;
+      margin: 0;
+    }
+  } // item
+}
+
+// REST API 함수 생성 모달 디자인
+.createApiFunction {
+  width: 100%; height: 100%;
+
+  &__main {
+    width: 100%;
+    height: 90%;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .createFunctionWrap {
+      width: 100%;
+      @include flex-center;
+      gap: 1rem;
+
+      .createFunctionBtuWrap {
+        width: 50%; height: 100%;
+
+        .createFunctionBtu {
+          @include button-style();
+          white-space: nowrap;
+          margin-top: 15%;
+        }
+      } // createFunctionBtuWrap
+    } // createFunctionWrap
+
+    .codeEditorWrapper {
+      @include codeEditorWrapper;
+      width: 100%; height: 60%;
+
+    } // codeEditorWrapper
+
+    .functionInfoWrap {
+      display: flex;
+      gap: 1rem;
+    } // functionInfoWrap
+
+    .saveFunctionBut {
+      @include button-style();
+    } // saveFunctionBut
+  } //__main
+
+  .modalGroup {
+    width: 100%;
+
+    & > label {
+      font-weight: $font-weight-bold;
+    }
+  }
+}

@@ -10,6 +10,7 @@ const maxMenuItems: MenuItem[] = [
     { path: '/database', text: 'DATABASE' },
     { path: '/revision', text: 'REVISION' },
     { path: '/api', text: 'API ARCHIVE' },
+    { path: '/autoApi', text: 'AUTO API CONNECT' },
     { path: '/workspace', text: 'WORKSPACE' },
 ];
 
@@ -17,6 +18,7 @@ const minMenuItems: MenuItem[] = [
     { path: '/database', text: 'DB' },
     { path: '/revision', text: 'REV' },
     { path: '/api', text: 'API' },
+    { path: '/autoApi', text: 'AUTO API' },
     { path: '/workspace', text: 'WORK' },
 ];
 

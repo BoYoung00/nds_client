@@ -264,3 +264,12 @@ interface WorkspaceRequest {
     columns?: { [key: string]: string }; // 현재 이름 / 실제 쓰일 컬럼 이름 (optional)
     bodyHTMLCode?: string; // HTML Body 코드 (optional)
 }
+
+// 함수 자동 생성 요청 타입
+interface ApiConnCodeRequest {
+    dataBaseId: number;
+    tableHash: string;
+    title: string;
+    description: string;
+    programmingLanguages: string;
+}

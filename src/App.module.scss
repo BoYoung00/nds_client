@@ -205,6 +205,20 @@ $font-weight-bold: 700; // Bold weight
   animation: fadeOut 1.5s forwards;
 }
 
+// 코드 에디터 디자인
+@mixin codeEditorWrapper {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  max-height: 83%;
+
+  .copyButtonWrap {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+}
+
 @keyframes fadeOut {
   0% {
     opacity: 1;

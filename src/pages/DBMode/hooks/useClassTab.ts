@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {useTable} from "../../../contexts/TableContext";
+import {findColumnInfo} from "../../../utils/utils";
 
 export function useClassTab(activeTab: string, dbType: 'Java' | 'Kotlin' | 'C++' | 'JS') {
     const { selectedTable } = useTable();
@@ -8,10 +9,10 @@ export function useClassTab(activeTab: string, dbType: 'Java' | 'Kotlin' | 'C++'
 
     const generateDTOClass = (table: TableData): string => {
         const columns = Object.entries(table.tableInnerStructure).map(([key, values]) => {
-            const firstRow = values.length > 0 ? values[0] : { dataType: '' };
+            const columnInfo = findColumnInfo(key)
             return {
-                name: key.match(/name=([\w가-힣]+)/)?.[1] ?? '',
-                type: firstRow.dataType
+                name: columnInfo.name,
+                type: columnInfo.type
             };
         });
 

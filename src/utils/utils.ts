@@ -1,4 +1,4 @@
-import {useCallback} from "react";
+import React, {useCallback} from "react";
 
 // 이메일
 export function extractUserFromEmail(email: string): string {

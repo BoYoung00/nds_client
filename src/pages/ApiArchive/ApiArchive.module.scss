@@ -6,10 +6,11 @@
   .wrap {
     @include flex-space-between;
   }
+
   .tabContainer {
     width: 10rem;
-
   }
+
   .testerBut {
     color: $color-blue-deep;
     font-weight: $font-weight-bold;

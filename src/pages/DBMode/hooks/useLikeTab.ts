@@ -118,7 +118,7 @@ export function useLikeTab() {
             apiFilterRequest: filterRequests,
             attributeNames: attributeNames,
         }
-        console.log('customAPIRequest', customAPIRequest)
+        // console.log('customAPIRequest', customAPIRequest)
         try {
             setLoading(true);
             await saveFilteredTableData(selectedTable.tableHash, customAPIRequest);
