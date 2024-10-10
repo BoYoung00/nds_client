@@ -7,11 +7,12 @@ import LineTitle from "../../publicComponents/UI/LineTitle";
 import DataTab from "./Components/DataTab";
 import {formatDate} from "../../utils/utils";
 import RestApiTab from "./Components/RestApiTab";
-import QueryTab from "./Components/QueryTab";
+import SQLTab from "./Components/SQLTab";
 import LikeTab from "./Components/LikeTab";
 import ExcelTab from "./Components/ExcelTab";
 import ResourceTab from "./Components/ResourceTab";
 import {useTable} from "../../contexts/TableContext";
+import ClassTab from "./Components/ClassTab";
 
 const DBMode:React.FC = () => {
     const { selectedTable } = useTable();
@@ -26,9 +27,9 @@ const DBMode:React.FC = () => {
             case 2:
                 return <LikeTab  />;
             case 3:
-                return <QueryTab />;
+                return <SQLTab />;
             case 4:
-                return <QueryTab isSQL={false} />;
+                return <ClassTab />;
             case 5:
                 return <ExcelTab />;
             case 6:

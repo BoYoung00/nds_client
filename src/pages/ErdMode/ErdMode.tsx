@@ -10,9 +10,10 @@ import {formatDate} from "../../utils/utils";
 import DataTab from "../DBMode/Components/DataTab";
 import LikeTab from "../DBMode/Components/LikeTab";
 import RestApiTab from "../DBMode/Components/RestApiTab";
-import QueryTab from "../DBMode/Components/QueryTab";
+import SQLTab from "../DBMode/Components/SQLTab";
 import ExcelTab from "../DBMode/Components/ExcelTab";
 import ResourceTab from "../DBMode/Components/ResourceTab";
+import ClassTab from "../DBMode/Components/ClassTab";
 
 const ErdMode: React.FC = () => {
     const {
@@ -35,9 +36,9 @@ const ErdMode: React.FC = () => {
             case 2:
                 return <LikeTab  />;
             case 3:
-                return <QueryTab />;
+                return <SQLTab />;
             case 4:
-                return <QueryTab isSQL={false} />;
+                return <ClassTab />;
             case 5:
                 return <ExcelTab />;
             case 6:
