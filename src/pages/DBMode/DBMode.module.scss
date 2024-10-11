@@ -2,7 +2,6 @@
 
 @mixin tab-container {
   width: 97.5%; height: 87%;
-  //max-height: 75vh;
   min-height: 80%;
   background: white;
   border: 1px solid #777777;
@@ -645,6 +644,7 @@
 .ResourceTab {
   @include tab-container;
   position: relative;
+  max-height: 70vh;
 
   .header {
     display: grid;
@@ -737,7 +737,7 @@
   }
 
   .main {
-    @include insideBox(98.5%, 77%);
+    @include insideBox(98.5%, 80%);
 
     section {
       display: flex;
