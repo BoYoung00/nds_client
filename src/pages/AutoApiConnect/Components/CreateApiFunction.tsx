@@ -6,7 +6,7 @@ import CodeEditor from "../../../publicComponents/UI/CodeEditor";
 import CopyButton from "../../../publicComponents/UI/CopyButton";
 import { useDataBase } from "../../../contexts/DataBaseContext";
 import { Notification } from "../../../publicComponents/layout/modal/Notification";
-import { getTablesForDataBaseID } from "../../../services/api";
+import {generateAPIConnCode, getTablesForDataBaseID} from "../../../services/api";
 
 interface CreateApiFunctionProps {
     isOpenModal: boolean;
@@ -57,16 +57,17 @@ const CreateApiFunction: React.FC<CreateApiFunctionProps> = ({ isOpenModal, onCl
             tableHash: selectedTableHash,
             title: functionName,
             description: functionDescription,
-            programmingLanguages: selectedLanguage
+            programmingLanguage: selectedLanguage
         }
         console.log('apiConnCodeRequest', apiConnCodeRequest);
 
         try {
-            // 여기에 API 호출 로직을 추가
-            // const response = await someApiCall(apiConnCodeRequest);
-            // setCode(response.data);
+            const response:ApiConnCodeResponse = await generateAPIConnCode(apiConnCodeRequest);
+            console.log('response', response)
+            setCode(response.createCode);
         } catch (e) {
-            setErrorMessage('API 연결 코드를 생성하는 데 실패했습니다.');
+            const error = (e as Error).message || '알 수 없는 오류가 발생하였습니다.';
+            setErrorMessage(error);
         }
     }
 
@@ -103,8 +104,8 @@ const CreateApiFunction: React.FC<CreateApiFunctionProps> = ({ isOpenModal, onCl
     return (
         <>
             <BackgroundModal
-                width={60}
-                height={60}
+                width={85}
+                height={85}
                 onClose={onCloseModal}
             >
                 <div className={styles.createApiFunction}>

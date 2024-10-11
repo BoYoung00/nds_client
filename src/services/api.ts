@@ -587,3 +587,20 @@ export const tableRelationConnect = async (relationRequest: RelationRequest) => 
         throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
     }
 };
+
+// Auto Api Connect (자동 API 함수 생성) 요청 함수
+export const generateAPIConnCode = async (apiConnCodeRequest: ApiConnCodeRequest) => {
+    try {
+        const response = await client.post('/api/autoAPiConnect/generate', apiConnCodeRequest);
+        if (response.status === 200)
+            return response.data;
+        new Error(`${response.data.message}`)
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};

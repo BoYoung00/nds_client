@@ -1,7 +1,6 @@
 @import 'src/App.module';
 
 .header {
-  min-width: 60rem;
   height: 4rem;
   @include flex-left;
   flex: 0 0 auto;
@@ -27,7 +26,7 @@
     padding: 0;
 
     &__item {
-      margin-right: 2rem;
+      margin-right: 1.7rem;
       cursor: pointer;
       display: inline-block;
       white-space: nowrap;

@@ -271,5 +271,11 @@ interface ApiConnCodeRequest {
     tableHash: string;
     title: string;
     description: string;
-    programmingLanguages: string;
+    programmingLanguage: string;
+}
+
+interface ApiConnCodeResponse {
+    title : string;
+    description : string;
+    createCode : string;
 }

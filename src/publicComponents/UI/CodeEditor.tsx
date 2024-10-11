@@ -26,7 +26,7 @@ const CodeEditorContainer = styled.div`
 
 const CodeEditor: React.FC<CodeEditorProps> = ({ code }) => {
     const highlightCode = (code: string) => {
-        const keywords = /\b(INSERT INTO|VALUES|CREATE DATABASE|USE|CREATE TABLE|INT|VARCHAR(.*?)|TEXT|BLOB|REAL|UNIQUE|NOT NULL|PRIMARY KEY|FOREIGN KEY|REFERENCES|public|private|class|void|return|this|String|double|FLOAT|std::)\b/gi;
+        const keywords = /\b(List|static|URL|while|JSONArray|new|JSONObject|try|catch|StringBuilder|BufferedReader|HttpURLConnection|INTEGER|NUMBER|INSERT INTO|VALUES|CREATE DATABASE|USE|CREATE TABLE|INT|VARCHAR(.*?)|TEXT|BLOB|REAL|UNIQUE|NOT NULL|PRIMARY KEY|FOREIGN KEY|REFERENCES|public|private|class|void|return|this|String|double|FLOAT|std::|InputStreamReader|ArrayList)\b/g;
 
         return { __html: code.replace(keywords, match => `<span class="keyword">${match}</span>`) };
     };
