@@ -6,14 +6,15 @@ import CodeEditor from "../../../publicComponents/UI/CodeEditor";
 import CopyButton from "../../../publicComponents/UI/CopyButton";
 import { useDataBase } from "../../../contexts/DataBaseContext";
 import { Notification } from "../../../publicComponents/layout/modal/Notification";
-import {generateAPIConnCode, getTablesForDataBaseID} from "../../../services/api";
+import {generateAPIConnCode, getTablesForDataBaseID, saveAPICode} from "../../../services/api";
 
 interface CreateApiFunctionProps {
     isOpenModal: boolean;
     onCloseModal(isOpenModal: boolean): void;
+    setApiData: React.Dispatch<React.SetStateAction<ApiConnInfoResponse[]>>;
 }
 
-const CreateApiFunction: React.FC<CreateApiFunctionProps> = ({ isOpenModal, onCloseModal }) => {
+const CreateApiFunction: React.FC<CreateApiFunctionProps> = ({ isOpenModal, onCloseModal, setApiData }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const { databases } = useDataBase();
 
@@ -39,8 +40,9 @@ const CreateApiFunction: React.FC<CreateApiFunctionProps> = ({ isOpenModal, onCl
             if (data.length > 0) {
                 setSelectedTableHash(data[0].tableHash);
             }
-        } catch (error) {
-            setErrorMessage('테이블 목록을 가져오는 데 실패했습니다.');
+        } catch (e) {
+            const error = (e as Error).message || '알 수 없는 오류가 발생하였습니다.';
+            setErrorMessage(error);
         } finally {
             setLoading(false);
         }
@@ -59,12 +61,32 @@ const CreateApiFunction: React.FC<CreateApiFunctionProps> = ({ isOpenModal, onCl
             description: functionDescription,
             programmingLanguage: selectedLanguage
         }
-        console.log('apiConnCodeRequest', apiConnCodeRequest);
-
         try {
             const response:ApiConnCodeResponse = await generateAPIConnCode(apiConnCodeRequest);
-            console.log('response', response)
             setCode(response.createCode);
+        } catch (e) {
+            const error = (e as Error).message || '알 수 없는 오류가 발생하였습니다.';
+            setErrorMessage(error);
+        }
+    }
+
+    // 함수 저장
+    const fetchApiConnectCodeSave = async () => {
+        if (!selectedTableHash) {
+            setErrorMessage('테이블을 선택해주세요.');
+            return;
+        }
+        const apiConnCodeRequest: ApiConnInfoRequest = {
+            databaseID: selectedDatabaseId,
+            tableHash: selectedTableHash,
+            functionTitle: functionName,
+            functionDescription: functionDescription,
+            programmingLanguage: selectedLanguage
+        }
+        try {
+            const response:ApiConnInfoResponse = await saveAPICode(apiConnCodeRequest);
+            setSuccessMessage('API 함수 저장에 성공하셨습니다.');
+            setApiData((prev) => [...prev, response])
         } catch (e) {
             const error = (e as Error).message || '알 수 없는 오류가 발생하였습니다.';
             setErrorMessage(error);
@@ -90,6 +112,15 @@ const CreateApiFunction: React.FC<CreateApiFunctionProps> = ({ isOpenModal, onCl
     const handleFunctionDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFunctionDescription(e.target.value);
     };
+
+    // 초기화
+    useEffect(() => {
+        setCode('');
+        setSelectedDatabaseId(databases[0]?.id!);
+        setSelectedLanguage('JAVA');
+        setFunctionName('');
+        setFunctionDescription('');
+    }, []);
 
     useEffect(() => {
         setSelectedDatabaseId(databases[0]?.id!);
@@ -165,7 +196,7 @@ const CreateApiFunction: React.FC<CreateApiFunctionProps> = ({ isOpenModal, onCl
                                 />
                             </div>
                         </section>
-                        <button className={styles.saveFunctionBut}>함수 저장하기</button>
+                        <button className={styles.saveFunctionBut} onClick={fetchApiConnectCodeSave}>함수 저장하기</button>
                     </main>
                 </div>
             </BackgroundModal>
@@ -174,6 +205,9 @@ const CreateApiFunction: React.FC<CreateApiFunctionProps> = ({ isOpenModal, onCl
                 onClose={() => setSuccessMessage(null)}
                 type="success"
                 message={successMessage}
+                onCloseConfirm={() => {
+                    onCloseModal(false);
+                }}
             />}
 
             {errorMessage && <Notification

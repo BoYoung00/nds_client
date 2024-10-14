@@ -274,8 +274,35 @@ interface ApiConnCodeRequest {
     programmingLanguage: string;
 }
 
+// 함수 저장 요청 타입
+interface ApiConnInfoRequest {
+    databaseID: number;
+    tableHash: string;
+    programmingLanguage: string;
+    functionTitle: string;
+    functionDescription: string;
+}
+
 interface ApiConnCodeResponse {
     title : string;
     description : string;
     createCode : string;
+}
+
+interface ApiConnInfoResponse {
+    id: number;
+    databaseID: number;
+    tableHash: string;
+    programmingLanguage: string;
+    functionTitle: string;
+    functionDescription: string;
+    createUsername: string;
+}
+
+// 함수 코드 정보
+interface APIConnDetailsResponse {
+    functionTitle: string;
+    functionDescription: string;
+    programingCode: string;
+    programmingLanguage: string;
 }

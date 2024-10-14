@@ -5,6 +5,13 @@
   &__main {
     border: none;
 
+    .allSelect {
+      min-width: 1rem;
+      font-size: .6rem;
+      @include flex-center;
+      gap: .2rem;
+    }
+
     table {
       @include table-styles;
     }

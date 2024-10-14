@@ -1,17 +1,17 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import LineTitle from "../../publicComponents/UI/LineTitle";
 import styles from "./AutoApiConnect.module.scss";
 import CreateApiFunction from "./Components/CreateApiFunction";
 import {Notification} from "../../publicComponents/layout/modal/Notification";
 import ApiViewModal from "./Components/ApiViewModal";
+import {deleteAPIConnCode, getAllAPIConnCodes} from "../../services/api";
 
 interface AutoApiConnectProps {
 
 }
 
 const AutoApiConnect:React.FC<AutoApiConnectProps> = () => {
-    // const [apiData, setApiData] = useState<ApiConnCodeResponse[]>([]);
-    // const selectedApiInfo = apiData.find(api => api.id === selectedApiId) || null;
+    const [apiData, setApiData] = useState<ApiConnInfoResponse[]>([]);
     const [selectedApiId, setSelectedApiId] = useState<number | null >(null);
 
     const [isOpenCreateApiFunctionModal, setIsOpenCreateApiFunctionModal] = useState<boolean>(false);
@@ -24,6 +24,31 @@ const AutoApiConnect:React.FC<AutoApiConnectProps> = () => {
     const handleRemoveApi = () => {
         setQuestionMessage('해당 함수를 삭제하시겠습니까?');
     };
+
+    const fetchGetApiInfos =  async () => {
+        try {
+            const response = await getAllAPIConnCodes();
+            setApiData(response);
+        } catch (e) {
+            const error = (e as Error).message || '알 수 없는 오류가 발생하였습니다.';
+            setErrorMessage(error);
+        }
+    }
+
+    const fetchDeleteAPIConnCode =  async () => {
+        if (!selectedApiId) return;
+        try {
+            await deleteAPIConnCode(selectedApiId);
+            setApiData((prev) => prev.filter((api) => api.id !== selectedApiId));
+        } catch (e) {
+            const error = (e as Error).message || '알 수 없는 오류가 발생하였습니다.';
+            setErrorMessage(error);
+        }
+    }
+
+    useEffect(() => {
+        fetchGetApiInfos();
+    }, [])
 
     return (
         <>
@@ -42,28 +67,40 @@ const AutoApiConnect:React.FC<AutoApiConnectProps> = () => {
                         </LineTitle>
                     </header>
                     <main>
-                        <div
-                            className={styles.item}
-                            onClick={() => {
-                                setSelectedApiId(1);
-                                setIsItemInfoModalOpen(true); // 클릭 시 모달 열기
-                            }}
-                        >
-                            <h2>테이블 함수1</h2>
-                            <p>테이블 함수1 설명</p>
-                            <button className={styles.closeButton} onClick={handleRemoveApi}>X</button>
-                        </div>
+                        { apiData && apiData.map((api) =>
+                            <div
+                                className={styles.item}
+                                onClick={() => {
+                                    setSelectedApiId(api.id);
+                                    setIsItemInfoModalOpen(true); // 클릭 시 모달 열기
+                                }}
+                            >
+                                <h2>{api.functionTitle}</h2>
+                                <p>{api.functionDescription}</p>
+                                <button
+                                    className={styles.closeButton}
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // 클릭 이벤트 전파 차단
+                                        handleRemoveApi(); // 삭제 처리
+                                    }}
+                                >X</button>
+                            </div>
+                        )}
                     </main>
                 </section>
             </div>
-            <CreateApiFunction isOpenModal={isOpenCreateApiFunctionModal} onCloseModal={setIsOpenCreateApiFunctionModal} />
+
+            <CreateApiFunction
+                isOpenModal={isOpenCreateApiFunctionModal}
+                onCloseModal={setIsOpenCreateApiFunctionModal}
+                setApiData={setApiData}
+            />
 
             {/* 선택된 아이템 정보 모달 */}
             <ApiViewModal
                 isOpen={isItemInfoModalOpen}
                 onClose={() => setIsItemInfoModalOpen(false)}
                 apiId={selectedApiId}
-                apiInfo={{title: '함수 제목', description: '함수 설명', createCode: '코드'}}
             />
 
             { successMessage && <Notification
@@ -83,7 +120,7 @@ const AutoApiConnect:React.FC<AutoApiConnectProps> = () => {
                 type="question"
                 message={questionMessage}
                 onConfirm={() => {
-                    console.log('삭제 로직');
+                    fetchDeleteAPIConnCode();
                 }}
             /> }
         </>

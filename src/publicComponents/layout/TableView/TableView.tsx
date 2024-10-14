@@ -62,11 +62,15 @@ const TableView: React.FC<TableViewProps> = ({ tableStructure, useAltStyle = tru
                     <thead>
                     <tr>
                         {isFilter && (
-                            <th style={{minWidth: '1rem'}}>
+                            <th className={styles.allSelect} onClick={handleAllCheckboxChange}>
+                                전체<br />선택
                                 <input
                                     type="checkbox"
                                     checked={isAllChecked}
-                                    onChange={handleAllCheckboxChange}
+                                    onChange={(e) => {
+                                        e.stopPropagation();
+                                        handleAllCheckboxChange();
+                                    }}
                                 />
                             </th>
                         )}

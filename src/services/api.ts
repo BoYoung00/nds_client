@@ -604,3 +604,58 @@ export const generateAPIConnCode = async (apiConnCodeRequest: ApiConnCodeRequest
         throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
     }
 };
+
+// Auto Api Connect (자동 API 함수 생성) 저장 함수
+export const saveAPICode = async (apiConnInfoRequest: ApiConnInfoRequest) => {
+    try {
+        const response = await client.post('/api/autoAPiConnect', apiConnInfoRequest);
+        if (response.status === 200)
+            return response.data;
+        new Error(`${response.data.message}`)
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
+
+// Auto Api Connect 함수 목록 가져오기
+export const getAllAPIConnCodes = async () => {
+    try {
+        const response = await client.get(`/api/autoAPiConnect`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Auto Api Connect 코드 가져오기
+export const getAPIConnCodeById = async (id: number) => {
+    try {
+        const response = await client.get(`/api/autoAPiConnect/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Auto Api Connect 함수 삭제
+export const deleteAPIConnCode = async (id: number) => {
+    try {
+        const response = await client.delete(`/api/autoAPiConnect/${id}`);
+        if (response.status === 200) {
+            return response.data; // 성공적으로 삭제된 데이터 반환
+        }
+        throw new Error(`Error: ${response.data.message}`);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
