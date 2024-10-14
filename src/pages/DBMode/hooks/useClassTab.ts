@@ -4,7 +4,6 @@ import {findColumnInfo} from "../../../utils/utils";
 
 export function useClassTab(activeTab: string, dbType: 'Java' | 'Kotlin' | 'C++' | 'JS') {
     const { selectedTable } = useTable();
-
     const [query, setQuery] = useState<string>('');
 
     const generateDTOClass = (table: TableData): string => {
@@ -34,7 +33,7 @@ export function useClassTab(activeTab: string, dbType: 'Java' | 'Kotlin' | 'C++'
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
-    // Java DTO 생성 함수
+    // Java DTO 생성 함수 with toString
     const generateJavaDTO = (tableName: string, columns: any[]) => {
         const fields = columns.map(col => {
             let javaType: string;
@@ -59,10 +58,12 @@ export function useClassTab(activeTab: string, dbType: 'Java' | 'Kotlin' | 'C++'
             return `\tpublic ${javaType} get${capitalizeFirstLetter(col.name)}() {\n\t\treturn ${col.name};\n\t}\n\n\tpublic void set${capitalizeFirstLetter(col.name)}(${javaType} ${col.name}) {\n\t\tthis.${col.name} = ${col.name};\n\t}\n`;
         });
 
-        return `public class ${tableName} {\n\t${fields.join('\n\t')} \n\n${gettersSetters.join('\n')}}`;
+        const toStringMethod = `\t@Override\n\tpublic String toString() {\n\t\treturn "${tableName}{" + ${columns.map(col => `"${col.name}=" + ${col.name} + ", "`).join(' + ')} + '}';\n\t}\n`;
+
+        return `public static class ${tableName}DTO {\n\t${fields.join('\n\t')} \n\n${gettersSetters.join('\n')}\n${toStringMethod}}`;
     };
 
-    // Kotlin DTO 생성 함수
+    // Kotlin DTO 생성 함수 with toString
     const generateKotlinDTO = (tableName: string, columns: any[]) => {
         const fields = columns.map(col => {
             let kotlinType: string;
@@ -82,10 +83,10 @@ export function useClassTab(activeTab: string, dbType: 'Java' | 'Kotlin' | 'C++'
             return `var ${col.name}: ${kotlinType}`;
         });
 
-        return `data class ${tableName}(\n\t${fields.join(',\n\t')}\n)`;
+        return `data class ${tableName}DTO (\n\t${fields.join(',\n\t')}\n)`;
     };
 
-    // C++ DTO 생성 함수
+    // C++ DTO 생성 함수 with toString
     const generateCppDTO = (tableName: string, columns: any[]) => {
         const fields = columns.map(col => {
             let cppType: string;
@@ -113,10 +114,10 @@ export function useClassTab(activeTab: string, dbType: 'Java' | 'Kotlin' | 'C++'
                 `\t${cppType} get${capitalizeFirstLetter(col.name)}() const {\n\t\treturn ${col.name};\n\t}\n\n\tvoid set${capitalizeFirstLetter(col.name)}(const ${cppType}& ${col.name}) {\n\t\tthis->${col.name} = ${col.name};\n\t}\n`;
         });
 
-        return `class ${tableName} {\nprivate:\n\t${fields.join('\n\t')}\npublic:\n${gettersSetters.join('\n')}};`;
+        return `class ${tableName}DTO {\nprivate:\n\t${fields.join('\n\t')}\npublic:\n${gettersSetters.join('\n')}};`;
     };
 
-    // JavaScript DTO 생성 함수
+    // JavaScript DTO 생성 함수 with toString
     const generateJSDTO = (tableName: string, columns: any[]) => {
         const fields = columns.map(col => `this.${col.name} = null;`).join('\n\t\t');
 
@@ -124,7 +125,8 @@ export function useClassTab(activeTab: string, dbType: 'Java' | 'Kotlin' | 'C++'
             return `get${capitalizeFirstLetter(col.name)}() {\n\t\treturn this.${col.name};\n\t}\n\n\tset${capitalizeFirstLetter(col.name)}(${col.name}) {\n\t\tthis.${col.name} = ${col.name};\n\t}`;
         }).join('\n\n\t');
 
-        return `class ${tableName} {\n\tconstructor() {\n\t\t${fields}\n\t}\n\n\t${methods}\n}`;
+
+        return `class ${tableName}DTO {\n\tconstructor() {\n\t\t${fields}\n\t}\n\n\t${methods}\n}`;
     };
 
     useEffect(() => {
