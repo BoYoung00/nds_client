@@ -44,6 +44,7 @@ export const useErdMode = () => {
         isVisible,
         selectedRemoteIndex,
         handelSelectedRemoteItem,
+        selectedDatabaseIndex,
         setSelectedDatabaseIndex,
         errorMessage,
         setErrorMessage,

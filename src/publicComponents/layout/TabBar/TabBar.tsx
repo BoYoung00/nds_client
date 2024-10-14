@@ -6,13 +6,14 @@ import CreateDB from "../modal/CreateDB/CreateDB";
 interface TabBarProps {
     tabs: string[];
     onTabSelect: (index: number) => void;
+    prevSelectedIndex?: number;
     width?: number;
     background?: string;
 }
 
-const TabBar: React.FC<TabBarProps> = ({ tabs, onTabSelect, width = 5, background='#D8D8D8' }) => {
+const TabBar: React.FC<TabBarProps> = ({ tabs, onTabSelect, width = 5, background='#D8D8D8', prevSelectedIndex }) => {
     const { selectedIndex, handleTabClick } = useTabBar({
-        initialIndex: 0,
+        initialIndex: prevSelectedIndex ? prevSelectedIndex : 0,
         onTabSelect,
     });
     const [isOpenCreateDBModal, setIsOpenCreateDBModal] = useState<boolean>(false);
