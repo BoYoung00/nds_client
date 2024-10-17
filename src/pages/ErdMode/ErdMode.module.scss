@@ -106,4 +106,35 @@
   }
 }
 
+// 컨텍스트 메뉴
+.contextMenu {
+  position: absolute;
+  background-color: #f6f6f6;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 9;
+  width: 10rem;
+  overflow: hidden;
+
+  & > span {
+    width: 100%;
+    margin-left: .5rem;
+    font-weight: $font-weight-bold;
+    //color: $color-blue-deep;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0; padding: 0;
+
+    li {
+      padding: .3rem .8rem;
+      cursor: pointer;
+      font-weight: $font-weight-bold;
+
+      &:hover { background-color: #d3d3d3; }
+    } // li
+  } // ul
+} //contextMenu
 

@@ -1,15 +1,25 @@
 import {useTable} from "../../../contexts/TableContext";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import * as go from "gojs";
 import {findColumnInfo} from "../../../utils/utils";
 import {tableRelationConnect} from "../../../services/api";
 import ERDiagram from "../Components/ERDiagram";
+import {useDataBase} from "../../../contexts/DataBaseContext";
 
 export const useERDiagram = () => {
+    const { selectedDataBase } = useDataBase();
     const { setTables } = useTable();
 
     const diagramInstanceRef = useRef<go.Diagram | null>(null);
     const deletedLinksRef = useRef<any[]>([]); // 삭제된 링크를 저장할 참조
+    const deletedLinkRef = useRef<any>(null); // 삭제할 링크
+
+    const [selectedParentTable, setSelectedParentTable] = useState<TableData | null>(null); // 관계 연결 시 선택한 부모 테이블
+    const [selectedChildTable, setSelectedChildTable] = useState<TableData | null>(null); // 관계 연결 시 선택한 자식 테이블
+
+    const [contextMenu, setContextMenu] = useState<{ x: number, y: number } | null>(null); // 클릭 위치
+    const [fkList, setFkList] = useState<{name: string, hash: string}[] | null>(null)
+    const [selectedFkHash, setSelectedFkHash]  = useState<string | null>(null)
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [questionMessage, setQuestionMessage] = useState<string | null>(null);
@@ -47,7 +57,7 @@ export const useERDiagram = () => {
     const handelFetchRelationAdd = async (relationRequest: RelationRequest) => {
         try {
             const response = await tableRelationConnect(relationRequest);
-            console.log('response', response);
+            // console.log('response', response);
             setTables(response);
 
         } catch (e) {
@@ -116,6 +126,100 @@ export const useERDiagram = () => {
         return { node: nodes, linkData: links };
     };
 
+    // FK 목록 찾기
+    const getForeignKeys = (childTable: TableData): { name: string; hash: string }[] => {
+        const columns = Object.keys(childTable.tableInnerStructure);
+
+        return columns
+            .map((column) => {
+                const columnInfo = findColumnInfo(column);
+                // 외래키인 경우만 객체를 반환
+                if (columnInfo.isFk) {
+                    return {
+                        name: columnInfo.name,
+                        hash: columnInfo.columnHash,
+                    };
+                }
+                return undefined;
+            })
+            .filter((fk) => fk !== undefined) as { name: string; hash: string }[]; // 타입 단언
+    };
+
+    // 메뉴 옵션 클릭 핸들러
+    const handleMenuOptionClick = (hash: string) => {
+        setSelectedFkHash(hash);
+        handleDocumentClick();
+    };
+
+    // 메뉴 옵션 취소
+    const handleMenuCancel = () => {
+        handleDocumentClick();
+        removeLink(deletedLinkRef.current); // 삭제 함수 호출
+    }
+
+    // 컨텍스트 메뉴 닫기
+    const handleDocumentClick = () => { setContextMenu(null); };
+
+    // 링크 삭제
+    const removeLink = (linkData: any | null) => {
+        const model = diagramInstanceRef.current?.model as go.GraphLinksModel;
+        if (model) {
+            model.removeLinkData(linkData);
+            deletedLinkRef.current = null;
+        }
+    };
+
+    // 마우스 클릭 후 위치 추적하여 컨텍스트 메뉴 위치 설정
+    const handleMouseUp = (event: MouseEvent) => {
+        // 마우스 오른쪽 클릭인 경우에만 메뉴를 띄움
+        if (event.button === 0) {
+            setContextMenu({ x: event.clientX, y: event.clientY });
+        }
+    };
+
+    // 훅 상태 초기화 함수
+    const resetState = () => {
+        setSelectedParentTable(null);
+        setSelectedChildTable(null);
+        setContextMenu(null);
+        setFkList(null);
+        setSelectedFkHash(null);
+        setErrorMessage(null);
+        setQuestionMessage(null);
+        deletedLinkRef.current = null;
+        deletedLinksRef.current = [];
+    };
+
+
+    useEffect(() => {
+        resetState();;
+    }, [selectedDataBase])
+
+    // FK 선택 시 연관 관계 추가 통신 실행
+    useEffect(() => {
+        if (selectedFkHash) {
+            const relationRequest : RelationRequest = {
+                dataBaseID: selectedDataBase?.id!,
+                parentColumnHash: selectedParentTable!.tableHash,
+                childColumnHash: selectedFkHash
+            }
+            console.log('relationRequest', relationRequest);
+            // handelFetchRelationAdd(relationRequest);
+            resetState(); // 상태 초기화
+        }
+    }, [selectedFkHash]);
+
+    // 컴포넌트가 마운트되면 `mouseup` 이벤트 리스너 추가
+    useEffect(() => {
+        resetState();
+
+        window.addEventListener("mouseup", handleMouseUp); // 마우스를 놓을 때 이벤트 발생
+
+        return () => {
+            window.removeEventListener("mouseup", handleMouseUp); // 언마운트 시 이벤트 제거
+        };
+    }, []);
+
     return {
         hooks: {
             diagramInstanceRef,
@@ -125,11 +229,22 @@ export const useERDiagram = () => {
             setQuestionMessage,
             restoreDeletedLinks,
             handelFetchDeletedLink,
+            deletedLinkRef,
+            setSelectedParentTable,
+            setSelectedChildTable,
+            fkList,
+            setFkList,
+            contextMenu,
         },
         handles: {
             transformTableData,
             validateLink,
             handelFetchRelationAdd,
+            getForeignKeys,
+            removeLink,
+            handleMenuOptionClick,
+            handleMenuCancel,
+            resetState,
         }
     };
 };

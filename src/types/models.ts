@@ -200,8 +200,8 @@ interface Link {
 // ERD 관계 연결 Request
 interface RelationRequest {
     dataBaseID: number;
-    parentTableHash: string;
-    childTableHash: string;
+    parentColumnHash: string;
+    childColumnHash: string;
 }
 
 // 스탬핑 변경 데이터

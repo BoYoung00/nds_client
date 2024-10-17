@@ -3,12 +3,10 @@ import styles from '../ErdMode.module.scss';
 import * as go from 'gojs';
 import {Notification} from "../../../publicComponents/layout/modal/Notification";
 import {useERDiagram} from "../hooks/useERDiagram";
-import {useDataBase} from "../../../contexts/DataBaseContext";
 import {useTable} from "../../../contexts/TableContext";
 
 
 const ERDiagram: React.FC = () => {
-    const { selectedDataBase } = useDataBase();
     const { tables, selectedTable, setSelectedTable } = useTable();
 
     const {
@@ -20,11 +18,22 @@ const ERDiagram: React.FC = () => {
             setQuestionMessage,
             restoreDeletedLinks,
             handelFetchDeletedLink,
+            deletedLinkRef,
+            setSelectedParentTable,
+            setSelectedChildTable,
+            fkList,
+            setFkList,
+            contextMenu,
         },
         handles: {
             transformTableData,
             validateLink,
             handelFetchRelationAdd,
+            getForeignKeys,
+            removeLink,
+            handleMenuOptionClick,
+            handleMenuCancel,
+            resetState,
         }
     } = useERDiagram();
 
@@ -138,6 +147,7 @@ const ERDiagram: React.FC = () => {
             const link = e.subject;
             const parentKey = link.data.from;
             const childKey = link.data.to;
+            deletedLinkRef.current = link.data;
 
             let isValidLink = false;
 
@@ -148,28 +158,24 @@ const ERDiagram: React.FC = () => {
 
             const isValidLinkMessage = validateLink(parentTable, childTable); // 유효성 검사 로직
             if (!isValidLinkMessage) {
-                isValidLink = true;  // 유효성 검사가 통과되었을 경우 링크를 허용
+                isValidLink = true;  // 유효성 검사가 통과 되었을 경우 링크를 허용
+                setSelectedParentTable(parentTable);
+                setSelectedChildTable(childTable);
             } else {
                 setErrorMessage(isValidLinkMessage);  // 유효하지 않을 경우 오류 메시지를 표시
             }
 
             if (!isValidLink) { // 유효하지 않은 링크를 삭제
-                const model = diagram.model as go.GraphLinksModel;
-                model.removeLinkData(link.data);
+                removeLink(deletedLinkRef.current); // 삭제 함수 호출
             } else { // 유효할 경우 통신
-                const relationRequest : RelationRequest = {
-                    dataBaseID: selectedDataBase?.id!,
-                    parentTableHash: parentTable.tableHash,
-                    childTableHash: childTable.tableHash
-                }
-                console.log('relationRequest', relationRequest);
-                handelFetchRelationAdd(relationRequest);
+                const childFkList = getForeignKeys(childTable);
+                setFkList(childFkList);
             }
         });
 
         // 노드, 선 삭제 로직 (선 삭제 로직 추가 시 작업 예정)
         // diagram.addDiagramListener('SelectionDeleted', (e) => {
-        //     let nodeDeleted = false; // 노드가 삭제되었는지 여부를 추적
+        //     let nodeDeleted = false; // 노드가 삭제 되었는지 여부를 추적
         //
         //     e.subject.each((part: go.Part) => {
         //         if (part instanceof go.Node) {
@@ -224,6 +230,7 @@ const ERDiagram: React.FC = () => {
         return diagram;
     }; // initDiagram 함수
 
+
     // ERD 업데이트
     useEffect(() => {
         diagramInstanceRef.current = initDiagram();
@@ -244,9 +251,27 @@ const ERDiagram: React.FC = () => {
         }
     }, [selectedTable, tables]);
 
+
     return (
         <>
             <div ref={diagramRef} className={styles.ERDiagram} />
+
+            {/* 컨텍스트 메뉴 */}
+            {contextMenu && fkList && (
+                <div
+                    className={styles.contextMenu}
+                    style={{ top: contextMenu.y, left: contextMenu.x }}
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <span>연결할 FK 선택</span>
+                    <ul>
+                        {fkList.map((fk, index) =>
+                            <li key={index} onClick={() => handleMenuOptionClick(fk.hash)}>{fk.name}</li>
+                        )}
+                        <li onClick={handleMenuCancel} style={{color: 'red', fontWeight: 'normal'}}>Cancel</li>
+                    </ul>
+                </div>
+            )}
 
             { errorMessage && <Notification
                 onClose={() => setErrorMessage(null)}
