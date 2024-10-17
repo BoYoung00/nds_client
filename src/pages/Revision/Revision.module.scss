@@ -129,6 +129,7 @@ $widthSize: 80%;
   flex-direction: column;
 
   .changes, .tables {
+    max-height: 85%;
     display: flex;
     flex: 1;
   }
@@ -141,7 +142,9 @@ $widthSize: 80%;
 
   .tableChangeView {
     width: 80%;
+    height: 100%;
     border-left: 1px solid #D8D8D8;
+    overflow: auto;
   }
 }
 
