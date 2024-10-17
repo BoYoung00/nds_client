@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import BackgroundModal from "../../../publicComponents/UI/BackgroundModal";
 import LineTitle from "../../../publicComponents/UI/LineTitle";
 import styles from "../AutoApiConnect.module.scss";
 import CodeEditor from "../../../publicComponents/UI/CodeEditor";
 import CopyButton from "../../../publicComponents/UI/CopyButton";
-import { useDataBase } from "../../../contexts/DataBaseContext";
-import { Notification } from "../../../publicComponents/layout/modal/Notification";
-import {generateAPIConnCode, getTablesForDataBaseID, saveAPICode} from "../../../services/api";
+import {useApiFunction} from "../hooks/useCreateApiFunction";
+import {useDataBase} from "../../../contexts/DataBaseContext";
+import {Notification} from "../../../publicComponents/layout/modal/Notification";
 
 interface CreateApiFunctionProps {
     isOpenModal: boolean;
@@ -15,83 +15,32 @@ interface CreateApiFunctionProps {
 }
 
 const CreateApiFunction: React.FC<CreateApiFunctionProps> = ({ isOpenModal, onCloseModal, setApiData }) => {
-    const [loading, setLoading] = useState<boolean>(false);
     const { databases } = useDataBase();
 
-    const [tables, setTables] = useState<TableData[]>([]);
-    const [code, setCode] = useState<string>('');
-
-    const [selectedDatabaseId, setSelectedDatabaseId] = useState<number>(databases[0]?.id!);
-    const [selectedTableHash, setSelectedTableHash] = useState<string>(tables[0]?.tableHash);
-    const [selectedLanguage, setSelectedLanguage] = useState<string>("JAVA");
-    const [functionName, setFunctionName] = useState<string>("");
-    const [functionDescription, setFunctionDescription] = useState<string>("");
-
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-    const fetchTables = async () => {
-        if (!selectedDatabaseId) return;
-        try {
-            setLoading(true);
-            const data = await getTablesForDataBaseID(selectedDatabaseId);
-            setTables(data);
-
-            if (data.length > 0) {
-                setSelectedTableHash(data[0].tableHash);
-            }
-        } catch (e) {
-            const error = (e as Error).message || '알 수 없는 오류가 발생하였습니다.';
-            setErrorMessage(error);
-        } finally {
-            setLoading(false);
+    const {
+        hooks: {
+            tables,
+            code,
+            selectedDatabaseId,
+            selectedTableHash,
+            selectedLanguage,
+            functionName,
+            functionDescription,
+            successMessage,
+            errorMessage,
+            setSelectedDatabaseId,
+            setSelectedTableHash,
+            setSelectedLanguage,
+            setFunctionName,
+            setFunctionDescription,
+            setSuccessMessage,
+            setErrorMessage,
+        },
+        handles: {
+            fetchApiConnectCode,
+            fetchApiConnectCodeSave,
         }
-    };
-
-    const fetchApiConnectCode = async () => {
-        if (!selectedTableHash) {
-            setErrorMessage('테이블을 선택해주세요.');
-            return;
-        }
-
-        const apiConnCodeRequest: ApiConnCodeRequest = {
-            dataBaseId: selectedDatabaseId,
-            tableHash: selectedTableHash,
-            title: functionName,
-            description: functionDescription,
-            programmingLanguage: selectedLanguage
-        }
-        try {
-            const response:ApiConnCodeResponse = await generateAPIConnCode(apiConnCodeRequest);
-            setCode(response.createCode);
-        } catch (e) {
-            const error = (e as Error).message || '알 수 없는 오류가 발생하였습니다.';
-            setErrorMessage(error);
-        }
-    }
-
-    // 함수 저장
-    const fetchApiConnectCodeSave = async () => {
-        if (!selectedTableHash) {
-            setErrorMessage('테이블을 선택해주세요.');
-            return;
-        }
-        const apiConnCodeRequest: ApiConnInfoRequest = {
-            databaseID: selectedDatabaseId,
-            tableHash: selectedTableHash,
-            functionTitle: functionName,
-            functionDescription: functionDescription,
-            programmingLanguage: selectedLanguage
-        }
-        try {
-            const response:ApiConnInfoResponse = await saveAPICode(apiConnCodeRequest);
-            setSuccessMessage('API 함수 저장에 성공하셨습니다.');
-            setApiData((prev) => [...prev, response])
-        } catch (e) {
-            const error = (e as Error).message || '알 수 없는 오류가 발생하였습니다.';
-            setErrorMessage(error);
-        }
-    }
+    } = useApiFunction(setApiData);
 
     const handleDatabaseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedDatabaseId(Number(e.target.value));
@@ -115,20 +64,8 @@ const CreateApiFunction: React.FC<CreateApiFunctionProps> = ({ isOpenModal, onCl
 
     // 초기화
     useEffect(() => {
-        setCode('');
-        setSelectedDatabaseId(databases[0]?.id!);
-        setSelectedLanguage('JAVA');
-        setFunctionName('');
-        setFunctionDescription('');
+        setSelectedDatabaseId(0);
     }, []);
-
-    useEffect(() => {
-        setSelectedDatabaseId(databases[0]?.id!);
-    }, [databases]);
-
-    useEffect(() => {
-        fetchTables();
-    }, [selectedDatabaseId]);
 
     if (!isOpenModal) return null;
 
@@ -196,27 +133,15 @@ const CreateApiFunction: React.FC<CreateApiFunctionProps> = ({ isOpenModal, onCl
                                 />
                             </div>
                         </section>
-                        <button className={styles.saveFunctionBut} onClick={fetchApiConnectCodeSave}>함수 저장하기</button>
+                        <button className={styles.saveFunctionBut} onClick={fetchApiConnectCodeSave}>함수 저장</button>
                     </main>
                 </div>
             </BackgroundModal>
 
-            {successMessage && <Notification
-                onClose={() => setSuccessMessage(null)}
-                type="success"
-                message={successMessage}
-                onCloseConfirm={() => {
-                    onCloseModal(false);
-                }}
-            />}
-
-            {errorMessage && <Notification
-                onClose={() => setErrorMessage(null)}
-                type="error"
-                message={errorMessage}
-            />}
+            {errorMessage && <Notification type={"error"} message={errorMessage} onClose={() => setErrorMessage(null)} />}
+            {successMessage && <Notification type={"success"} message={successMessage} onClose={() => setSuccessMessage(null)} />}
         </>
     );
-}
+};
 
 export default CreateApiFunction;

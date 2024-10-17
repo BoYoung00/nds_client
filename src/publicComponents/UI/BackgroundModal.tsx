@@ -25,7 +25,7 @@ const BackgroundModal: React.FC<BackgroundModalProps> = ({ width = 80, height = 
         width: `${width}%`,
         height: `${height}%`,
         minWidth: '400px',
-        minHeight: '600px',
+        minHeight: '500px',
         borderRadius: '4px',
         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
         background: 'white',

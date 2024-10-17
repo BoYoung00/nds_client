@@ -23,7 +23,7 @@ const TemplateCard: React.FC<TemplateCardProp> = ({ imgUrl, title, category}) =>
                     </div>
                 </section>
                 <section className={styles.templateCard__overlay}>
-                    <Link className={styles.customPageBut} to={`/workspace/${title}`}>커스텀 페이지 생성</Link>
+                    <Link className={styles.customPageBut} to={`/workspace/${title}`}>커스텀 페이지 작업</Link>
                     <button className={styles.codeDownloadBut}>코드 다운로드</button>
                 </section>
             </div>

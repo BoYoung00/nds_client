@@ -169,7 +169,9 @@ $font-weight-bold: 700; // Bold weight
     min-height: 85vh;
     margin: 2rem 0;
     background: white;
-    border: 1px solid #C1C1C1;
+    //border: 1px solid #C1C1C1;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 
     header {
       padding: 3.5rem 2.5rem 2rem 2.5rem;

@@ -11,7 +11,8 @@ const maxMenuItems: MenuItem[] = [
     { path: '/revision', text: 'REVISION' },
     { path: '/api', text: 'API ARCHIVE' },
     { path: '/autoApi', text: 'AUTO API CONNECT' },
-    { path: '/workspace', text: 'WORKSPACE' },
+    // { path: '/workspace', text: 'WORKSPACE' },
+    { path: '/dbConnect', text: 'DBMS CONNECT' },
 ];
 
 const minMenuItems: MenuItem[] = [
@@ -19,7 +20,8 @@ const minMenuItems: MenuItem[] = [
     { path: '/revision', text: 'REV' },
     { path: '/api', text: 'API' },
     { path: '/autoApi', text: 'AUTO API' },
-    { path: '/workspace', text: 'WORK' },
+    // { path: '/workspace', text: 'WORK' },
+    { path: '/dbConnect', text: 'DBMS' },
 ];
 
 export const useHeader = () => {
@@ -42,9 +44,9 @@ export const useHeader = () => {
         setSelectedIndex(index === -1 ? 0 : index);
     }, [location]);
 
+
     useEffect(() => {
-        // 반응형 : 글자 줄이기
-        handleResize();
+        handleResize(); // 반응형 : 글자 줄이기
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);

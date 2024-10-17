@@ -19,8 +19,6 @@ const ERDiagram: React.FC = () => {
             restoreDeletedLinks,
             handelFetchDeletedLink,
             deletedLinkRef,
-            setSelectedParentTable,
-            setSelectedChildTable,
             fkList,
             setFkList,
             contextMenu,
@@ -159,8 +157,6 @@ const ERDiagram: React.FC = () => {
             const isValidLinkMessage = validateLink(parentTable, childTable); // 유효성 검사 로직
             if (!isValidLinkMessage) {
                 isValidLink = true;  // 유효성 검사가 통과 되었을 경우 링크를 허용
-                setSelectedParentTable(parentTable);
-                setSelectedChildTable(childTable);
             } else {
                 setErrorMessage(isValidLinkMessage);  // 유효하지 않을 경우 오류 메시지를 표시
             }
@@ -260,10 +256,10 @@ const ERDiagram: React.FC = () => {
             {contextMenu && fkList && (
                 <div
                     className={styles.contextMenu}
-                    style={{ top: contextMenu.y, left: contextMenu.x }}
+                    style={{ top: contextMenu.y - 130, left: contextMenu.x }}
                     onClick={(e) => e.stopPropagation()}
                 >
-                    <span>연결할 FK 선택</span>
+                    <p>연결할 FK 선택 <span>{'>'}</span></p>
                     <ul>
                         {fkList.map((fk, index) =>
                             <li key={index} onClick={() => handleMenuOptionClick(fk.hash)}>{fk.name}</li>

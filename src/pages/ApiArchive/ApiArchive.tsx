@@ -23,6 +23,13 @@ const ApiArchive: React.FC = () => {
     } = useApiArchive();
 
     const renderDropdowns = (apiList: UserAPIDTO[], urlName: '' | 'like/') => {
+        if (apiList.length === 0)
+            return (
+                <div style={{width:'100%', height: '100%', textAlign:'center'}}>
+                    <p style={{color: 'gray'}}>저장된 REST API가 없습니다.</p>
+                </div>
+            )
+
         return apiList.map((api, index) => (
             <Dropdown
                 id={api.id}
@@ -44,7 +51,7 @@ const ApiArchive: React.FC = () => {
                 <section className={styles.apiArchive__container}>
                     <header>
                         <LineTitle
-                            text="API 보관함"
+                            text="API ARCHIVE"
                             fontSize="2rem"
                             smallText="REST API URL을 보관함에 저장하여 관리하세요."
                             isCenter
@@ -66,8 +73,10 @@ const ApiArchive: React.FC = () => {
                     </header>
                     <main>
                         {activeTab === 'Normal'
-                            ? apis && renderDropdowns(apis.basicAPIList, '')
-                            : apis && renderDropdowns(apis.filterAPIList, 'like/')
+                            ?
+                                apis && renderDropdowns(apis.basicAPIList, '')
+                            :
+                                apis && renderDropdowns(apis.filterAPIList, 'like/')
                         }
                     </main>
                 </section>

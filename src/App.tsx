@@ -13,6 +13,7 @@ import {WebBuilder} from "./pages/WebBuilder";
 import {DataBaseProvider} from "./contexts/DataBaseContext";
 import ApiArchive from "./pages/ApiArchive";
 import AutoApiConnect from "./pages/AutoApiConnect";
+import DBMSConnect from "./pages/DBMSConnect";
 
 const App: React.FC = () => {
     const [token, setToken] = useState<string | null>(null);
@@ -72,8 +73,9 @@ const App: React.FC = () => {
                                 <Route path="/revision" element={<RevisionProvider> <Revision /> </RevisionProvider>} />
                                 <Route path="/api" element={<ApiArchive />} />
                                 <Route path="/autoApi" element={<AutoApiConnect />} />
-                                <Route path="/workspace" element={<Template />} />
-                                <Route path="/workspace/:template" element={<WebBuilder />} />
+                                {/*<Route path="/workspace" element={<Template />} />*/}
+                                {/*<Route path="/workspace/:template" element={<WebBuilder />} />*/}
+                                <Route path="/dbConnect" element={<DBMSConnect />} />
                             </Routes>
                         </div>
                     </DataBaseProvider>

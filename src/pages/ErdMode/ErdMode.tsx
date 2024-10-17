@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import styles from './ErdMode.module.scss';
 import TabBar from '../../publicComponents/layout/TabBar';
 import {Notification} from '../../publicComponents/layout/modal/Notification';
@@ -14,12 +14,8 @@ import SQLTab from "../DBMode/Components/SQLTab";
 import ExcelTab from "../DBMode/Components/ExcelTab";
 import ResourceTab from "../DBMode/Components/ResourceTab";
 import ClassTab from "../DBMode/Components/ClassTab";
-import {useDataBase} from "../../contexts/DataBaseContext";
 
 const ErdMode: React.FC = () => {
-    const { databases, selectedDataBase } = useDataBase();
-
-
     const {
         databaseNames,
         selectedTable,

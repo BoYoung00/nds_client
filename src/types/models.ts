@@ -306,3 +306,15 @@ interface APIConnDetailsResponse {
     programingCode: string;
     programmingLanguage: string;
 }
+
+// DBMS Connect 요청값
+interface DBMSDtoRequest {
+    connType: string,
+    name: string,
+    dbmsType: string,
+    description: string,
+    url: string,
+    username: string,
+    password: string,
+    databaseName: string
+}

@@ -14,9 +14,7 @@ export const useERDiagram = () => {
     const deletedLinksRef = useRef<any[]>([]); // 삭제된 링크를 저장할 참조
     const deletedLinkRef = useRef<any>(null); // 삭제할 링크
 
-    const [selectedParentTable, setSelectedParentTable] = useState<TableData | null>(null); // 관계 연결 시 선택한 부모 테이블
-    const [selectedChildTable, setSelectedChildTable] = useState<TableData | null>(null); // 관계 연결 시 선택한 자식 테이블
-
+    const [selectedPkColumnHash, setSelectedPkColumnHash] = useState<string>(''); // PK Hash
     const [contextMenu, setContextMenu] = useState<{ x: number, y: number } | null>(null); // 클릭 위치
     const [fkList, setFkList] = useState<{name: string, hash: string}[] | null>(null)
     const [selectedFkHash, setSelectedFkHash]  = useState<string | null>(null)
@@ -33,6 +31,7 @@ export const useERDiagram = () => {
             const columnInfo = findColumnInfo(columnMeta);
             if (columnInfo.isPk) {
                 parentTableType = columnInfo.type;
+                setSelectedPkColumnHash(columnInfo.columnHash); // 선택한 PK 행 저장
                 return columnInfo.isPk; // 부모 테이블에 PK가 있는지 확인
             }
         });
@@ -127,8 +126,8 @@ export const useERDiagram = () => {
     };
 
     // FK 목록 찾기
-    const getForeignKeys = (childTable: TableData): { name: string; hash: string }[] => {
-        const columns = Object.keys(childTable.tableInnerStructure);
+    const getForeignKeys = (table: TableData): { name: string; hash: string }[] => {
+        const columns = Object.keys(table.tableInnerStructure);
 
         return columns
             .map((column) => {
@@ -143,6 +142,21 @@ export const useERDiagram = () => {
                 return undefined;
             })
             .filter((fk) => fk !== undefined) as { name: string; hash: string }[]; // 타입 단언
+    };
+
+    // PK 찾기
+    const getPrimaryKeyHash = (table: TableData): string => {
+        const columns = Object.keys(table.tableInnerStructure);
+
+        const pk = columns.find((column) => {
+            const columnInfo = findColumnInfo(column);
+            // 외래키인 경우만 객체를 반환
+            if (columnInfo.isPk) {
+                return columnInfo.columnHash
+            }
+            return undefined;
+        })
+        return pk ? pk : '';
     };
 
     // 메뉴 옵션 클릭 핸들러
@@ -180,8 +194,6 @@ export const useERDiagram = () => {
 
     // 훅 상태 초기화 함수
     const resetState = () => {
-        setSelectedParentTable(null);
-        setSelectedChildTable(null);
         setContextMenu(null);
         setFkList(null);
         setSelectedFkHash(null);
@@ -201,11 +213,11 @@ export const useERDiagram = () => {
         if (selectedFkHash) {
             const relationRequest : RelationRequest = {
                 dataBaseID: selectedDataBase?.id!,
-                parentColumnHash: selectedParentTable!.tableHash,
+                parentColumnHash: selectedPkColumnHash,
                 childColumnHash: selectedFkHash
             }
             console.log('relationRequest', relationRequest);
-            // handelFetchRelationAdd(relationRequest);
+            handelFetchRelationAdd(relationRequest);
             resetState(); // 상태 초기화
         }
     }, [selectedFkHash]);
@@ -231,8 +243,6 @@ export const useERDiagram = () => {
             restoreDeletedLinks,
             handelFetchDeletedLink,
             deletedLinkRef,
-            setSelectedParentTable,
-            setSelectedChildTable,
             fkList,
             setFkList,
             contextMenu,

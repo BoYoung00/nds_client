@@ -1,0 +1,83 @@
+@import "src/App.module";
+
+.DBMSConnect {
+  @include container-default-style;
+
+  .createButWrap {
+    display: flex;
+    justify-content: end;
+    margin-top: 1rem;
+
+    .createBut {
+      @include button-style(true, 10rem);
+    } // createBut
+  } // createButWrap
+
+  .item {
+    padding: 1rem;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 3px 3px 1px rgb(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    position: relative;
+
+    & > h2 {
+      color: $color-blue-deep;
+      margin: 0 0 .5rem 0;
+    }
+
+    & > p {
+      color: $color-gray-middle;
+      margin: 0;
+    }
+
+    &:hover {
+      border: 1px solid $color-blue-deep;
+    }
+  } // item
+}
+
+
+// DBMS 모달 디자인
+.DbmsModal {
+  width: 100%; height: 95%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: 3rem;
+
+  .inputContainer {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 1.2rem;
+
+    & > p {
+      color: $color-blue-deep;
+      margin: .5rem 0 .5rem 0;
+      font-size: 1.2rem;
+      //font-weight: $font-weight-bold;
+    }
+    &:last-child { border-bottom: none; }
+
+    .inputBox {
+      @include flex-left;
+      gap: 1rem;
+      margin-left: 1rem;
+
+      .modalGroup {
+        width: 100%;
+
+        & > label { color: gray; }
+      } // modalGroup
+    } // inputBox
+  } // inputContainer
+
+  .butContainer {
+    width: 100%;
+    @include flex-right;
+    gap: 1rem;
+
+    .testBut { @include button-style(true, 5rem, .9rem, .4rem)}
+    .saveBut { @include button-style(false, 5rem, .9rem, .25rem)}
+  } // butContainer
+}
