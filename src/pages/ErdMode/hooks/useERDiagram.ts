@@ -155,6 +155,7 @@ export const useERDiagram = () => {
     const handleMenuCancel = () => {
         handleDocumentClick();
         removeLink(deletedLinkRef.current); // 삭제 함수 호출
+        resetState(); // 초기화
     }
 
     // 컨텍스트 메뉴 닫기
