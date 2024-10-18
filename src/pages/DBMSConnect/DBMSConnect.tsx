@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./DBMSConnenct.module.scss";
 import LineTitle from "../../publicComponents/UI/LineTitle";
 import {Notification} from "../../publicComponents/layout/modal/Notification";
 import DBMSModal from "./Components/DBMSModal";
-
+import {getAllDBMSInfo} from "../../services/api";
 
 const DBMSConnect:React.FC = () => {
     const [dbmsInfos, setDbmsInfos] = useState<DBMSDtoRequest[]>([]);
@@ -14,6 +14,21 @@ const DBMSConnect:React.FC = () => {
 
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    const fetchDbmsInfos = async () => {
+        try {
+            const response = await getAllDBMSInfo();
+            console.log('리스트', response)
+            setDbmsInfos(response);
+        } catch (e) {
+            console.error(e);
+            setErrorMessage('알 수 없는 오류가 발생하였습니다.');
+        }
+    };
+
+    useEffect(() => {
+        fetchDbmsInfos();
+    }, [])
 
     return (
         <>
@@ -31,7 +46,7 @@ const DBMSConnect:React.FC = () => {
                                     className={styles.createBut}
                                     onClick={() => setIsOpenCreateDBConnectModal(true)}
                                 >
-                                    ADD DBMS
+                                    ADD Connector
                                 </button>
                             </div>
                         </LineTitle>
@@ -47,17 +62,19 @@ const DBMSConnect:React.FC = () => {
                                         setIsItemInfoModalOpen(true);
                                     }}
                                 >
-                                    <h2>{info.name}</h2>
-                                    <p>{info.description}</p>
-                                    {/*<button*/}
-                                    {/*    className={styles.closeButton}*/}
-                                    {/*    onClick={(e) => {*/}
-                                    {/*        e.stopPropagation();*/}
-                                    {/*        handleRemoveApi();*/}
-                                    {/*    }}*/}
-                                    {/*>*/}
-                                    {/*    X*/}
-                                    {/*</button>*/}
+                                    <section className={styles.itemInfo}>
+                                        <h2>{info.name}</h2>
+                                        <p>{info.description}</p>
+                                    </section>
+                                    <section className={styles.itemAction}>
+                                        <div className={styles.runButWrap}>
+                                            <button>RUN</button>
+                                        </div>
+                                        <div className={styles.IMEXWrap}>
+                                            <p>IMPORT</p>
+                                            <p>EXPORT</p>
+                                        </div>
+                                    </section>
                                 </div>
                             ))
                             :
@@ -73,6 +90,14 @@ const DBMSConnect:React.FC = () => {
                 isOpenModal={isOpenCreateDBConnectModal}
                 onCloseModal={setIsOpenCreateDBConnectModal}
                 setDbmsInfos={setDbmsInfos}
+            />
+
+            <DBMSModal
+                isOpenModal={isItemInfoModalOpen}
+                onCloseModal={setIsItemInfoModalOpen}
+                setDbmsInfos={setDbmsInfos}
+                isUpdateModel={true}
+                selectedDbmsInfo={selectedDbmsInfo}
             />
 
             {successMessage && (

@@ -13,7 +13,7 @@ export const useRemoteControl = () => {
         if (selectedTable === null) {
             setErrorMessage("엔티티를 선택해주세요.");
         } else {
-            setQuestionMessage(`${selectedTable.name} 엔티티를 삭제 하시겠습니까?`);
+            setQuestionMessage(`${selectedTable.name} 엔티티를 삭제 하시겠습니까? \n 엔티티와 연관된 데이터들도 모두 삭제 됩니다.`);
         }
     };
 

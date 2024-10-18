@@ -1,6 +1,16 @@
 import {client} from "../contexts/AuthContext";
 import axios from "axios";
 
+// 에러 처리 함수
+const handleError = (error: any) => {
+    if (axios.isAxiosError(error)) {
+        const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+        throw new Error(message);
+    }
+    if (error instanceof Error) throw new Error(error.message);
+    throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+};
+
 // 데이터베이스 생성
 export const createDataBase = async (name: string, comment: string) => {
     try {
@@ -88,8 +98,7 @@ export const tableStructure = async (tableRequest: TableRequest) => {
             const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
             throw new Error(message);
         }
-        if (error instanceof Error)
-            throw new Error(error.message);
+        if (error instanceof Error) throw new Error(error.message);
         throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
     }
 };
@@ -648,6 +657,77 @@ export const deleteAPIConnCode = async (id: number) => {
         const response = await client.delete(`/api/autoAPiConnect/${id}`);
         if (response.status === 200) {
             return response.data; // 성공적으로 삭제된 데이터 반환
+        }
+        throw new Error(`Error: ${response.data.message}`);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
+
+// DBMS 정보 생성
+export const createDBMSInfo = async (dbmsDtoRequest: DBMSDtoRequest) => {
+    try {
+        const response = await client.post('/api/dbms', dbmsDtoRequest);
+        if (response.status === 201) {
+            return response.data; // 성공적으로 생성된 데이터 반환
+        }
+        throw new Error(`Error: ${response.data.message}`);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
+
+// DBMS 정보 조회 (전체)
+export const getAllDBMSInfo = async () => {
+    try {
+        const response = await client.get('/api/dbms');
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// DBMS 정보 조회 (단일 ID로 조회)
+export const getDBMSInfoById = async (id: number): Promise<DBMSDtoRequest | undefined> => {
+    try {
+        const response = await client.get(`/api/dbms/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// DBMS 정보 수정
+export const updateDBMSInfo = async (id: number, dbmsDtoRequest: DBMSDtoRequest) => {
+    try {
+        const response = await client.put(`/api/dbms/${id}`, dbmsDtoRequest);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
+            throw new Error(message);
+        }
+        if (error instanceof Error) throw new Error(error.message);
+        throw new Error('요청 처리 중 알 수 없는 오류가 발생했습니다.');
+    }
+};
+
+// DBMS 정보 삭제
+export const deleteDBMSInfo = async (id: number) => {
+    try {
+        const response = await client.delete(`/api/dbms/${id}`);
+        if (response.status === 204) {
+            return; // 성공적으로 삭제됨, 반환할 데이터 없음
         }
         throw new Error(`Error: ${response.data.message}`);
     } catch (error) {

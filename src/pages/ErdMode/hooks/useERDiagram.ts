@@ -14,10 +14,10 @@ export const useERDiagram = () => {
     const deletedLinksRef = useRef<any[]>([]); // 삭제된 링크를 저장할 참조
     const deletedLinkRef = useRef<any>(null); // 삭제할 링크
 
-    const [selectedPkColumnHash, setSelectedPkColumnHash] = useState<string>(''); // PK Hash
-    const [contextMenu, setContextMenu] = useState<{ x: number, y: number } | null>(null); // 클릭 위치
+    const [selectedPkHash, setSelectedPkHash] = useState<string>(''); // PK Hash
     const [fkList, setFkList] = useState<{name: string, hash: string}[] | null>(null)
     const [selectedFkHash, setSelectedFkHash]  = useState<string | null>(null)
+    const [contextMenu, setContextMenu] = useState<{ x: number, y: number } | null>(null); // 클릭 위치
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [questionMessage, setQuestionMessage] = useState<string | null>(null);
@@ -31,7 +31,7 @@ export const useERDiagram = () => {
             const columnInfo = findColumnInfo(columnMeta);
             if (columnInfo.isPk) {
                 parentTableType = columnInfo.type;
-                setSelectedPkColumnHash(columnInfo.columnHash); // 선택한 PK 행 저장
+                setSelectedPkHash(columnInfo.columnHash); // 선택한 PK 행 저장
                 return columnInfo.isPk; // 부모 테이블에 PK가 있는지 확인
             }
         });
@@ -58,7 +58,6 @@ export const useERDiagram = () => {
             const response = await tableRelationConnect(relationRequest);
             // console.log('response', response);
             setTables(response);
-
         } catch (e) {
             const error = (e as Error).message || '알 수 없는 오류가 발생하였습니다.';
             setErrorMessage(error);
@@ -85,46 +84,6 @@ export const useERDiagram = () => {
         deletedLinksRef.current = []; // 복원 후 배열 비우기
     }
 
-    // 데이터 변환 함수
-    const transformTableData = (tableData: TableData[]): ERDiagram => {
-        const nodes: any[] = [];
-        const links: any[] = [];
-
-        for (const table of tableData) {
-            const nodeColumns = Object.entries(table.tableInnerStructure).flatMap(([columnMeta, columnData]) => {
-                const columnInfo = findColumnInfo(columnMeta);
-
-                return {
-                    name: columnInfo.name,
-                    type: columnInfo.type,
-                    keyName: columnInfo.isPk ? 'PK' : (columnInfo.isUk ? 'UK' : (columnInfo.isFk ? 'FK' : null)),
-                    nullLabel: columnInfo.isNotNull
-                };
-            });
-
-            nodes.push({
-                key: table.id!,
-                name: table.name!,
-                columns: nodeColumns
-            });
-
-            for (const [columnMeta, columnData] of Object.entries(table.tableInnerStructure)) {
-                const columnInfo = findColumnInfo(columnMeta);
-                if (columnInfo.joinTableHash && columnInfo.joinTableHash !== 'null') {
-                    const fromTable = tableData.find(t => t.tableHash === columnInfo.joinTableHash);
-                    if (fromTable) {
-                        links.push({
-                            from: fromTable.id,
-                            to: table.id
-                        });
-                    }
-                }
-            }
-        }
-
-        return { node: nodes, linkData: links };
-    };
-
     // FK 목록 찾기
     const getForeignKeys = (table: TableData): { name: string; hash: string }[] => {
         const columns = Object.keys(table.tableInnerStructure);
@@ -145,19 +104,19 @@ export const useERDiagram = () => {
     };
 
     // PK 찾기
-    const getPrimaryKeyHash = (table: TableData): string => {
-        const columns = Object.keys(table.tableInnerStructure);
-
-        const pk = columns.find((column) => {
-            const columnInfo = findColumnInfo(column);
-            // 외래키인 경우만 객체를 반환
-            if (columnInfo.isPk) {
-                return columnInfo.columnHash
-            }
-            return undefined;
-        })
-        return pk ? pk : '';
-    };
+    // const getPrimaryKeyHash = (table: TableData): string => {
+    //     const columns = Object.keys(table.tableInnerStructure);
+    //
+    //     const pk = columns.find((column) => {
+    //         const columnInfo = findColumnInfo(column);
+    //         // 외래키인 경우만 객체를 반환
+    //         if (columnInfo.isPk) {
+    //             return columnInfo.columnHash
+    //         }
+    //         return undefined;
+    //     })
+    //     return pk ? pk : '';
+    // };
 
     // 메뉴 옵션 클릭 핸들러
     const handleMenuOptionClick = (hash: string) => {
@@ -213,7 +172,7 @@ export const useERDiagram = () => {
         if (selectedFkHash) {
             const relationRequest : RelationRequest = {
                 dataBaseID: selectedDataBase?.id!,
-                parentColumnHash: selectedPkColumnHash,
+                parentColumnHash: selectedPkHash,
                 childColumnHash: selectedFkHash
             }
             console.log('relationRequest', relationRequest);
@@ -260,3 +219,42 @@ export const useERDiagram = () => {
     };
 };
 
+// 데이터 변환 함수
+const transformTableData = (tableData: TableData[]): ERDiagram => {
+    const nodes: any[] = [];
+    const links: any[] = [];
+
+    for (const table of tableData) {
+        const nodeColumns = Object.entries(table.tableInnerStructure).flatMap(([columnMeta, columnData]) => {
+            const columnInfo = findColumnInfo(columnMeta);
+
+            return {
+                name: columnInfo.name,
+                type: columnInfo.type,
+                keyName: columnInfo.isPk ? 'PK' : (columnInfo.isUk ? 'UK' : (columnInfo.isFk ? 'FK' : null)),
+                nullLabel: columnInfo.isNotNull
+            };
+        });
+
+        nodes.push({
+            key: table.id!,
+            name: table.name!,
+            columns: nodeColumns
+        });
+
+        for (const [columnMeta, columnData] of Object.entries(table.tableInnerStructure)) {
+            const columnInfo = findColumnInfo(columnMeta);
+            if (columnInfo.joinTableHash && columnInfo.joinTableHash !== 'null') {
+                const fromTable = tableData.find(t => t.tableHash === columnInfo.joinTableHash);
+                if (fromTable) {
+                    links.push({
+                        from: fromTable.id,
+                        to: table.id
+                    });
+                }
+            }
+        }
+    }
+
+    return { node: nodes, linkData: links };
+};

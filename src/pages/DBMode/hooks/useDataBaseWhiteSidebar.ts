@@ -39,7 +39,7 @@ export function useDataBaseWhiteSidebar() {
         if (selectedTable === null) {
             setErrorMessage("선택한 테이블이 없습니다.");
         } else {
-            setQuestionMessage(`${selectedTable.name} 테이블을 삭제 하시겠습니까?`);
+            setQuestionMessage(`${selectedTable.name} 테이블을 삭제 하시겠습니까? \n 테이블과 연관된 데이터들도 모두 삭제 됩니다.`);
         }
     };
 
