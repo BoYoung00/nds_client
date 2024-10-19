@@ -6,6 +6,18 @@ import {tableRelationConnect} from "../../../services/api";
 import ERDiagram from "../Components/ERDiagram";
 import {useDataBase} from "../../../contexts/DataBaseContext";
 
+interface PkInfo {
+    name: string,
+    hash: string,
+    type: string
+}
+
+interface FkInfo {
+    name: string,
+    hash: string,
+    type: string
+}
+
 export const useERDiagram = () => {
     const { selectedDataBase } = useDataBase();
     const { setTables } = useTable();
@@ -14,24 +26,24 @@ export const useERDiagram = () => {
     const deletedLinksRef = useRef<any[]>([]); // 삭제된 링크를 저장할 참조
     const deletedLinkRef = useRef<any>(null); // 삭제할 링크
 
-    const [selectedPkHash, setSelectedPkHash] = useState<string>(''); // PK Hash
-    const [fkList, setFkList] = useState<{name: string, hash: string}[] | null>(null)
+    const [selectedPk, setSelectedPk] = useState<PkInfo>(); // PK Hash
+    const [fkList, setFkList] = useState<FkInfo[] | null>(null)
     const [selectedFkHash, setSelectedFkHash]  = useState<string | null>(null)
     const [contextMenu, setContextMenu] = useState<{ x: number, y: number } | null>(null); // 클릭 위치
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [questionMessage, setQuestionMessage] = useState<string | null>(null);
 
-    // 관계 연결 유효성 검사
+    // 관계 연결 유효성 검사 - PK, FK 유무
     const validateLink = (parentTable: TableData, childTable: TableData): string | null => {
-        let parentTableType = '';
-        let childTableType = '';
-
         const isParentTableValid = Object.entries(parentTable.tableInnerStructure).some(([columnMeta, columnData]) => {
             const columnInfo = findColumnInfo(columnMeta);
             if (columnInfo.isPk) {
-                parentTableType = columnInfo.type;
-                setSelectedPkHash(columnInfo.columnHash); // 선택한 PK 행 저장
+                setSelectedPk({
+                    name: columnInfo.name,
+                    hash: columnInfo.columnHash,
+                    type: columnInfo.type
+                }); // 선택한 PK 행 저장
                 return columnInfo.isPk; // 부모 테이블에 PK가 있는지 확인
             }
         });
@@ -40,14 +52,12 @@ export const useERDiagram = () => {
             const columnInfo = findColumnInfo(columnMeta);
 
             if (columnInfo.isFk) {
-                childTableType = columnInfo.type;
                 return columnInfo.isFk; // 자식 테이블에 FK가 있는지 확인
             }
         });
 
         if (!isParentTableValid) return "부모 테이블에 PK가 존재하지 않습니다.";
         if (!isChildTableValid) return "자식 테이블에 FK가 존재하지 않습니다.";
-        if (parentTableType !== childTableType) return "PK와 FK의 타입이 일치하지 않습니다.";
 
         return null;
     };
@@ -85,7 +95,7 @@ export const useERDiagram = () => {
     }
 
     // FK 목록 찾기
-    const getForeignKeys = (table: TableData): { name: string; hash: string }[] => {
+    const getForeignKeys = (table: TableData): FkInfo[] => {
         const columns = Object.keys(table.tableInnerStructure);
 
         return columns
@@ -96,33 +106,25 @@ export const useERDiagram = () => {
                     return {
                         name: columnInfo.name,
                         hash: columnInfo.columnHash,
+                        type: columnInfo.type
                     };
                 }
                 return undefined;
             })
-            .filter((fk) => fk !== undefined) as { name: string; hash: string }[]; // 타입 단언
+            .filter((fk) => fk !== undefined) as { name: string; hash: string; type: string; }[]; // 타입 단언
     };
-
-    // PK 찾기
-    // const getPrimaryKeyHash = (table: TableData): string => {
-    //     const columns = Object.keys(table.tableInnerStructure);
-    //
-    //     const pk = columns.find((column) => {
-    //         const columnInfo = findColumnInfo(column);
-    //         // 외래키인 경우만 객체를 반환
-    //         if (columnInfo.isPk) {
-    //             return columnInfo.columnHash
-    //         }
-    //         return undefined;
-    //     })
-    //     return pk ? pk : '';
-    // };
 
     // 메뉴 옵션 클릭 핸들러
-    const handleMenuOptionClick = (hash: string) => {
-        setSelectedFkHash(hash);
-        handleDocumentClick();
+    const handleMenuOptionClick = (fkInfo: FkInfo) => {
+        if (fkInfo.type === selectedPk?.type) {
+            setSelectedFkHash(fkInfo.hash);
+            handleDocumentClick();
+        } else {
+            setErrorMessage('PK와 FK의 타입이 일치하지 않습니다.');
+            handleMenuCancel();
+        }
     };
+
 
     // 메뉴 옵션 취소
     const handleMenuCancel = () => {
@@ -156,15 +158,13 @@ export const useERDiagram = () => {
         setContextMenu(null);
         setFkList(null);
         setSelectedFkHash(null);
-        setErrorMessage(null);
-        setQuestionMessage(null);
         deletedLinkRef.current = null;
         deletedLinksRef.current = [];
     };
 
 
     useEffect(() => {
-        resetState();;
+        resetState();
     }, [selectedDataBase])
 
     // FK 선택 시 연관 관계 추가 통신 실행
@@ -172,7 +172,7 @@ export const useERDiagram = () => {
         if (selectedFkHash) {
             const relationRequest : RelationRequest = {
                 dataBaseID: selectedDataBase?.id!,
-                parentColumnHash: selectedPkHash,
+                parentColumnHash: selectedPk?.hash!,
                 childColumnHash: selectedFkHash
             }
             console.log('relationRequest', relationRequest);

@@ -262,7 +262,7 @@ const ERDiagram: React.FC = () => {
                     <p>연결할 FK 선택 <span>{'>'}</span></p>
                     <ul>
                         {fkList.map((fk, index) =>
-                            <li key={index} onClick={() => handleMenuOptionClick(fk.hash)}>{fk.name}</li>
+                            <li key={index} onClick={() => handleMenuOptionClick(fk)}>{fk.name}</li>
                         )}
                         <li onClick={handleMenuCancel} style={{color: 'red', fontWeight: 'normal'}}>Cancel</li>
                     </ul>
