@@ -307,7 +307,7 @@ interface APIConnDetailsResponse {
     programmingLanguage: string;
 }
 
-// DBMS Connect 요청값
+// DBMS Connect 요청값 (저장)
 interface DBMSDtoRequest {
     connType: string,
     name: string,
@@ -317,4 +317,19 @@ interface DBMSDtoRequest {
     username: string,
     password: string,
     databaseName: string
+}
+
+// DBMS Connect 응답값
+interface DBMSInfoResponse {
+    id: number,
+    createUserToken: string,
+    connType: string,
+    name: string,
+    dbmsType: string,
+    description: string,
+    url: string,
+    username: string,
+    password: string,
+    databaseName: string,
+    createTime: string,
 }
