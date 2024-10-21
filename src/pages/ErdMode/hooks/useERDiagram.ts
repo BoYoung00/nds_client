@@ -6,13 +6,7 @@ import {tableRelationConnect} from "../../../services/api";
 import ERDiagram from "../Components/ERDiagram";
 import {useDataBase} from "../../../contexts/DataBaseContext";
 
-interface PkInfo {
-    name: string,
-    hash: string,
-    type: string
-}
-
-interface FkInfo {
+interface KeyInfo {
     name: string,
     hash: string,
     type: string
@@ -26,8 +20,8 @@ export const useERDiagram = () => {
     const deletedLinksRef = useRef<any[]>([]); // 삭제된 링크를 저장할 참조
     const deletedLinkRef = useRef<any>(null); // 삭제할 링크
 
-    const [selectedPk, setSelectedPk] = useState<PkInfo>(); // PK Hash
-    const [fkList, setFkList] = useState<FkInfo[] | null>(null)
+    const [selectedPk, setSelectedPk] = useState<KeyInfo>(); // PK Hash
+    const [fkList, setFkList] = useState<KeyInfo[] | null>(null)
     const [selectedFkHash, setSelectedFkHash]  = useState<string | null>(null)
     const [contextMenu, setContextMenu] = useState<{ x: number, y: number } | null>(null); // 클릭 위치
 
@@ -95,7 +89,7 @@ export const useERDiagram = () => {
     }
 
     // FK 목록 찾기
-    const getForeignKeys = (table: TableData): FkInfo[] => {
+    const getForeignKeys = (table: TableData): KeyInfo[] => {
         const columns = Object.keys(table.tableInnerStructure);
 
         return columns
@@ -111,11 +105,11 @@ export const useERDiagram = () => {
                 }
                 return undefined;
             })
-            .filter((fk) => fk !== undefined) as { name: string; hash: string; type: string; }[]; // 타입 단언
+            .filter((fk) => fk !== undefined) as KeyInfo[]; // 타입 단언
     };
 
-    // 메뉴 옵션 클릭 핸들러
-    const handleMenuOptionClick = (fkInfo: FkInfo) => {
+    // 메뉴 옵션(Fk) 클릭 핸들러
+    const handleMenuOptionClick = (fkInfo: KeyInfo) => {
         if (fkInfo.type === selectedPk?.type) {
             setSelectedFkHash(fkInfo.hash);
             handleDocumentClick();
