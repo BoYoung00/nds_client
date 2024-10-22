@@ -143,6 +143,7 @@ const DBMSConnect: React.FC = () => {
                                                                 onChange={(e) => setTableNameInputValue(e.target.value)}
                                                             />
                                                         </div>
+                                                        <p className={styles.DBMSComment}>※ DBMS에서 가져오고자 하는 테이블 이름을 작성해주세요.</p>
                                                     </div>
                                                 ) : (
                                                     <div>
@@ -168,6 +169,7 @@ const DBMSConnect: React.FC = () => {
                                                                 ))}
                                                             </select>
                                                         </div>
+                                                        <p className={styles.DBMSComment}>※ D-SIM에서 DBMS에 보내고자 하는 테이블을 선택해주세요.</p>
                                                     </div>
                                                 )}
 

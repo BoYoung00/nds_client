@@ -65,12 +65,13 @@ export const useDBMSModal = (selectedDbmsInfo?: DBMSInfoResponse, setDbmsInfos?:
         try {
             if (isSave) {
                 const response = await createDBMSInfo(dbmsInfo);
-                if (setDbmsInfos) setDbmsInfos(response);
+                if (setDbmsInfos) setDbmsInfos(prev => [...prev, response]);
                 setSuccessMessage('연결 정보 저장에 성공하셨습니다.');
             } else {
                 if (!selectedDbmsInfo) return;
-                await updateDBMSInfo(selectedDbmsInfo.id, dbmsInfo);
+                const response = await updateDBMSInfo(selectedDbmsInfo.id, dbmsInfo);
                 setSuccessMessage('연결 정보 수정에 성공하셨습니다.');
+                if (setDbmsInfos) setDbmsInfos(prev => [...prev, response]);
             }
         } catch (e) {
             const error = (e as Error).message || '알 수 없는 오류가 발생하였습니다.';

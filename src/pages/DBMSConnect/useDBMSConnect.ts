@@ -47,7 +47,7 @@ export const useDBMSConnect = () => {
         if (!selectedDbmsInfo) return;
         try {
             const response = await insertData(selectedDbmsInfo.id, selectedTableId);
-            setSuccessMessage(response)
+            setSuccessMessage('DBMS에 데이터 보내기에 성공하셨습니다.')
         } catch (e) {
             const error = (e as Error).message || '알 수 없는 오류가 발생하였습니다.';
             setErrorMessage(error);
@@ -59,7 +59,7 @@ export const useDBMSConnect = () => {
         if (!selectedDbmsInfo) return;
         try {
             const response = await importTableData(selectedDbmsInfo.id, selectedDatabaseId, tableNameInputValue);
-            setSuccessMessage(response)
+            setSuccessMessage('DBMS 데이터 가져오기에 성공하셨습니다.')
         } catch (e) {
             const error = (e as Error).message || '알 수 없는 오류가 발생하였습니다.';
             setErrorMessage(error);

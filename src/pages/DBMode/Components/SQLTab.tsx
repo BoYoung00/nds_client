@@ -34,7 +34,7 @@ const SQLTab: React.FC = () => {
                         <option value="MariaDB">MariaDB</option>
                         <option value="SQLite">SQLite</option>
                     </select>
-                    <button onClick={() => downloadSQLFile()}>.sql 파일 <br/> 다운로드</button>
+                    <button onClick={() => downloadSQLFile()}>SQL 파일 추출</button>
                 </div>
             </div>
             <div className={styles.codeEditorWrapper}>
