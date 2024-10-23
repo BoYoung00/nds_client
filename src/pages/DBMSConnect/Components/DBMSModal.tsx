@@ -155,7 +155,7 @@ const DBMSModal:React.FC<DBMSModalProps> = ({ isOpenModal, onCloseModal, dbmsInf
                                 {successConnect && <p className={successConnect ? styles.visible : ''}>연결 성공</p>}
                             </div>
                             <button className={styles.testBut} onClick={fetchTestDbmsConnection}>TEST</button>
-                            <button className={styles.saveBut} onClick={() => fetchSaveAndUpdateDBMS(isUpdateModel)}>{isUpdateModel ? 'UPDATE' : 'SAVE'}</button>
+                            <button className={styles.saveBut} onClick={() => fetchSaveAndUpdateDBMS(!isUpdateModel)}>{isUpdateModel ? 'UPDATE' : 'SAVE'}</button>
                         </div>
                     </section>
                 </div>

@@ -70,6 +70,7 @@ export const useDBMSModal = (selectedDbmsInfo?: DBMSInfoResponse, setDbmsInfos?:
             } else {
                 if (!selectedDbmsInfo) return;
                 const response = await updateDBMSInfo(selectedDbmsInfo.id, dbmsInfo);
+                console.log(response)
                 setSuccessMessage('연결 정보 수정에 성공하셨습니다.');
                 if (setDbmsInfos) setDbmsInfos(prev => [...prev, response]);
             }

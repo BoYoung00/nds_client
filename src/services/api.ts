@@ -673,7 +673,8 @@ export const deleteAPIConnCode = async (id: number) => {
 export const createDBMSInfo = async (dbmsDtoRequest: DBMSDtoRequest) => {
     try {
         const response = await client.post('/api/dbms', dbmsDtoRequest);
-        if (response.status === 200) {
+        console.log('response', response)
+        if (response.status === 201) {
             return response.data; // 성공적으로 생성된 데이터 반환
         }
         new Error(`${response.data.message}`)
@@ -711,6 +712,7 @@ export const getDBMSInfoById = async (id: number): Promise<DBMSDtoRequest | unde
 export const updateDBMSInfo = async (id: number, dbmsDtoRequest: DBMSDtoRequest) => {
     try {
         const response = await client.put(`/api/dbms/${id}`, dbmsDtoRequest);
+        console.log('response', response)
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -726,10 +728,7 @@ export const updateDBMSInfo = async (id: number, dbmsDtoRequest: DBMSDtoRequest)
 export const deleteDBMSInfo = async (id: number) => {
     try {
         const response = await client.delete(`/api/dbms/${id}`);
-        if (response.status === 200) {
-            return response.data; // 성공적으로 삭제됨, 반환할 데이터 없음
-        }
-        throw new Error(`Error: ${response.data.message}`);
+        return response.data; // 성공적으로 삭제됨, 반환할 데이터 없음
     } catch (error) {
         if (axios.isAxiosError(error)) {
             const message = error.response?.data.message || '서버에서 오류가 발생했습니다.';
