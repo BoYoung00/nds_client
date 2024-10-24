@@ -8,7 +8,7 @@ export const useApiFunction = (setApiData: React.Dispatch<React.SetStateAction<A
     const [loading, setLoading] = useState<boolean>(false);
     const [tables, setTables] = useState<TableData[]>([]);
     const [code, setCode] = useState<string>('');
-    const [selectedDatabaseId, setSelectedDatabaseId] = useState<number>(databases[0]?.id!);
+    const [selectedDatabaseId, setSelectedDatabaseId] = useState<number>(databases[0]?.id!); // 초기값을 0으로 설정
     const [selectedTableHash, setSelectedTableHash] = useState<string>('');
     const [selectedLanguage, setSelectedLanguage] = useState<string>("JAVA");
     const [functionName, setFunctionName] = useState<string>('');
@@ -17,11 +17,11 @@ export const useApiFunction = (setApiData: React.Dispatch<React.SetStateAction<A
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     // 테이블 가져오기
-    const fetchTables = async () => {
-        if (!selectedDatabaseId) return;
+    const fetchTables = async (databaseId: number) => {
+        if (!databaseId) return;
         try {
             setLoading(true);
-            const data = await getTablesForDataBaseID(selectedDatabaseId);
+            const data = await getTablesForDataBaseID(databaseId);
             setTables(data);
             if (data.length > 0) {
                 setSelectedTableHash(data[0].tableHash);
@@ -80,12 +80,18 @@ export const useApiFunction = (setApiData: React.Dispatch<React.SetStateAction<A
         }
     };
 
+    // 데이터베이스가 변경될 때마다 첫 번째 항목을 자동으로 선택
     useEffect(() => {
-        setSelectedDatabaseId(databases[0]?.id!);
-    }, [databases]);
+        if (databases.length > 0 && selectedDatabaseId === 0) {
+            setSelectedDatabaseId(databases[0].id!); // 첫 번째 데이터베이스 선택
+        }
+    }, [databases, selectedDatabaseId]); // 의존성 배열에 `selectedDatabaseId` 추가
 
+    // 데이터베이스가 선택되면 테이블 로드
     useEffect(() => {
-        fetchTables();
+        if (selectedDatabaseId) {
+            fetchTables(selectedDatabaseId);
+        }
     }, [selectedDatabaseId]);
 
     return {
