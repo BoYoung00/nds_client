@@ -19,11 +19,11 @@ export const useStampingMassage = (isStampingPossible: boolean) => {
             setErrorMessage('스태핑 메세지를 작성해주세요.');
             return;
         }
-        if (!isStampingPossible) {
-            console.log('isStampingPossible',isStampingPossible)
-            setErrorMessage('변경 데이터가 없습니다.');
-            return;
-        }
+        // if (!isStampingPossible) {
+        //     console.log('isStampingPossible',isStampingPossible)
+        //     setErrorMessage('변경 데이터가 없습니다.');
+        //     return;
+        // }
 
         try {
             await revisionDataFirstCommit(selectedDataBase.id!, stampingMessage);

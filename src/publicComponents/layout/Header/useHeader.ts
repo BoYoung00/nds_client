@@ -9,7 +9,7 @@ interface MenuItem {
 const maxMenuItems: MenuItem[] = [
     { path: '/database', text: 'DATABASE' },
     { path: '/revision', text: 'REVISION' },
-    { path: '/api', text: 'API ARCHIVE' },
+    // { path: '/api', text: 'API ARCHIVE' },
     { path: '/autoApi', text: 'AUTO API CONNECT' },
     // { path: '/workspace', text: 'WORKSPACE' },
     { path: '/dbConnect', text: 'DBMS CONNECT' },
@@ -18,7 +18,7 @@ const maxMenuItems: MenuItem[] = [
 const minMenuItems: MenuItem[] = [
     { path: '/database', text: 'DB' },
     { path: '/revision', text: 'REV' },
-    { path: '/api', text: 'API' },
+    // { path: '/api', text: 'API' },
     { path: '/autoApi', text: 'AUTO API' },
     // { path: '/workspace', text: 'WORK' },
     { path: '/dbConnect', text: 'DBMS' },

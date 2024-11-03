@@ -71,7 +71,7 @@ const App: React.FC = () => {
                                 <Route path='/' element={<Navigate to="/database" />} />
                                 <Route path="/database" element={<TableProvider> <DataBase /> </TableProvider>} />
                                 <Route path="/revision" element={<RevisionProvider> <Revision /> </RevisionProvider>} />
-                                <Route path="/api" element={<ApiArchive />} />
+                                {/*<Route path="/api" element={<ApiArchive />} />*/}
                                 <Route path="/autoApi" element={<AutoApiConnect />} />
                                 {/*<Route path="/workspace" element={<Template />} />*/}
                                 {/*<Route path="/workspace/:template" element={<WebBuilder />} />*/}

@@ -57,8 +57,8 @@ const Main: React.FC = () => {
                     <img className={styles.header__logo} src={logo} alt="Logo" />
                     <li onClick={() => scrollToSection(section1Ref)}>DATABASE</li>
                     <li onClick={() => scrollToSection(section2Ref)}>REVISION</li>
-                    <li onClick={() => scrollToSection(section2Ref)}>API ARCHIVE</li>
-                    <li onClick={() => scrollToSection(section3Ref)}>WORKSPACE</li>
+                    <li onClick={() => scrollToSection(section2Ref)}>AUTO API CONNECT</li>
+                    <li onClick={() => scrollToSection(section3Ref)}>DBMS CONNECT</li>
                 </ul>
                 <Link to={'/auth'}>로그인</Link>
             </header>
@@ -128,18 +128,18 @@ const Main: React.FC = () => {
                     </section>
                     <section className={`${styles.group2__section} ${observer7InView ? styles.visible7 : ''}`} ref={observer7Ref}>
                         <img src={apiArchive} alt="apiArchive" />
-                        <h2>API ARCHIVE</h2>
+                        <h2>AUTO API CONNECT</h2>
                         <p>
-                            <span>“API 보관함”</span>
-                            원하는 데이터베이스 테이블의 REST API를 보관함에 저장하여 관리하여 보세요. 좀 더 빠른 웹 페이지 제작을 하실 수 있습니다.
+                            <span>“API 함수 자동 생성”</span>
+                            REST API 연결 코드를 자동으로 생성하여 작업 효율성을 극대화 해보세요.
                         </p>
                     </section>
                 </div>
 
                 <div ref={section3Ref} className={styles.group3} >
-                    <h1 className={`${observer8InView ? styles.visible8 : ''}`}>WORKSPACE</h1>
+                    <h1 className={`${observer8InView ? styles.visible8 : ''}`}>DBMS CONNECT</h1>
                     <img src={workspace} alt="workspace" className={`${observer8InView ? styles.visible8 : ''}`} ref={observer8Ref}/>
-                    <p className={`${observer8InView ? styles.visible9 : ''}`}>직접 만든 데이터베이스를 바탕으로 템플릿을 이용해 본인만의 웹 사이트를 만들어보세요.</p>
+                    <p className={`${observer8InView ? styles.visible9 : ''}`}>D-SIM에서 만든 데이터베이스와 기존 DBMS를 상호 연결하여 유연한 데이터 관리 환경을 구축하세요.</p>
                 </div>
             </div>
         </div>
