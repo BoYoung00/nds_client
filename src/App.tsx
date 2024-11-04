@@ -6,12 +6,9 @@ import UserAuth from "./pages/UserAuth/UserAuth";
 import DataBase from "./pages/DataBase/DataBase";
 import Header from "./publicComponents/layout/Header";
 import Revision from "./pages/Revision";
-import Template from "./pages/Template";
 import {TableProvider} from "./contexts/TableContext";
 import {RevisionProvider} from "./contexts/RevisionContext";
-import {WebBuilder} from "./pages/WebBuilder";
 import {DataBaseProvider} from "./contexts/DataBaseContext";
-import ApiArchive from "./pages/ApiArchive";
 import AutoApiConnect from "./pages/AutoApiConnect";
 import DBMSConnect from "./pages/DBMSConnect";
 

@@ -53,10 +53,10 @@ const ExcelTab: React.FC = () => {
                     <section className={styles.previewContainer}>
                         <div className={styles.excelTopBox}>
                             <h2>CSV Export</h2>
-                                <p>엑셀로 추출할 행을 선택해주세요.</p>
-                                <div className={styles.ExportPreviewWrap}>
-                                    <TableView tableStructure={selectedTable?.tableInnerStructure!} isFilter={true} attributeNames={attributeNames} setAttributeNames={setAttributeNames}/>
-                                </div>
+                            <p>엑셀로 추출할 행을 선택해주세요.</p>
+                            <div className={styles.ExportPreviewWrap}>
+                                <TableView tableStructure={selectedTable?.tableInnerStructure!} isFilter={true} attributeNames={attributeNames} setAttributeNames={setAttributeNames}/>
+                            </div>
                         </div>
                         <button className={styles.excelBut} onClick={handleExportTable}>
                             테이블 엑셀 다운로드
