@@ -53,34 +53,47 @@ D-SIM은 데이터베이스 설계 및 관리의 복잡성을 줄이고, 데이�
 ---
 
 ## 🖥️ 주요 화면
-1. 로그인 및 토큰 발급 화면
+
+#### 1. 로그인 및 토큰 발급 화면
+
 ![image](https://github.com/user-attachments/assets/6530bbf7-2913-4be2-b6bd-edb5e2d54b3d)
    - 이메일로 토큰 발급 및 로그인 가능.
 
 
-2. ERD 모드 화면
-![image](https://github.com/user-attachments/assets/3aac1173-2e2e-49b9-adfc-8d1a5e179e3b)
+
+#### 3. ERD 모드 화면
+
+![image](https://github.com/user-attachments/assets/e8d3a4f5-6b58-4c18-80d0-3ec9f3193680)
    - 데이터베이스 엔티티 설계 및 관리.
 
 
-3. DB 모드 화면
+
+#### 4. DB 모드 화면
+   
 ![image](https://github.com/user-attachments/assets/8836d4fc-d2d0-428b-8b84-21260e059997)
    - 데이터베이스 테이블 관리.
 
 
-4. Excel Import/Export 화면
+
+#### 5. Excel Import/Export 화면
+   
 ![KakaoTalk_20241219_042045336](https://github.com/user-attachments/assets/94dff952-815d-4f50-a1b7-b64013b04c75)
    - 엑셀 파일로 데이터 관리.
 
 
-5. REST API 및 필터링 화면
+
+#### 6. REST API 및 필터링 화면
+    
 ![KakaoTalk_20241219_042133403](https://github.com/user-attachments/assets/b73fbf5e-fe67-4d6b-8d0d-d78542c7403a)
    - API URL 적용 및 데이터 접근.
 
 
-6. 데이터베이스 버전 관리 화면
+
+#### 7. 데이터베이스 버전 관리 화면
+    
 ![KakaoTalk_20241219_042154880](https://github.com/user-attachments/assets/91ab4238-f320-4336-a6a4-37451de1e340)
    - 데이터 이력 관리.
+
   
 ---
 
