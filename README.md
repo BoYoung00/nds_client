@@ -51,9 +51,9 @@ D-SIM은 데이터베이스 설계 및 관리의 복잡성을 줄이고, 데이�
 ## 🔧 기술 스택
 - Frontend: React, TypeScript, SCSS
 - Backend: Spring Boot, Kotlin
-- Database: MySQL, Oracle
+- Database: MySQL
 - Deployment: GCP
-- 협업 도구: Figma (UI/UX 설계), IntelliJ IDEA, Git
+- 개발 도구: Figma (UI/UX 설계), IntelliJ IDEA
 
 ---
 
