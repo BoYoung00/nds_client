@@ -53,7 +53,7 @@ D-SIM은 데이터베이스 설계 및 관리의 복잡성을 줄이고, 데이�
 - Backend: Spring Boot, Kotlin
 - Database: MySQL
 - Deployment: GCP
-- 개발 도구: Figma (UI/UX 설계), IntelliJ IDEA
+- 개발 도구: Figma, IntelliJ IDEA
 
 ---
 
