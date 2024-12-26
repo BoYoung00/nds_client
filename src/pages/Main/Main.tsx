@@ -1,20 +1,20 @@
 import React, {useEffect, useRef, useState} from 'react';
 import styles from './Main.module.scss';
-import logo from "../../assets/images/logo.png";
-import dataImage from '../../assets/images/erd/data.png';
-import likeImage from '../../assets/images/erd/like.png';
-import restApiImage from '../../assets/images/erd/restApi.png';
-import queryImage from '../../assets/images/erd/query.png';
-import excelImage from '../../assets/images/erd/excel.png';
-import resourceImage from '../../assets/images/erd/resource.png';
-import ellipse_red from '../../assets/images/ellipse_red.png';
-import ellipse_blue from '../../assets/images/ellipse_blue.png';
+import logo from "../../assets/images/logo.webp";
+import dataImage from '../../assets/images/erd/data.webp';
+import likeImage from '../../assets/images/erd/like.webp';
+import restApiImage from '../../assets/images/erd/restApi.webp';
+import queryImage from '../../assets/images/erd/query.webp';
+import excelImage from '../../assets/images/erd/excel.webp';
+import resourceImage from '../../assets/images/erd/resource.webp';
+import ellipse_red from '../../assets/images/ellipse_red.webp';
+import ellipse_blue from '../../assets/images/ellipse_blue.webp';
 import { Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
-import database from '../../assets/images/main/database.png';
-import apiArchive from '../../assets/images/main/apiArchive.png';
-import revision from '../../assets/images/main/revision.png';
-import workspace from '../../assets/images/main/workspace.png';
+import database from '../../assets/images/main/database.webp';
+import apiArchive from '../../assets/images/main/apiArchive.webp';
+import revision from '../../assets/images/main/revision.webp';
+import workspace from '../../assets/images/main/workspace.webp';
 
 const Main: React.FC = () => {
     // 헤더 이동

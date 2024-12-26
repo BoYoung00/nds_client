@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../DBMode.module.scss';
-import doubleArrow from '../../../assets/images/doubleArrow.png';
+import doubleArrow from '../../../assets/images/doubleArrow.webp';
 import TableView from "../../../publicComponents/layout/TableView";
 import {Notification} from "../../../publicComponents/layout/modal/Notification";
 import {useLikeTab} from "../hooks/useLikeTab";

@@ -1,10 +1,10 @@
 import React, {useRef} from 'react';
 import styles from '../DBMode.module.scss';
-import refresh from '../../../assets/images/refresh.png';
-import addData from '../../../assets/images/addData.png';
-import deleteData from '../../../assets/images/deleteData.png';
-import save from '../../../assets/images/save.png';
-import updateSave from '../../../assets/images/updateSave.png';
+import refresh from '../../../assets/images/refresh.webp';
+import addData from '../../../assets/images/addData.webp';
+import deleteData from '../../../assets/images/deleteData.webp';
+import save from '../../../assets/images/save.webp';
+import updateSave from '../../../assets/images/updateSave.webp';
 import {Notification} from '../../../publicComponents/layout/modal/Notification';
 import {useAutoColumnWidth, useDataTab, useSearchPosition} from "../hooks/useDataTab";
 import Search from "../../../publicComponents/layout/modal/Search/Search";
