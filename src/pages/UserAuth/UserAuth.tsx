@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './UserAuth.module.scss';
 import {Notification} from "../../publicComponents/layout/modal/Notification";
-import login_img1 from '../../assets/images/login_img1.png';
-import login_img2 from '../../assets/images/login_img2.png';
+import login_img1 from '../../assets/images/login_img1.webp';
+import login_img2 from '../../assets/images/login_img2.webp';
 import CopyButton from "../../publicComponents/UI/CopyButton";
 import useUserAuth from './useUserAuth';
 

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import styles from './Header.module.scss';
-import logo from '../../../assets/images/logo.png';
+import logo from '../../../assets/images/logo.webp';
 import {useHeader} from "./useHeader";
 
 interface HeaderProps {

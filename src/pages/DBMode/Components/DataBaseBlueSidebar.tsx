@@ -5,7 +5,7 @@ import { CreateDB } from "../../../publicComponents/layout/modal/CreateDB";
 import { Notification } from "../../../publicComponents/layout/modal/Notification";
 import { useDataBaseBlueSidebar } from "../hooks/useDataBaseBlueSidebar";
 import { useDataBase } from "../../../contexts/DataBaseContext";
-import edit from "../../../assets/images/edit.png"
+import edit from "../../../assets/images/edit.webp"
 
 const DataBaseBlueSidebar: React.FC = () => {
     const { databases, selectedDataBase } = useDataBase();

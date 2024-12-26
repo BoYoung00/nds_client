@@ -2,7 +2,7 @@ import React from 'react';
 import BackgroundModal from "../../../UI/BackgroundModal";
 import styles from './Merge.module.scss';
 import LineTitle from "../../../UI/LineTitle";
-import doubleArrow from "../../../../assets/images/doubleArrow.png";
+import doubleArrow from "../../../../assets/images/doubleArrow.webp";
 import { Notification } from "../Notification";
 import {useTable} from "../../../../contexts/TableContext";
 import {useMerge} from "./useMerge"; // 훅 임포트

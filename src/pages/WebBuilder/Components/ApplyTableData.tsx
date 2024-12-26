@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styles from '../WebBuilder.module.scss';
 import LineTitle from "../../../publicComponents/UI/LineTitle";
-import doubleArrow from '../../../assets/images/doubleArrow.png';
+import doubleArrow from '../../../assets/images/doubleArrow.webp';
 import {useParams} from "react-router-dom";
 import {Notification} from "../../../publicComponents/layout/modal/Notification";
 import axios from "axios";

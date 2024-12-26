@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Search.module.scss';
-import searchIcon from '../../../../assets/images/search.png';
+import searchIcon from '../../../../assets/images/search.webp';
 
 interface SearchModalProps {
     title: string;

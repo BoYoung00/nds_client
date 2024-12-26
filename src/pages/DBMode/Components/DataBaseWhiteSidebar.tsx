@@ -6,7 +6,7 @@ import {useDataBaseWhiteSidebar} from "../hooks/useDataBaseWhiteSidebar";
 import {useDataBase} from "../../../contexts/DataBaseContext";
 import Merge from "../../../publicComponents/layout/modal/Merge/Merge";
 import {useTable} from "../../../contexts/TableContext";
-import edit from "../../../assets/images/edit.png";
+import edit from "../../../assets/images/edit.webp";
 
 const DataBaseWhiteSidebar: React.FC = () => {
     const { selectedDataBase } = useDataBase();

@@ -2,10 +2,10 @@ import React from 'react';
 import styles from './Template.module.scss';
 import LineTitle from "../../publicComponents/UI/LineTitle";
 import TemplateCard from "./Components/TemplateCard";
-import board from '../../assets/images/workspace/board.png'
-import gallery from '../../assets/images/workspace/gallery.png'
-import shop from '../../assets/images/workspace/shop.png'
-import todo from '../../assets/images/workspace/todo.png'
+import board from '../../assets/images/workspace/board.webp'
+import gallery from '../../assets/images/workspace/gallery.webp'
+import shop from '../../assets/images/workspace/shop.webp'
+import todo from '../../assets/images/workspace/todo.webp'
 
 
 const Template: React.FC = () => {
