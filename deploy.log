@@ -1,0 +1,4 @@
+2024-12-17 10:17:13 - 빌드 파일 전송 시작
+ssh: connect to host 123.45.67.89 port 22: Operation timed out
+rsync: connection unexpectedly closed (0 bytes received so far) [sender]
+rsync error: unexplained error (code 255) at /AppleInternal/Library/BuildRoots/4b66fb3c-7dd0-11ef-b4fb-4a83e32a47e1/Library/Caches/com.apple.xbs/Sources/rsync/rsync/io.c(453) [sender=2.6.9]
