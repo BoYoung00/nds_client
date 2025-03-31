@@ -48,6 +48,14 @@ D-SIM은 UI를 통해 데이터베이스 엔티티와 테이블 관리 등을 �
 
 ---
 
+## 🔗 링크
+🎞 시연 동영상 : https://www.youtube.com/watch?v=TCFZ6KjAqi4
+
+💻 개발 산출물 : https://drive.google.com/file/d/1d6fW3QyB2JiKBZE89NaQrHvBLjc210j3/view
+
+---
+
+
 ## 🔧 기술 스택
 - Frontend: React, TypeScript, SCSS
 - Backend: Spring Boot, Kotlin
@@ -108,9 +116,6 @@ D-SIM은 UI를 통해 데이터베이스 엔티티와 테이블 관리 등을 �
 - 주동호(백엔드)
 
 🏆 졸업작품 대상 수상 프로젝트 (2024)
-
-
-🎞 시연 동영상 : https://www.youtube.com/watch?v=TCFZ6KjAqi4
 
 ---
 
