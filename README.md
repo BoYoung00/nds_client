@@ -15,17 +15,13 @@ D-SIM은 UI를 통해 데이터베이스 엔티티와 테이블 관리 등을 �
 ### 📌 주요 기능
 
 #### 1. 데이터베이스 설계 및 관리
-   - ERD 모드:
-       - 엔티티 생성 및 관계(FK) 연결
-   - DB 모드:
-       - 테이블 데이터 추가, 수정, 삭제 및 저장
+   - ERD 모드: 엔티티 생성 및 관계(FK) 연결
+   - DB 모드: 테이블 데이터 추가, 수정, 삭제 및 저장
 
 
 #### 3. 데이터 입력 및 변환
-   - Excel Import/Export:
-       - 엑셀 데이터를 테이블에 업로드하거나 다운로드
-   - SQL 생성:
-       - 다양한 DBMS(MySQL, Oracle 등)에서 사용할 CREATE 및 INSERT 문 자동 생성
+   - Excel Import/Export: 엑셀 데이터를 테이블에 업로드하거나 다운로드
+   - SQL 생성: 다양한 DBMS(MySQL, Oracle 등)에서 사용할 CREATE 및 INSERT 문 자동 생성
 
 
 #### 4. REST API와 데이터 접근
